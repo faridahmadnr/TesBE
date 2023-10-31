@@ -35,3 +35,19 @@ terminal for other things.
 ```shell
 ./vendor/bin/sail test
 ```
+
+### Blameable
+
+```
+    $table->foreign('created_by')
+        ->references('id')->on('users')
+        ->onDelete('cascade');
+
+    $table->foreign('updated_by')
+        ->references('id')->on('users')
+        ->onDelete('cascade');
+
+    $table->foreign('deleted_by')
+        ->references('id')->on('users')
+        ->onDelete('cascade');
+```

@@ -21358,6 +21358,17 @@ namespace  {
             }
              
                 /**
+             * 
+             *
+             * @see \Essa\APIToolKit\MacroServiceProvider::boot()
+             * @static 
+             */ 
+            public static function dynamicPaginate()
+            {
+                                return \Illuminate\Database\Eloquent\Builder::dynamicPaginate();
+            }
+             
+                /**
              * Set the columns to be selected.
              *
              * @param array|mixed $columns
