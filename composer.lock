@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a1ff14fc10e45a95a1ba7c3b6fc3d083",
+    "content-hash": "3b8d1e79ce22c9c93db87b5b9de0a8c7",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -275,6 +275,81 @@
                 }
             ],
             "time": "2022-02-21T13:15:14+00:00"
+        },
+        {
+            "name": "dedoc/scramble",
+            "version": "v0.8.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dedoc/scramble.git",
+                "reference": "a7e02cb90eff09a6e751da750d9f72cf256b6d6b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dedoc/scramble/zipball/a7e02cb90eff09a6e751da750d9f72cf256b6d6b",
+                "reference": "a7e02cb90eff09a6e751da750d9f72cf256b6d6b",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^8.0.0|^9.0.0|^10.0.0",
+                "nikic/php-parser": "^4.0",
+                "php": "^8.1",
+                "phpstan/phpdoc-parser": "^1.0",
+                "spatie/laravel-package-tools": "^1.9.2"
+            },
+            "require-dev": {
+                "doctrine/dbal": "^3.4",
+                "laravel/pint": "^v1.1.0",
+                "nunomaduro/collision": "^5.0|^v6.0",
+                "orchestra/testbench": "^6.0|^7.0|^8.0",
+                "pestphp/pest": "^1.21",
+                "pestphp/pest-plugin-laravel": "^1.2",
+                "phpunit/phpunit": "^9.5",
+                "spatie/pest-plugin-snapshots": "^1.1"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Dedoc\\Scramble\\ScrambleServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Dedoc\\Scramble\\": "src",
+                    "Dedoc\\Scramble\\Database\\Factories\\": "database/factories"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Roman Lytvynenko",
+                    "email": "litvinenko95@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Automatic generation of API documentation for Laravel applications.",
+            "homepage": "https://github.com/dedoc/scramble",
+            "keywords": [
+                "documentation",
+                "laravel",
+                "openapi"
+            ],
+            "support": {
+                "issues": "https://github.com/dedoc/scramble/issues",
+                "source": "https://github.com/dedoc/scramble/tree/v0.8.4"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/romalytvynenko",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-09-24T08:35:49+00:00"
         },
         {
             "name": "deligoez/laravel-model-hashid",
@@ -1333,6 +1408,75 @@
                 }
             ],
             "time": "2023-10-06T06:47:41+00:00"
+        },
+        {
+            "name": "elegantweb/sanitizer",
+            "version": "v2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/elegantweb/sanitizer.git",
+                "reference": "1dc98ec3851d6d592d683a5a549127e12130b7ff"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/elegantweb/sanitizer/zipball/1dc98ec3851d6d592d683a5a549127e12130b7ff",
+                "reference": "1dc98ec3851d6d592d683a5a549127e12130b7ff",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^6.0|^7.0|^8.0|^9.0|^10.0",
+                "illuminate/validation": "^6.0|^7.0|^8.0|^9.0|^10.0",
+                "nesbot/carbon": "^1.0|^2.0",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Elegant\\Sanitizer\\Laravel\\SanitizerServiceProvider"
+                    ],
+                    "aliases": {
+                        "Sanitizer": "Elegant\\Sanitizer\\Laravel\\Facade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Elegant\\Sanitizer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "William Wallace San Paulo",
+                    "email": "info@waavi.com"
+                },
+                {
+                    "name": "Sina Sharifzade",
+                    "email": "sharifzadesina@gmail.com"
+                }
+            ],
+            "description": "Sanitization library for PHP and the Laravel framework.",
+            "keywords": [
+                "input",
+                "input filter",
+                "input sanitation",
+                "input sanitizer",
+                "laravel",
+                "sanitation",
+                "transform input"
+            ],
+            "support": {
+                "issues": "https://github.com/elegantweb/sanitizer/issues",
+                "source": "https://github.com/elegantweb/sanitizer/tree/v2.1.0"
+            },
+            "time": "2023-02-23T14:41:02+00:00"
         },
         {
             "name": "essa/api-tool-kit",
@@ -4748,6 +4892,53 @@
             "time": "2023-02-25T19:38:58+00:00"
         },
         {
+            "name": "phpstan/phpdoc-parser",
+            "version": "1.24.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpstan/phpdoc-parser.git",
+                "reference": "bcad8d995980440892759db0c32acae7c8e79442"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/bcad8d995980440892759db0c32acae7c8e79442",
+                "reference": "bcad8d995980440892759db0c32acae7c8e79442",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2 || ^8.0"
+            },
+            "require-dev": {
+                "doctrine/annotations": "^2.0",
+                "nikic/php-parser": "^4.15",
+                "php-parallel-lint/php-parallel-lint": "^1.2",
+                "phpstan/extension-installer": "^1.0",
+                "phpstan/phpstan": "^1.5",
+                "phpstan/phpstan-phpunit": "^1.1",
+                "phpstan/phpstan-strict-rules": "^1.0",
+                "phpunit/phpunit": "^9.5",
+                "symfony/process": "^5.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PHPStan\\PhpDocParser\\": [
+                        "src/"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHPDoc parser with support for nullable, intersection and generic types",
+            "support": {
+                "issues": "https://github.com/phpstan/phpdoc-parser/issues",
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.24.2"
+            },
+            "time": "2023-09-26T12:28:12+00:00"
+        },
+        {
             "name": "predis/predis",
             "version": "v2.2.2",
             "source": {
@@ -5795,6 +5986,88 @@
                 }
             ],
             "time": "2023-08-23T09:04:39+00:00"
+        },
+        {
+            "name": "spatie/laravel-permission",
+            "version": "6.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-permission.git",
+                "reference": "095821962f8f287f0ce1d6265fc7aa7070dacf12"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/095821962f8f287f0ce1d6265fc7aa7070dacf12",
+                "reference": "095821962f8f287f0ce1d6265fc7aa7070dacf12",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/auth": "^8.12|^9.0|^10.0",
+                "illuminate/container": "^8.12|^9.0|^10.0",
+                "illuminate/contracts": "^8.12|^9.0|^10.0",
+                "illuminate/database": "^8.12|^9.0|^10.0",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "laravel/passport": "^11.0",
+                "orchestra/testbench": "^6.23|^7.0|^8.0",
+                "phpunit/phpunit": "^9.4"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "6.x-dev",
+                    "dev-master": "6.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Spatie\\Permission\\PermissionServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Spatie\\Permission\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Permission handling for Laravel 8.0 and up",
+            "homepage": "https://github.com/spatie/laravel-permission",
+            "keywords": [
+                "acl",
+                "laravel",
+                "permission",
+                "permissions",
+                "rbac",
+                "roles",
+                "security",
+                "spatie"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/laravel-permission/issues",
+                "source": "https://github.com/spatie/laravel-permission/tree/6.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-10-25T05:25:50+00:00"
         },
         {
             "name": "symfony/console",
@@ -10727,53 +11000,6 @@
                 }
             ],
             "time": "2023-09-19T12:34:29+00:00"
-        },
-        {
-            "name": "phpstan/phpdoc-parser",
-            "version": "1.24.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "bcad8d995980440892759db0c32acae7c8e79442"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/bcad8d995980440892759db0c32acae7c8e79442",
-                "reference": "bcad8d995980440892759db0c32acae7c8e79442",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.2 || ^8.0"
-            },
-            "require-dev": {
-                "doctrine/annotations": "^2.0",
-                "nikic/php-parser": "^4.15",
-                "php-parallel-lint/php-parallel-lint": "^1.2",
-                "phpstan/extension-installer": "^1.0",
-                "phpstan/phpstan": "^1.5",
-                "phpstan/phpstan-phpunit": "^1.1",
-                "phpstan/phpstan-strict-rules": "^1.0",
-                "phpunit/phpunit": "^9.5",
-                "symfony/process": "^5.2"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "PHPStan\\PhpDocParser\\": [
-                        "src/"
-                    ]
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "PHPDoc parser with support for nullable, intersection and generic types",
-            "support": {
-                "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.24.2"
-            },
-            "time": "2023-09-26T12:28:12+00:00"
         },
         {
             "name": "phpstan/phpstan",

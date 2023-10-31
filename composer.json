@@ -9,9 +9,11 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "dedoc/scramble": "^0.8.4",
         "deligoez/laravel-model-hashid": "^2.4",
         "divineomega/laravel-password-exposed-validation-rule": "dev-l10-compatibility",
         "doctrine/dbal": "^3.7",
+        "elegantweb/sanitizer": "^2.1",
         "essa/api-tool-kit": "^2.1",
         "guzzlehttp/guzzle": "^7.2",
         "http-interop/http-factory-guzzle": "^1.2",
@@ -28,7 +30,8 @@
         "meilisearch/meilisearch-php": "^1.4",
         "predis/predis": "^2.2",
         "richan-fongdasen/eloquent-blameable": "^1.9",
-        "spatie/laravel-activitylog": "^4.7"
+        "spatie/laravel-activitylog": "^4.7",
+        "spatie/laravel-permission": "^6.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.7",

@@ -18926,6 +18926,44 @@
      
 }
 
+    namespace Elegant\Sanitizer\Laravel { 
+            /**
+     * 
+     *
+     * @see \Illuminate\Validation\Factory
+     */ 
+        class Facade {
+                    /**
+         * Create a new Sanitizer instance.
+         *
+         * @param array $data Data to be sanitized
+         * @param array $filters Filters to be applied to the given data
+         * @return \Sanitizer 
+         * @static 
+         */ 
+        public static function make($data, $filters)
+        {
+                        /** @var \Elegant\Sanitizer\Laravel\Factory $instance */
+                        return $instance->make($data, $filters);
+        }
+                    /**
+         * Add a custom filters to all Sanitizers created with this Factory.
+         *
+         * @param string $filter
+         * @param mixed $extension Either the full class name of a Filter class implementing the Filter contract, or a \Closure.
+         * @return void 
+         * @static 
+         */ 
+        public static function extend($filter, $extension)
+        {
+                        /** @var \Elegant\Sanitizer\Laravel\Factory $instance */
+                        $instance->extend($filter, $extension);
+        }
+         
+    }
+     
+}
+
     namespace Laravel\Pennant { 
             /**
      * 
@@ -19604,6 +19642,39 @@
         public static function hasValidSignatureWhileIgnoring($ignoreQuery = [], $absolute = true)
         {
                         return \Illuminate\Http\Request::hasValidSignatureWhileIgnoring($ignoreQuery, $absolute);
+        }
+         
+    }
+     
+}
+
+    namespace Illuminate\Routing { 
+            /**
+     * 
+     *
+     */ 
+        class Route {
+                    /**
+         * 
+         *
+         * @see \Spatie\Permission\PermissionServiceProvider::registerMacroHelpers()
+         * @param mixed $roles
+         * @static 
+         */ 
+        public static function role($roles = [])
+        {
+                        return \Illuminate\Routing\Route::role($roles);
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\Permission\PermissionServiceProvider::registerMacroHelpers()
+         * @param mixed $permissions
+         * @static 
+         */ 
+        public static function permission($permissions = [])
+        {
+                        return \Illuminate\Routing\Route::permission($permissions);
         }
          
     }
@@ -23671,6 +23742,7 @@ namespace  {
             class View extends \Illuminate\Support\Facades\View {}
             class Vite extends \Illuminate\Support\Facades\Vite {}
             class Debugbar extends \Barryvdh\Debugbar\Facades\Debugbar {}
+            class Sanitizer extends \Elegant\Sanitizer\Laravel\Facade {}
             class Feature extends \Laravel\Pennant\Feature {}
             class Flare extends \Spatie\LaravelIgnition\Facades\Flare {}
      

@@ -38,6 +38,8 @@ terminal for other things.
 
 ### Blameable
 
+Readmore: [Blameable](https://github.com/richan-fongdasen/eloquent-blameable)
+
 ```
     $table->foreign('created_by')
         ->references('id')->on('users')
@@ -50,4 +52,45 @@ terminal for other things.
     $table->foreign('deleted_by')
         ->references('id')->on('users')
         ->onDelete('cascade');
+```
+
+### Sanitize user input (NEVER TRUS USER INPUT)
+
+Readmore: [sanitizer](https://github.com/elegantweb/sanitizer)
+
+```
+namespace App\Http\Requests;
+
+use Elegant\Sanitizer\Laravel\SanitizesInput;
+
+class MyAwesomeRequest extends Request
+{
+    use SanitizesInput;
+
+    public function filters()
+    {
+        return [
+            'name' => 'trim|capitalize',
+        ];
+    }
+}
+```
+
+### Encrypt sensitive information
+
+#### IMPORTANT WARNING: Protect Your App Key
+
+```
+APP_KEY=base64:QikAJAlo0evYLq2RYFxGv/PRrSIfJcNDj2qiFRp1oUs=
+
+```
+
+The encrypted data is lost if you lost or change your APP_KEY
+
+Example:
+
+```
+protected $casts = [
+    'passport_number' => 'encrypted',
+];
 ```
