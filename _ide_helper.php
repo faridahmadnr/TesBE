@@ -20176,17 +20176,6 @@
      
 }
 
-    namespace Nwidart\Modules { 
-            /**
-     * 
-     *
-     */ 
-        class Collection {
-         
-    }
-     
-}
-
 
 namespace  { 
             class App extends \Illuminate\Support\Facades\App {}
@@ -21932,17 +21921,6 @@ namespace  {
             public static function whereHashIdNot($id)
             {
                                 return \Illuminate\Database\Eloquent\Builder::whereHashIdNot($id);
-            }
-             
-                /**
-             * 
-             *
-             * @see \Essa\APIToolKit\MacroServiceProvider::boot()
-             * @static 
-             */ 
-            public static function dynamicPaginate()
-            {
-                                return \Illuminate\Database\Eloquent\Builder::dynamicPaginate();
             }
              
                 /**
