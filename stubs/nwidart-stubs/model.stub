@@ -2,13 +2,11 @@
 
 namespace $NAMESPACE$;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class $CLASS$ extends Model
+class $CLASS$ extends BaseModel
 {
-    use HasFactory;
-
     protected $fillable = $FILLABLE$;
     
     protected static function newFactory()

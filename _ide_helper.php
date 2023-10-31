@@ -20176,6 +20176,17 @@
      
 }
 
+    namespace Nwidart\Modules { 
+            /**
+     * 
+     *
+     */ 
+        class Collection {
+         
+    }
+     
+}
+
 
 namespace  { 
             class App extends \Illuminate\Support\Facades\App {}

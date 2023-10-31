@@ -22,16 +22,17 @@ return new class extends Migration
             $table->uuid('financial_institution_umi_id')->nullable();
             $table->string('photo')->nullable();
 
-            $table->foreign('created_by')
-                ->references('id')->on('users')
+            $table->foreignId('created_by')
+                ->nullable()
+                ->constrained('users')
                 ->nullOnDelete();
-
-            $table->foreign('updated_by')
-                ->references('id')->on('users')
+            $table->foreignId('updated_by')
+                ->nullable()
+                ->constrained('users')
                 ->nullOnDelete();
-
-            $table->foreign('deleted_by')
-                ->references('id')->on('users')
+            $table->foreignId('deleted_by')
+                ->nullable()
+                ->constrained('users')
                 ->nullOnDelete();
             $table->timestamps();
         });

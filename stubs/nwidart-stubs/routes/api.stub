@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/$LOWER_NAME$', function (Request $request) {
-    return $request->user();
+Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::group(['prefix' => 'v1', 'as' => 'api.v1.'], function () {
+        includeRouteFiles(__DIR__.'/v1/');
+    });
 });
