@@ -1,6 +1,6 @@
 <?php
 
-use Modules\BusinessPermit\Http\Controllers\API\V1\BusinessPermitController;
+use Modules\BusinessType\Http\Controllers\API\V1\BusinessTypeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,9 +15,9 @@ use Modules\BusinessPermit\Http\Controllers\API\V1\BusinessPermitController;
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::group(['prefix' => 'v1', 'as' => 'api.v1.'], function () {
-        Route::apiResource('business-permits', BusinessPermitController::class)
+        Route::apiResource('business-types', BusinessTypeController::class)
             ->parameters([
-                'business-permits' => 'businessPermit',
+                'business-types' => 'businessType',
             ]);
     });
 });

@@ -1,0 +1,11 @@
+{
+    "name": "BusinessType",
+    "alias": "businesstype",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\BusinessType\\Providers\\BusinessTypeServiceProvider"
+    ],
+    "files": []
+}
