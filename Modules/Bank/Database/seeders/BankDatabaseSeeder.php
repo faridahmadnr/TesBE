@@ -1,12 +1,12 @@
 <?php
 
-namespace $NAMESPACE$;
+namespace Modules\Bank\Database\seeders;
 
 use Database\Seeders\Traits\DisableForeignKeys;
 use Database\Seeders\Traits\TruncateTable;
 use Illuminate\Database\Seeder;
 
-class $NAME$ extends Seeder
+class BankDatabaseSeeder extends Seeder
 {
     use DisableForeignKeys, TruncateTable;
 
@@ -19,9 +19,8 @@ class $NAME$ extends Seeder
     {
         $this->disableForeignKeys();
 
-        // $this->truncate('model_name');
+        $this->truncate('banks');
 
-        // $this->call("OthersTableSeeder");
         $this->enableForeignKeys();
     }
 }

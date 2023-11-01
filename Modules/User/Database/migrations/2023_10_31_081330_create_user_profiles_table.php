@@ -18,7 +18,7 @@ return new class extends Migration
                 ->constrained('users')
                 ->cascadeOnDelete();
             $table->string('phone', 20)->nullable();
-            $table->integer('role_id');
+            $table->integer('role_id')->nullable()->comment('deprecated');
             $table->uuid('bank_id')->nullable();
             $table->uuid('financial_institution_umi_id')->nullable();
             $table->string('photo')->nullable();
@@ -26,15 +26,15 @@ return new class extends Migration
             $table->foreignId('created_by')
                 ->nullable()
                 ->constrained('users')
-                ->nullOnDelete();
+                ->cascadeOnDelete();
             $table->foreignId('updated_by')
                 ->nullable()
                 ->constrained('users')
-                ->nullOnDelete();
+                ->cascadeOnDelete();
             $table->foreignId('deleted_by')
                 ->nullable()
                 ->constrained('users')
-                ->nullOnDelete();
+                ->cascadeOnDelete();
             $table->timestamps();
         });
     }

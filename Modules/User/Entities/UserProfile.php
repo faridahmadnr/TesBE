@@ -4,6 +4,7 @@ namespace Modules\User\Entities;
 
 use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Bank\Entities\Bank;
 
 /**
  * Modules\User\Entities\UserProfile
@@ -53,7 +54,7 @@ class UserProfile extends BaseModel
     protected $fillable = [
         'user_id',
         'phone',
-        'role_id',
+        'role_id', // deprecated
         'bank_id',
         'financial_institution_umi_id',
         'photo',
@@ -69,5 +70,16 @@ class UserProfile extends BaseModel
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Retrieves the bank associated with this model.
+     *
+     * @return BelongsTo<Bank, UserProfile>
+     */
+    public function bank(): BelongsTo
+    {
+        return $this->belongsTo(Bank::class)
+            ->withTrashed();
     }
 }
