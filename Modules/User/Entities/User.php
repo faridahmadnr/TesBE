@@ -66,6 +66,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
+        'active',
+        'password_changed_at',
+        'last_login_at',
+        'last_login_ip',
     ];
 
     /**
@@ -86,6 +90,8 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'password_changed_at' => 'datetime',
+        'last_login_at' => 'datetime',
     ];
 
     /**
@@ -96,5 +102,15 @@ class User extends Authenticatable implements MustVerifyEmail
     public function profile(): HasOne
     {
         return $this->hasOne(UserProfile::class);
+    }
+
+    /**
+     * Get the user's member.
+     *
+     * @return HasOne<UserMember>
+     */
+    public function member(): HasOne
+    {
+        return $this->hasOne(UserMember::class);
     }
 }

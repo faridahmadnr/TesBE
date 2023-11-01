@@ -16,7 +16,7 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255', 'trim', 'escape'],
             'email' => [
                 'required',
                 'string',
@@ -26,6 +26,8 @@ class RegisterRequest extends FormRequest
                 'max:255',
                 'unique:'.User::class,
             ],
+            'nik' => 'required|digit|valid_nik',
+            'phone' => 'phone:INTERNATIONAL,ID',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ];
     }

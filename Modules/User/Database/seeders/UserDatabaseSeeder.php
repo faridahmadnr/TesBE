@@ -2,11 +2,14 @@
 
 namespace Modules\User\Database\seeders;
 
+use Database\Seeders\Traits\DisableForeignKeys;
+use Database\Seeders\Traits\TruncateTable;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Eloquent\Model;
 
 class UserDatabaseSeeder extends Seeder
 {
+    use DisableForeignKeys, TruncateTable;
+
     /**
      * Run the database seeds.
      *
@@ -14,8 +17,10 @@ class UserDatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Model::unguard();
+        $this->disableForeignKeys();
 
-        // $this->call("OthersTableSeeder");
+        $this->call(RolesAndPermissionsSeeder::class);
+
+        $this->enableForeignKeys();
     }
 }

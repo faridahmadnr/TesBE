@@ -30,6 +30,7 @@
         "nwidart/laravel-modules": "^10.0",
         "predis/predis": "^2.2",
         "propaganistas/laravel-disposable-email": "^2.2",
+        "propaganistas/laravel-phone": "^5.0",
         "richan-fongdasen/eloquent-blameable": "^1.9",
         "spatie/laravel-activitylog": "^4.7",
         "spatie/laravel-permission": "^6.0",
