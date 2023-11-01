@@ -1,0 +1,73 @@
+<?php
+
+namespace Modules\User\Entities;
+
+use App\Models\BaseModel;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+/**
+ * Modules\User\Entities\UserProfile
+ *
+ * @property int $id
+ * @property int $user_id
+ * @property string|null $phone
+ * @property int $role_id
+ * @property string|null $bank_id
+ * @property string|null $financial_institution_umi_id
+ * @property string|null $photo
+ * @property int|null $created_by
+ * @property int|null $updated_by
+ * @property int|null $deleted_by
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Modules\User\Entities\User $user
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserProfile newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|UserProfile newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|UserProfile onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|UserProfile query()
+ * @method static \Illuminate\Database\Eloquent\Builder|BaseModel updatedBy($userId)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserProfile whereBankId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserProfile whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserProfile whereCreatedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserProfile whereDeletedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserProfile whereFinancialInstitutionUmiId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserProfile whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserProfile wherePhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserProfile wherePhoto($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserProfile whereRoleId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserProfile whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserProfile whereUpdatedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserProfile whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserProfile withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|UserProfile withoutTrashed()
+ *
+ * @property-read \Modules\User\Entities\User|null $creator
+ * @property-read \Modules\User\Entities\User|null $updater
+ *
+ * @mixin \Eloquent
+ */
+class UserProfile extends BaseModel
+{
+    protected $fillable = [
+        'user_id',
+        'phone',
+        'role_id',
+        'bank_id',
+        'financial_institution_umi_id',
+        'photo',
+        'regency_id',
+        'district_id',
+    ];
+
+    /**
+     * Retrieve the associated user.
+     *
+     * @return BelongsTo<User, UserProfile>
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+}

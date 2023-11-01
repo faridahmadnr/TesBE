@@ -92,7 +92,7 @@ return [
     |
     */
 
-    'separator' => '_',
+    'separator' => '',
 
     /*
     |--------------------------------------------------------------------------
@@ -119,24 +119,5 @@ return [
     |
     */
 
-    'model_generators' => [
-        // App\Models\User::class => [
-        //     'salt'            => 'your-model-specific-salt-string',
-        //     'length'          => 13,
-        //     'alphabet'        => 'abcdefghjklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ234567890',
-        //     'prefix_length'   => 3,
-        //     'prefix_case'     => 'lower',
-        //     'separator'       => '_',
-        //     'database_column' => 'hash_id',
-        // ],
-
-        // App\Models\Post::class => [
-        //     'salt'            => 'your-model-specific-salt-string',
-        //     'length'          => 13,
-        //     'alphabet'        => 'abcdefghjklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ234567890',
-        //     'prefix'          => 'abc', // prefix will be 'abc' for this model, not a generated prefix
-        //     'separator'       => '_',
-        //     'database_column' => 'hash_id',
-        // ],
-    ],
+    'model_generators' => [],
 ];
