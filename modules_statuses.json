@@ -1,4 +1,5 @@
 {
     "Bank": true,
-    "User": true
+    "User": true,
+    "BusinessPermit": true
 }
