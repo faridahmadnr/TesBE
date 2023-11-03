@@ -79,6 +79,7 @@ final class TestimoniService extends BaseService
                 $this->uploadImage($testimoni, $image);
                 $testimoni->image = $imagePath;
                 $this->deleteImage($testimoni);
+
             }
 
             $testimoni->save();
@@ -145,7 +146,7 @@ final class TestimoniService extends BaseService
     protected function deleteImage(Testimoni $testimoni): void
     {
         if ($testimoni->image) {
-            Storage::disk('s3')->delete('testimonials/'.$testimoni->logo);
+            Storage::disk('s3')->delete('testimonials/'.$testimoni->image);
         }
     }
 
