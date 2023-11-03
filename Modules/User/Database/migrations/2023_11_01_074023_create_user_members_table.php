@@ -13,20 +13,19 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('user_members', function (Blueprint $table) {
+        Schema::create('members', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')
                 ->index()
                 ->constrained('users')
                 ->cascadeOnDelete();
             $table->char('nik', 36);
-            $table->string('full_name');
-            $table->string('email')->nullable();
-            $table->string('password');
             $table->string('phone', 20)->nullable();
+            $table->string('second_phone', 20)->nullable();
             $table->string('address')->nullable();
-            $table->string('gender');
+            $table->string('gender', 6);
             $table->date('dob');
+            $table->string('photo')->nullable();
 
             $table->foreignId('created_by')
                 ->nullable()

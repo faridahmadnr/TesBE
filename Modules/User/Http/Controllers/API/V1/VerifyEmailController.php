@@ -5,20 +5,23 @@ namespace Modules\User\Http\Controllers\API\V1;
 use App\Exceptions\GeneralException;
 use App\Http\Controllers\Controller as BaseController;
 use Illuminate\Auth\Events\Verified;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
+use Modules\User\Services\UserService;
 
 class VerifyEmailController extends BaseController
 {
-    public function __invoke(EmailVerificationRequest $request)
+    public function __invoke(Request $request, UserService $userService)
     {
-        if ($request->user()->hasVerifiedEmail()) {
+        $user = $userService->getByHashId($request->route('id'));
+
+        if ($user->hasVerifiedEmail()) {
             throw new GeneralException('Your email address is already verified.');
         }
 
-        if ($request->user()->markEmailAsVerified()) {
-            event(new Verified($request->user()));
+        if ($user->markEmailAsVerified()) {
+            event(new Verified($user));
         }
 
-        return $this->okResponse(['message' => 'Your e-mail has been verified.']);
+        return $this->noContentResponse();
     }
 }

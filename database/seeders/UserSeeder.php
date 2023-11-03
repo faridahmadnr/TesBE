@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use Database\Seeders\Traits\DisableForeignKeys;
 use Database\Seeders\Traits\TruncateTable;
 use Illuminate\Database\Seeder;
-use Modules\User\Entities\User;
 
 class UserSeeder extends Seeder
 {
@@ -16,12 +15,17 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Add the master administrator, user id of 1
-        User::create([
-            'name' => 'Super Admin',
-            'email' => 'admin@admin.com',
-            'password' => 'secret',
-            'email_verified_at' => now(),
+        $this->disableForeignKeys();
+
+        $this->truncateMultiple([
+            'users',
+            'roles',
+            'permissions',
+            'model_has_permissions',
+            'model_has_roles',
+            'role_has_permissions',
         ]);
+
+        $this->enableForeignKeys();
     }
 }

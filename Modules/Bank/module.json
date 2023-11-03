@@ -4,8 +4,6 @@
     "description": "",
     "keywords": [],
     "priority": 0,
-    "providers": [
-        "Modules\\Bank\\Providers\\BankServiceProvider"
-    ],
+    "providers": ["Modules\\Bank\\Providers\\BankServiceProvider"],
     "files": []
 }

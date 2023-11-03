@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use Modules\Bank\Http\Controllers\API\V1;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +15,6 @@ use Illuminate\Http\Request;
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::group(['prefix' => 'v1', 'as' => 'api.v1.'], function () {
-        // Route::apiResource('bank', '');
+        Route::apiResource('banks', V1\BankController::class);
     });
 });

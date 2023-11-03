@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Deligoez\LaravelModelHashId\Traits\HasHashId;
+use Deligoez\LaravelModelHashId\Traits\HasHashIdRouting;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -28,7 +30,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  */
 class BaseModel extends Model
 {
-    use BlameableTrait, HasFactory, LogsActivity, SoftDeletes;
+    use BlameableTrait, HasFactory, HasHashId, HasHashIdRouting, LogsActivity, SoftDeletes;
 
     public function getActivitylogOptions(): LogOptions
     {

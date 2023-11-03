@@ -2,14 +2,17 @@
 
 namespace Modules\User\Entities;
 
+use App\Enums\RolesEnum;
 use Deligoez\LaravelModelHashId\Traits\HasHashId;
 use Deligoez\LaravelModelHashId\Traits\HasHashIdRouting;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Modules\User\Notifications\VerifyEmailNotification;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -55,7 +58,7 @@ use Spatie\Permission\Traits\HasRoles;
  */
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, HasHashId, HasHashIdRouting, HasRoles, Notifiable;
+    use HasApiTokens, HasFactory, HasHashId, HasHashIdRouting, HasRoles, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -66,8 +69,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
-        'active',
+        'status',
         'password_changed_at',
+        'email_verified_at',
         'last_login_at',
         'last_login_ip',
     ];
@@ -83,6 +87,15 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
+     * @var array
+     */
+    protected $dates = [
+        'last_login_at',
+        'email_verified_at',
+        'password_changed_at',
+    ];
+
+    /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
@@ -93,6 +106,28 @@ class User extends Authenticatable implements MustVerifyEmail
         'password_changed_at' => 'datetime',
         'last_login_at' => 'datetime',
     ];
+
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyEmailNotification);
+    }
+
+    public function isSuperAdmin()
+    {
+        return $this->hasRole(RolesEnum::SUPER_ADMIN);
+    }
+
+    /**
+     * Send a password reset notification to the user.
+     *
+     * @param  string  $token
+     */
+    // public function sendPasswordResetNotification($token): void
+    // {
+    //     $url = 'https://example.com/reset-password?token='.$token;
+
+    //     $this->notify(new ResetPasswordNotification($url));
+    // }
 
     /**
      * Get the user's profile.
@@ -107,10 +142,10 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Get the user's member.
      *
-     * @return HasOne<UserMember>
+     * @return HasOne<Member>
      */
     public function member(): HasOne
     {
-        return $this->hasOne(UserMember::class);
+        return $this->hasOne(Member::class);
     }
 }

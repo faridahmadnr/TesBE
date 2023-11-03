@@ -17,10 +17,10 @@ final class BankService extends BaseService
 
     public function getAllBank()
     {
-        $bankQuery = $this->model::select(['id', 'name', 'email']);
+        $bankQuery = $this->model::select(['id', 'name']);
         $banks = QueryBuilder::for($bankQuery)
-            ->allowedFields(['id', 'email'])
-            ->allowedFilters(['name', 'email'])
+            ->allowedFields(['id'])
+            ->allowedFilters(['name'])
             ->paginate(10)
             ->appends(request()->query());
 

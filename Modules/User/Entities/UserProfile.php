@@ -54,12 +54,9 @@ class UserProfile extends BaseModel
     protected $fillable = [
         'user_id',
         'phone',
-        'role_id', // deprecated
         'bank_id',
         'financial_institution_umi_id',
         'photo',
-        'regency_id',
-        'district_id',
     ];
 
     /**
@@ -69,7 +66,8 @@ class UserProfile extends BaseModel
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)
+            ->withTrashed();
     }
 
     /**

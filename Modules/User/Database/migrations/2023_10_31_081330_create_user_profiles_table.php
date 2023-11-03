@@ -18,9 +18,11 @@ return new class extends Migration
                 ->constrained('users')
                 ->cascadeOnDelete();
             $table->string('phone', 20)->nullable();
-            $table->integer('role_id')->nullable()->comment('deprecated');
-            $table->uuid('bank_id')->nullable();
-            $table->uuid('financial_institution_umi_id')->nullable();
+            $table->foreignId('bank_id')
+                ->index()
+                ->nullable()
+                ->constrained('banks')
+                ->nullOnDelete();
             $table->string('photo')->nullable();
 
             $table->foreignId('created_by')
@@ -36,6 +38,7 @@ return new class extends Migration
                 ->constrained('users')
                 ->cascadeOnDelete();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

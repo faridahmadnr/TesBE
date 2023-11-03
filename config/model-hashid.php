@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use Modules\Bank\Entities\Bank;
+use Modules\User\Entities\Role;
+
 return [
 
     /*
@@ -30,7 +33,7 @@ return [
     |
     */
 
-    'length' => 13,
+    'length' => 15,
 
     /*
     |--------------------------------------------------------------------------
@@ -119,5 +122,24 @@ return [
     |
     */
 
-    'model_generators' => [],
+    // 'model_generators' => [
+    //     Bank::class => [
+    //         'salt' => 'MLtS3N(C-jz/GP^t!$yapg:\}!+77w>L',
+    //         'length' => 15,
+    //         'alphabet' => 'abcdefghjklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ234567890',
+    //         'prefix_length' => 0,
+    //         'prefix_case' => 'lower',
+    //         'separator' => '',
+    //         'database_column' => 'hash_id',
+    //     ],
+    //     Role::class => [
+    //         'salt' => 'd5"o6as@vW2U*}ee4Zq=mfpeT-t]:!Ug',
+    //         'length' => 15,
+    //         'alphabet' => 'abcdefghjklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ234567890',
+    //         'prefix_length' => 0,
+    //         'prefix_case' => 'lower',
+    //         'separator' => '',
+    //         'database_column' => 'hash_id',
+    //     ],
+    // ],
 ];

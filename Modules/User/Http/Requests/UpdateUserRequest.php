@@ -14,7 +14,7 @@ use Modules\User\Entities\Role;
 use Modules\User\Entities\User;
 use Modules\User\Enums\PermissionsEnum;
 
-class StoreUserRequest extends FormRequest
+class UpdateUserRequest extends FormRequest
 {
     use SanitizesInput;
 
@@ -34,7 +34,7 @@ class StoreUserRequest extends FormRequest
                 'email',
                 'indisposable',
                 'max:255',
-                'unique:'.User::class,
+                Rule::unique('users', 'email')->ignore(request('user')->id),
             ],
             'phone' => 'required|phone:INTERNATIONAL,ID',
             'role_id' => [
@@ -65,17 +65,14 @@ class StoreUserRequest extends FormRequest
                 },
             ],
             'password' => [
-                'required',
-                'confirmed',
-                Rules\Password::defaults(),
-                PasswordRules::register($this->email),
+                'sometimes',
+                PasswordRules::changePassword($this->email),
             ],
             'permissions' => ['sometimes', 'array'],
             'permissions.*' => [Rule::exists('permissions', 'id')->where('type', $this->type)],
             'email_verified' => ['sometimes', 'boolean'],
             'send_confirmation_email' => ['sometimes', 'boolean'],
             'photo' => 'sometimes|image|max:2048|mimes:jpg,png,jpeg',
-            'active' => 'required|boolean',
         ];
     }
 

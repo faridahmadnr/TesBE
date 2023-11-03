@@ -21,8 +21,10 @@ return new class extends Migration
             $table->unsignedTinyInteger('active')->default(1);
             $table->timestamp('last_login_at')->nullable();
             $table->string('last_login_ip')->nullable();
+            $table->tinyInteger('status')->default(1);
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

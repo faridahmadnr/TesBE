@@ -2,17 +2,22 @@
 
 namespace Modules\User\Services;
 
+use App\Enums\RolesEnum;
 use App\Exceptions\GeneralException;
 use App\Services\BaseService;
 use Exception;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
+use Modules\Bank\Entities\Bank;
+use Modules\User\Entities\Role;
 use Modules\User\Entities\User;
 use Spatie\QueryBuilder\QueryBuilder;
+use Storage;
 
 final class UserService extends BaseService
 {
@@ -23,7 +28,6 @@ final class UserService extends BaseService
 
     public function register(array $data = [])
     {
-
         DB::beginTransaction();
 
         try {
@@ -33,8 +37,16 @@ final class UserService extends BaseService
                 'password' => $data['password'],
             ]);
 
-            $user->syncRoles($data['roles'] ?? []);
-            $user->syncPermissions($data['permissions'] ?? []);
+            $user->member()->create([
+                'nik' => $data['nik'],
+                'phone' => $data['phone'] ?? null,
+                'address' => $data['address'],
+                'second_phone' => $data['second_phone'] ?? null,
+                'gender' => $data['gender'],
+                'dob' => $data['dob'],
+            ]);
+
+            $user->syncRoles([RolesEnum::MEMBER]);
         } catch (Exception $e) {
             report($e);
 
@@ -46,8 +58,6 @@ final class UserService extends BaseService
         event(new Registered($user));
 
         DB::commit();
-
-        $user->sendEmailVerificationNotification();
 
         return $user;
     }
@@ -91,9 +101,21 @@ final class UserService extends BaseService
 
     public function getAllUsers()
     {
-        $userQuery = $this->model::select(['id', 'name', 'email']);
+        $userQuery = $this->model::select([
+            'id',
+            'name',
+            'email',
+            'created_at',
+            'status',
+        ])
+            ->with(['profile', 'roles'])
+            ->when(request('is_trashed'), function ($query) {
+                return $query->onlyTrashed();
+            })
+            ->orderBy('created_at', 'desc')
+            ->withoutRole(RolesEnum::SUPER_ADMIN);
         $users = QueryBuilder::for($userQuery)
-            ->allowedFields(['id', 'email'])
+            ->allowedFields(['id', 'name', 'email'])
             ->allowedFilters(['name', 'email'])
             ->paginate(10)
             ->appends(request()->query());
@@ -110,7 +132,28 @@ final class UserService extends BaseService
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'password' => $data['password'],
+                'status' => $data['active'],
+                'email_verified_at' => $data['email_verified'] ? now() : null,
             ]);
+
+            $filename = null;
+            if (isset($data['photo'])) {
+                /** @var UploadedFile $photo */
+                $photo = $data['photo'];
+                $filename = 'avatar.'.$photo->getClientOriginalExtension();
+                $photo->storeAs($user->hashId, $filename, [
+                    'disk' => 's3',
+                ]);
+            }
+
+            $user->profile()->create([
+                'phone' => $data['phone'],
+                'bank_id' => isset($data['bank_id']) ? Bank::keyFromHashId($data['bank_id']) : null,
+                'photo' => $filename,
+            ]);
+
+            $user->syncRoles([Role::keyFromHashId($data['role_id'])]);
+            $user->syncPermissions($data['permissions'] ?? []);
         } catch (\Throwable $th) {
             DB::rollBack();
 
@@ -119,15 +162,145 @@ final class UserService extends BaseService
 
         DB::commit();
 
+        if (! $data['email_verified'] && $data['send_confirmation_email']) {
+            $user->sendEmailVerificationNotification();
+        }
+
         return $user;
+    }
+
+    public function update(User $user, array $data = [])
+    {
+        DB::beginTransaction();
+
+        try {
+            $user->fill($this->createUserData([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'email_verified_at' => $data['email_verified'] ? now() : $user->email_verified_at,
+            ]));
+
+            if (isset($data['password'])) {
+                $user->password = Hash::make($data['password']);
+            }
+
+            $user->save();
+
+            $filename = $user->profile->photo;
+            if (isset($data['photo'])) {
+                /** @var UploadedFile $photo */
+                $photo = $data['photo'];
+                $filename = 'avatar.'.$photo->getClientOriginalExtension();
+                $photo->storeAs($user->hashId, $filename, [
+                    'disk' => 's3',
+                ]);
+            }
+
+            $user->profile()->update([
+                'phone' => $data['phone'],
+                'bank_id' => isset($data['bank_id']) ? Bank::keyFromHashId($data['bank_id']) : $user->profile->bank_id,
+                'photo' => $filename,
+            ]);
+
+            $user->syncRoles([Role::keyFromHashId($data['role_id'])]);
+            $user->syncPermissions($data['permissions'] ?? []);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+
+            throw new GeneralException(__('There was a problem updating this user. Please try again.'));
+        }
+
+        DB::commit();
+
+        if (! $data['email_verified'] && $data['send_confirmation_email']) {
+            $user->sendEmailVerificationNotification();
+        }
+
+        return $user;
+    }
+
+    public function delete(User $user): User
+    {
+        if ($user->id === auth()->id()) {
+            throw new GeneralException(__('You can not delete yourself.'));
+        }
+
+        if ($this->deleteById($user->id)) {
+            // event(new UserDeleted($user));
+
+            return $user;
+        }
+
+        throw new GeneralException('There was a problem deleting this user. Please try again.');
+    }
+
+    public function restore(User $user): User
+    {
+        if ($user->restore()) {
+            // event(new UserRestored($user));
+
+            return $user;
+        }
+
+        throw new GeneralException(__('There was a problem restoring this user. Please try again.'));
+    }
+
+    public function destroy(User $user): bool
+    {
+        if (
+            ! $user->isSuperAdmin()
+            && $user->trashed()
+            && $user->forceDelete()) {
+
+            if ($user->profile->photo) {
+                Storage::disk('s3')->delete($user->hashId.'/'.$user->profile->photo);
+            }
+            // event(new UserDestroyed($user));
+
+            return true;
+        }
+
+        throw new GeneralException(__('There was a problem permanently deleting this user. Please try again.'));
+    }
+
+    public function mark(User $user, $status): User
+    {
+        if ($status === 0 && auth()->id() === $user->id) {
+            throw new GeneralException(__('You can not do that to yourself.'));
+        }
+
+        if ($status === 0 && $user->isSuperAdmin()) {
+            throw new GeneralException(__('You can not deactivate the administrator account.'));
+        }
+
+        $user->active = $status;
+
+        if ($user->save()) {
+            // event(new UserStatusChanged($user, $status));
+
+            return $user;
+        }
+
+        throw new GeneralException(__('There was a problem updating this user. Please try again.'));
+    }
+
+    protected function createUserData(array $data = []): array
+    {
+        $result = [
+            'name' => $data['name'] ?? null,
+            'email' => $data['email'] ?? null,
+            'password' => $data['password'] ?? null,
+            'status' => $data['status'] ?? false,
+            'email_verified_at' => $data['email_verified_at'] ?? null,
+        ];
+
+        return array_filter($result, function ($value) {
+            return $value !== null;
+        });
     }
 
     protected function createUser(array $data = []): User
     {
-        return $this->model::create([
-            'name' => $data['name'] ?? null,
-            'email' => $data['email'] ?? null,
-            'password' => $data['password'] ?? null,
-        ]);
+        return $this->model::create($this->createUserData($data));
     }
 }

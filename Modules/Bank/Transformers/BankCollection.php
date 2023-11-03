@@ -2,8 +2,17 @@
 
 namespace Modules\Bank\Transformers;
 
-use App\Transformer\BaseTransformerCollection;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class BankCollection extends BaseTransformerCollection
+class BankCollection extends ResourceCollection
 {
+    public function toArray($request)
+    {
+        return $this->collection->map(function ($bank) {
+            return [
+                'id' => $bank->hashId,
+                'name' => $bank->name,
+            ];
+        });
+    }
 }

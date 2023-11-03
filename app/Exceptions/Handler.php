@@ -4,6 +4,8 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
@@ -60,6 +62,24 @@ class Handler extends ExceptionHandler
                     'message' => $e->getMessage(),
                     'errors' => $e->errors(),
                 ], $e->status);
+            }
+        });
+
+        $this->renderable(function (AccessDeniedHttpException $e, $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'apiVersion' => '1.0',
+                    'message' => $e->getMessage(),
+                ], 403);
+            }
+        });
+
+        $this->renderable(function (HttpException $e, $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'apiVersion' => '1.0',
+                    'message' => $e->getMessage(),
+                ], 403);
             }
         });
     }

@@ -28,13 +28,22 @@ Route::group([
             ->name('auth.reset-password');
         Route::post('email/verify', V1\VerifyEmailNotificationController::class)
             ->name('auth.verify-email-notification');
-        Route::post('auth/verify-email/{id}/{hash}', V1\VerifyEmailController::class)
+        Route::get('auth/verify-email/{id}/{hash}', V1\VerifyEmailController::class)
+            ->middleware(['signed', 'throttle:6,1'])
             ->name('auth.verify-email');
     });
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
+        Route::controller(V1\UserController::class)->group(function () {
+            Route::post('users/{user}/restore', 'restore')->name('users.restore');
+            Route::delete('users/{user}/delete', 'forceDelete')->name('users.delete');
+        });
         Route::apiResource('users', V1\UserController::class);
+
         Route::post('auth/logout', V1\LogoutController::class)
             ->name('auth.logout');
+
+        Route::get('roles', V1\RolesController::class)
+            ->name('user.roles');
     });
 });

@@ -13,5 +13,8 @@ class Bank extends BaseModel
         'status',
         'reason_status',
         'logo',
+
+        'created_by',
+        'updated_by',
     ];
 }
