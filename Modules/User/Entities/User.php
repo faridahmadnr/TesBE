@@ -54,6 +54,24 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static \Illuminate\Database\Eloquent\Builder|User withoutPermission($permissions)
  * @method static \Illuminate\Database\Eloquent\Builder|User withoutRole($roles, $guard = null)
  *
+ * @property \Illuminate\Support\Carbon|null $password_changed_at
+ * @property int $active
+ * @property \Illuminate\Support\Carbon|null $last_login_at
+ * @property string|null $last_login_ip
+ * @property int $status
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Modules\User\Entities\Member|null $member
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|User onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereLastLoginAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereLastLoginIp($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User wherePasswordChangedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|User withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class User extends Authenticatable implements MustVerifyEmail

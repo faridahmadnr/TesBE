@@ -46,6 +46,14 @@ use Modules\Bank\Entities\Bank;
  *
  * @property-read \Modules\User\Entities\User|null $creator
  * @property-read \Modules\User\Entities\User|null $updater
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read Bank|null $bank
+ * @property-read string|null $hash_id
+ * @property-read string $hash_id_raw
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|UserProfile whereDeletedAt($value)
  *
  * @mixin \Eloquent
  */

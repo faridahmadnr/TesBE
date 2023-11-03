@@ -2,17 +2,26 @@
 
 namespace Modules\Bank\Transformers;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Transformer\BaseTransformerCollection;
 
-class BankCollection extends ResourceCollection
+class BankCollection extends BaseTransformerCollection
 {
-    public function toArray($request)
+    /**
+     * Maps an item to an array.
+     *
+     * @param  mixed  $item The item to be mapped.
+     * @return array The mapped array.
+     */
+    protected function map(mixed $item)
     {
-        return $this->collection->map(function ($bank) {
-            return [
-                'id' => $bank->hashId,
-                'name' => $bank->name,
-            ];
-        });
+        return [
+            'id' => $item->hashId,
+            'name' => $item->name,
+            'code' => $item->code,
+            'logo' => $item->logo,
+            'link' => $item->link,
+            'isActive' => (bool) $item->status,
+            'createdAt' => $item->created_at,
+        ];
     }
 }

@@ -3,6 +3,7 @@
 namespace Modules\Bank\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Modules\User\Enums\PermissionsEnum;
 
 class StoreBankRequest extends FormRequest
 {
@@ -14,7 +15,12 @@ class StoreBankRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'required|max:255',
+            'code' => 'required|max:50',
+            'link' => 'sometimes|url',
+            'status' => 'required|boolean',
+            'reason_status' => 'nullable|max:255',
+            'logo' => 'sometimes|image|mimes:jpeg,png,jpg|max:2048',
         ];
     }
 
@@ -25,6 +31,6 @@ class StoreBankRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return $this->user()->can(PermissionsEnum::CREATE_BANK->value);
     }
 }

@@ -15,6 +15,14 @@ use Modules\Bank\Http\Controllers\API\V1;
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::group(['prefix' => 'v1', 'as' => 'api.v1.'], function () {
+        Route::controller(V1\BankController::class)->group(function () {
+            Route::post('banks/{bank}/restore', 'restore')
+                ->name('banks.restore')
+                ->withTrashed();
+            Route::delete('banks/{bank}/delete', 'forceDelete')
+                ->name('banks.delete')
+                ->withTrashed();
+        });
         Route::apiResource('banks', V1\BankController::class);
     });
 });

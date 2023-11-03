@@ -16,9 +16,20 @@ class BaseTransformerCollection extends ResourceCollection
     public function toArray($request)
     {
         return [
-            'items' => $this->collection,
-            'itemsCount' => $this->count(),
+            'items' => $this->collection->transform($this->map(...)),
+            'itemsCount' => $this->total(),
             'itemsPerPage' => $this->perPage(),
         ];
+    }
+
+    /**
+     * Maps an item.
+     *
+     * @param  mixed  $item The item to be mapped.
+     * @return mixed The mapped item.
+     */
+    protected function map($item)
+    {
+        return $item;
     }
 }

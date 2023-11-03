@@ -14,7 +14,7 @@ class UserResource extends JsonResource
             'id' => $this->hashId,
             'email' => $this->email,
             'name' => $this->name,
-            'isActive' => $this->status,
+            'isActive' => (bool) $this->status,
             'createdAt' => $this->created_at,
             'lastLoginAt' => $this->last_login_at,
             'role' => $this->whenLoaded('roles', function () {

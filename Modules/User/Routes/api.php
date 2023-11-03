@@ -35,8 +35,12 @@ Route::group([
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::controller(V1\UserController::class)->group(function () {
-            Route::post('users/{user}/restore', 'restore')->name('users.restore');
-            Route::delete('users/{user}/delete', 'forceDelete')->name('users.delete');
+            Route::post('users/{user}/restore', 'restore')
+                ->name('users.restore')
+                ->withTrashed();
+            Route::delete('users/{user}/delete', 'forceDelete')
+                ->name('users.delete')
+                ->withTrashed();
         });
         Route::apiResource('users', V1\UserController::class);
 

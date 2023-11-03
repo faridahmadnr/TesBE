@@ -22,10 +22,12 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel updatedBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel withoutTrashed()
- *
  * @property-read \Modules\User\Entities\User|null $creator
  * @property-read \Modules\User\Entities\User|null $updater
- *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read string|null $hash_id
+ * @property-read \App\Models\?string $hash_id_raw
  * @mixin \Eloquent
  */
 class BaseModel extends Model

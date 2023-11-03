@@ -6,14 +6,16 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class BankResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request
-     * @return array
-     */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->hashId,
+            'name' => $this->name,
+            'code' => $this->code,
+            'createdAt' => $this->created_at,
+            'logo' => $this->logo,
+            'isActive' => (bool) $this->status,
+            'link' => $this->link,
+        ];
     }
 }

@@ -16,6 +16,8 @@ use Illuminate\Support\Str;
 use Modules\Bank\Entities\Bank;
 use Modules\User\Entities\Role;
 use Modules\User\Entities\User;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 use Storage;
 
@@ -109,14 +111,19 @@ final class UserService extends BaseService
             'status',
         ])
             ->with(['profile', 'roles'])
-            ->when(request('is_trashed'), function ($query) {
-                return $query->onlyTrashed();
-            })
-            ->orderBy('created_at', 'desc')
             ->withoutRole(RolesEnum::SUPER_ADMIN);
         $users = QueryBuilder::for($userQuery)
+            ->defaultSort('-created_at')
             ->allowedFields(['id', 'name', 'email'])
-            ->allowedFilters(['name', 'email'])
+            ->allowedFilters([
+                'name',
+                'email',
+                AllowedFilter::trashed(),
+            ])
+            ->allowedSorts([
+                'name',
+                'email',
+                AllowedSort::field('created_at', 'createdAt'), ])
             ->paginate(10)
             ->appends(request()->query());
 

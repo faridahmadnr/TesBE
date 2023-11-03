@@ -11,8 +11,9 @@ class RolesController extends BaseController
 {
     public function __invoke()
     {
-        $roles = Role::all(['id', 'name', 'description'])
-            ->where('name', '!=', RolesEnum::SUPER_ADMIN->value);
+        $roles = Role::select(['id', 'name', 'description'])
+            ->where('name', '!=', RolesEnum::SUPER_ADMIN->value)
+            ->paginate(10);
 
         return $this->okResponse(new RoleCollection($roles));
     }
