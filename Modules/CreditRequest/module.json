@@ -1,0 +1,11 @@
+{
+    "name": "CreditRequest",
+    "alias": "creditrequest",
+    "description": "",
+    "keywords": [],
+    "priority": 2,
+    "providers": [
+        "Modules\\CreditRequest\\Providers\\CreditRequestServiceProvider"
+    ],
+    "files": []
+}

@@ -88,6 +88,14 @@ enum PermissionsEnum: string
     case DELETE_TESTIMONI = 'delete-testimoni';
 
     /**
+     * Credit Request Type Permissions
+     */
+    case CREATE_CREDIT_REQUEST_TYPE = 'create-credit-request-type';
+    case READ_CREDIT_REQUEST_TYPE = 'read-credit-request-type';
+    case UPDATE_CREDIT_REQUEST_TYPE = 'update-credit-request-type';
+    case DELETE_CREDIT_REQUEST_TYPE = 'delete-credit-request-type';
+
+    /**
      * Credit Request Permissions
      */
     case CREATE_CREDIT_REQUEST = 'create-credit-request';
@@ -159,6 +167,11 @@ enum PermissionsEnum: string
             self::READ_CREDIT_TERM => 'Read Credit Term',
             self::UPDATE_CREDIT_TERM => 'Update Credit Term',
             self::DELETE_CREDIT_TERM => 'Delete Credit Term',
+
+            self::CREATE_CREDIT_REQUEST_TYPE => 'Create Credit Request Type',
+            self::READ_CREDIT_REQUEST_TYPE => 'Read Credit Request Type',
+            self::UPDATE_CREDIT_REQUEST_TYPE => 'Update Credit Request Type',
+            self::DELETE_CREDIT_REQUEST_TYPE => 'Delete Credit Request Type',
         };
     }
 }

@@ -50,5 +50,9 @@
     "Create Credit Term": "Buat Termin Kredit",
     "Read Credit Term": "Lihat Termin Kredit",
     "Update Credit Term": "Edit Termin Kredit",
-    "Delete Credit Term": "Hapus Termin Kredit"
+    "Delete Credit Term": "Hapus Termin Kredit",
+    "Create Credit Request Type": "Buat Tipe Permintaan Kredit",
+    "Read Credit Request Type": "Lihat Tipe Permintaan Kredit",
+    "Update Credit Request Type": "Edit Tipe Permintaan Kredit",
+    "Delete Credit Request Type": "Hapus Tipe Permintaan Kredit"
 }

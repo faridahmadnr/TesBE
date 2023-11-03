@@ -1,0 +1,21 @@
+{
+    "name": "kahasolusi/credit-request",
+    "description": "",
+    "authors": [
+        {
+            "name": "PT. Kaha Solusi Indonesia",
+            "email": "info@kahasolusi.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {}
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\CreditRequest\\": ""
+        }
+    }
+}
