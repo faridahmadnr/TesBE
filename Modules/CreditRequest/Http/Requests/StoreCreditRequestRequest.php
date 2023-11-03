@@ -11,7 +11,6 @@ use Modules\CreditRequest\Entities\CreditRequestType;
 use Modules\Location\Entities\District;
 use Modules\Location\Entities\Regency;
 use Modules\Termin\Entities\Termin;
-use Modules\User\Entities\User;
 use Modules\User\Enums\PermissionsEnum;
 
 class StoreCreditRequestRequest extends FormRequest
@@ -24,16 +23,6 @@ class StoreCreditRequestRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'user_id' => [
-            //     'required',
-            //     function (string $attribute, mixed $value, Closure $fail) {
-            //         $user = User::findByHashId($value);
-
-            //         if (is_null($user)) {
-            //             $fail('User is not exists.');
-            //         }
-            //     },
-            // ],
             'business_type_id' => [
                 'required',
                 function (string $attribute, mixed $value, Closure $fail) {

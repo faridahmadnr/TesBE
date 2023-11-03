@@ -6,14 +6,21 @@ use App\Transformer\BaseTransformerCollection;
 
 class CreditRequestCollection extends BaseTransformerCollection
 {
-    /**
-     * Transform the resource collection into an array.
-     *
-     * @param  \Illuminate\Http\Request
-     * @return array
-     */
-    public function toArray($request)
+    protected function map($item)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $item->hashId,
+            'amount' => $item->amount,
+            'business' => [
+                'address' => $item->business_address,
+                'district' => $item->whenLoaded('district', $item->district->name),
+                'type' => $item->whenLoaded('businessType', $item->businessType->name),
+            ],
+            'registrationNumber' => trim($item->registration_number),
+            'phone' => $item->user->member->phone ?? '',
+            'creditRequestType' => $item->whenLoaded('creditRequestType', $item->creditRequestType->name),
+            'createdAt' => $item->created_at,
+            'user' => $item->whenLoaded('user', $item->user->name),
+        ];
     }
 }

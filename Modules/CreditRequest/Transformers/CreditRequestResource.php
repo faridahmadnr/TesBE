@@ -6,14 +6,47 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class CreditRequestResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request
-     * @return array
-     */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->hashId,
+            'amount' => intval($this->amount),
+            'bank' => $this->whenLoaded('bank', [
+                'id' => $this->bank->hashId,
+                'name' => $this->bank->name,
+            ]),
+            'business' => [
+                'address' => $this->business_address,
+                'district' => $this->whenLoaded('district', [
+                    'id' => $this->district->hashId,
+                    'name' => $this->district->name,
+                ]),
+                'permit' => $this->whenLoaded('businessPermit', [
+                    'id' => $this->businessPermit->hashId,
+                    'name' => $this->businessPermit->name,
+                ]),
+                'regency' => $this->whenLoaded('regency', [
+                    'id' => $this->regency->hashId,
+                    'name' => $this->regency->name,
+                ]),
+                'business_tin' => $this->business_tin,
+                'type' => $this->whenLoaded('businessType', [
+                    'id' => $this->businessType->hashId,
+                    'name' => $this->businessType->name,
+                ]),
+            ],
+            'createdAt' => $this->created_at,
+            'type' => $this->whenLoaded('creditRequestType', [
+                'id' => $this->creditRequestType->hashId,
+                'name' => $this->creditRequestType->name,
+            ]),
+            'postalCode' => $this->postal_code,
+            'registrationNumber' => trim($this->registration_number),
+            'termin' => $this->whenLoaded('termin', [
+                'id' => $this->termin->hashId,
+                'name' => $this->termin->name,
+            ]),
+            'village' => $this->village,
+        ];
     }
 }

@@ -7,6 +7,7 @@ use Deligoez\LaravelModelHashId\Traits\HasHashIdRouting;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Scout\Searchable;
 use RichanFongdasen\EloquentBlameable\BlameableTrait;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -22,17 +23,19 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel updatedBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel withoutTrashed()
+ *
  * @property-read \Modules\User\Entities\User|null $creator
  * @property-read \Modules\User\Entities\User|null $updater
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
  * @property-read int|null $activities_count
  * @property-read string|null $hash_id
- * @property-read \App\Models\?string $hash_id_raw
+ * @property-read string $hash_id_raw
+ *
  * @mixin \Eloquent
  */
 class BaseModel extends Model
 {
-    use BlameableTrait, HasFactory, HasHashId, HasHashIdRouting, LogsActivity, SoftDeletes;
+    use BlameableTrait, HasFactory, HasHashId, HasHashIdRouting, LogsActivity, Searchable, SoftDeletes;
 
     public function getActivitylogOptions(): LogOptions
     {

@@ -4,8 +4,17 @@ namespace Modules\CreditRequest\Services;
 
 use App\Exceptions\GeneralException;
 use App\Services\BaseService;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Modules\Bank\Entities\Bank;
+use Modules\BusinessPermit\Entities\BusinessPermit;
+use Modules\BusinessType\Entities\BusinessType;
 use Modules\CreditRequest\Entities\CreditRequest;
+use Modules\CreditRequest\Entities\CreditRequestType;
+use Modules\Location\Entities\District;
+use Modules\Location\Entities\Regency;
+use Modules\Termin\Entities\Termin;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -19,18 +28,24 @@ final class CreditRequestService extends BaseService
 
     public function getAll()
     {
-        $query = $this->model::select(['id', 'name', 'min_value', 'max_value', 'created_at']);
+        $query = $this->model::select([
+            '*',
+        ])->with([
+            'district',
+            'user',
+            'user.member',
+            'creditRequestType',
+            'businessType',
+        ]);
         $results = QueryBuilder::for($query)
             ->defaultSort('-created_at')
-            ->allowedFields(['name', 'min_value', 'max_value'])
+            ->allowedFields(['name'])
             ->allowedFilters([
                 'name',
                 AllowedFilter::trashed(),
             ])
             ->allowedSorts([
                 'name',
-                AllowedSort::field('min_value', 'min'),
-                AllowedSort::field('max_value', 'max'),
                 AllowedSort::field('created_at', 'createdAt'),
             ])
             ->paginate(10)
@@ -45,7 +60,17 @@ final class CreditRequestService extends BaseService
 
         try {
             $creditRequest = $this->createCreditRequest($data);
+
+            if (isset($data['image'])) {
+                /** @var UploadedFile $image */
+                $image = $data['image'];
+                $imagePath = $this->uploadImage($creditRequest, $image);
+                $creditRequest->update([
+                    'image' => $imagePath,
+                ]);
+            }
         } catch (\Throwable $th) {
+            report($th);
             DB::rollBack();
 
             throw new GeneralException(__('There was a problem registering this credit request. Please try again.'));
@@ -63,6 +88,15 @@ final class CreditRequestService extends BaseService
 
         try {
             $creditRequest->fill($data);
+
+            if (isset($data['image'])) {
+                /** @var UploadedFile $image */
+                $image = $data['image'];
+                $imagePath = $this->uploadImage($creditRequest, $image);
+                $this->uploadImage($creditRequest, $image);
+                $creditRequest->image = $imagePath;
+                $this->deleteImage($creditRequest);
+            }
             $creditRequest->save();
         } catch (\Throwable $th) {
             report($th);
@@ -106,6 +140,8 @@ final class CreditRequestService extends BaseService
         }
 
         if ($creditRequest->forceDelete()) {
+
+            $this->deleteImage($creditRequest);
             // event(new CreditRequestDestroyed($creditRequest));
 
             return true;
@@ -114,12 +150,53 @@ final class CreditRequestService extends BaseService
         throw new GeneralException(__('There was a problem permanently deleting this credit request. Please try again.'));
     }
 
+    protected function uploadImage(CreditRequest $creditRequest, UploadedFile $file): string
+    {
+        $filename = sha1($creditRequest->registration_number.$creditRequest->user_id)
+            .'.'.$file->getClientOriginalExtension();
+        $file->storeAs('credit-requests', $filename, [
+            'disk' => 's3',
+        ]);
+
+        return $filename;
+    }
+
+    protected function deleteImage(CreditRequest $creditRequest): void
+    {
+        if ($creditRequest->image) {
+            Storage::disk('s3')->delete('credit-requests/'.$creditRequest->image);
+        }
+    }
+
+    protected function getRegistrationNumber(): string
+    {
+        $latestCreditRequest = $this
+            ->select([])
+            ->whereRaw('DATE(created_at) = ?', [now()])
+            ->get()
+            ->count();
+        $sequenceNumber = $latestCreditRequest ? $latestCreditRequest + 1 : 1;
+
+        return 'PJ'.date('y').date('m').(str_pad(strval($sequenceNumber), 4, '0', STR_PAD_LEFT));
+    }
+
     protected function createCreditRequest(array $data = []): CreditRequest
     {
         return $this->model::create([
-            'name' => $data['name'] ?? null,
-            'min_value' => $data['min_value'] ?? 0,
-            'max_value' => $data['max_value'] ?? 0,
+            'user_id' => auth()->user()->id,
+            'registration_number' => $this->getRegistrationNumber(),
+            'business_type_id' => BusinessType::keyFromHashId($data['business_type_id']),
+            'business_permit_id' => BusinessPermit::keyFromHashId($data['business_permit_id']),
+            'business_tin' => $data['business_tin'] ?? null,
+            'business_address' => $data['business_address'] ?? '',
+            'business_regency_id' => Regency::keyFromHashId($data['business_regency_id']),
+            'business_district_id' => District::keyFromHashId($data['business_district_id']),
+            'village' => $data['village'] ?? null,
+            'postal_code' => $data['postal_code'] ?? null,
+            'credit_request_type_id' => CreditRequestType::keyFromHashId($data['credit_request_type_id']) ?? null,
+            'amount' => $data['amount'] ?? 0,
+            'termin_id' => Termin::keyFromHashId($data['termin_id']),
+            'bank_id' => Bank::keyFromHashId($data['bank_id']),
         ]);
     }
 }

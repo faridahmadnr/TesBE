@@ -4,6 +4,7 @@ namespace Modules\Location\Services;
 
 use App\Exceptions\GeneralException;
 use App\Services\BaseService;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Modules\Location\Entities\Province;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -24,11 +25,16 @@ final class ProvinceService extends BaseService
             'name',
             'created_at',
         ]);
+
         $results = QueryBuilder::for($query)
             ->defaultSort('-created_at')
             ->allowedFields(['id', 'name'])
             ->allowedFilters([
                 'name',
+                AllowedFilter::callback('q', function (Builder $query, $term) {
+                    $provinceIds = Province::search($term)->keys();
+                    $query->whereIn('id', $provinceIds);
+                }),
                 AllowedFilter::trashed(),
             ])
             ->allowedSorts([

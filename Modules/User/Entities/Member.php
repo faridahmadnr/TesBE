@@ -3,6 +3,7 @@
 namespace Modules\User\Entities;
 
 use App\Models\BaseModel;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Modules\User\Entities\Member
@@ -66,4 +67,14 @@ class Member extends BaseModel
         'dob',
         'photo',
     ];
+
+    /**
+     * Retrieve the associated user.
+     *
+     * @return BelongsTo<User, Member> The associated user.
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

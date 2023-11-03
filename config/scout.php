@@ -1,5 +1,11 @@
 <?php
 
+use Modules\Bank\Entities\Bank;
+use Modules\Location\Entities\District;
+use Modules\Location\Entities\Province;
+use Modules\Location\Entities\Regency;
+use Modules\User\Entities\User;
+
 return [
 
     /*
@@ -54,7 +60,7 @@ return [
     |
     */
 
-    'after_commit' => false,
+    'after_commit' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -83,7 +89,7 @@ return [
     |
     */
 
-    'soft_delete' => false,
+    'soft_delete' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -133,6 +139,26 @@ return [
         'host' => env('MEILISEARCH_HOST', 'http://localhost:7700'),
         'key' => env('MEILISEARCH_KEY'),
         'index-settings' => [
+            Province::class => [
+                'filterableAttributes' => ['name'],
+                'sortableAttributes' => ['name'],
+            ],
+            District::class => [
+                'filterableAttributes' => ['name'],
+                'sortableAttributes' => ['name'],
+            ],
+            Regency::class => [
+                'filterableAttributes' => ['name'],
+                'sortableAttributes' => ['name'],
+            ],
+            Bank::class => [
+                'filterableAttributes' => ['name'],
+                'sortableAttributes' => ['name'],
+            ],
+            User::class => [
+                'filterableAttributes' => ['name', 'email'],
+                'sortableAttributes' => ['name', 'email'],
+            ],
             // 'users' => [
             //     'filterableAttributes'=> ['id', 'name', 'email'],
             // ],
