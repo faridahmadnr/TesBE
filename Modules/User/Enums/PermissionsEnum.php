@@ -15,6 +15,14 @@ enum PermissionsEnum: string
     case DELETE_BANK = 'delete-bank';
 
     /**
+     * Location Permissions
+     */
+    case CREATE_LOCATION = 'create-location';
+    case READ_LOCATION = 'read-location';
+    case UPDATE_LOCATION = 'update-location';
+    case DELETE_LOCATION = 'delete-location';
+
+    /**
      * Business Permit Permissions
      */
     case CREATE_BUSINESS_PERMIT = 'create-business-permit';
@@ -172,6 +180,11 @@ enum PermissionsEnum: string
             self::READ_CREDIT_REQUEST_TYPE => 'Read Credit Request Type',
             self::UPDATE_CREDIT_REQUEST_TYPE => 'Update Credit Request Type',
             self::DELETE_CREDIT_REQUEST_TYPE => 'Delete Credit Request Type',
+
+            self::CREATE_LOCATION => 'Create Location',
+            self::READ_LOCATION => 'Read Location',
+            self::UPDATE_LOCATION => 'Update Location',
+            self::DELETE_LOCATION => 'Delete Location',
         };
     }
 }

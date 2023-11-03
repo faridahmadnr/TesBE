@@ -54,5 +54,9 @@
     "Create Credit Request Type": "Buat Tipe Permintaan Kredit",
     "Read Credit Request Type": "Lihat Tipe Permintaan Kredit",
     "Update Credit Request Type": "Edit Tipe Permintaan Kredit",
-    "Delete Credit Request Type": "Hapus Tipe Permintaan Kredit"
+    "Delete Credit Request Type": "Hapus Tipe Permintaan Kredit",
+    "Create Location": "Buat Lokasi",
+    "Read Location": "Lihat Lokasi",
+    "Update Location": "Edit Lokasi",
+    "Delete Location": "Hapus Lokasi"
 }

@@ -18,7 +18,8 @@ return new class extends Migration
             $table->foreignId('province_id')
                 ->index()
                 ->constrained('provinces')
-                ->cascadeOnDelete();
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
             $table->string('name');
 
             $table->foreignId('created_by')

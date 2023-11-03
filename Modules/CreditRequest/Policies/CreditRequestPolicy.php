@@ -10,38 +10,44 @@ class CreditRequestPolicy
 {
     use HandlesAuthorization;
 
-    public function viewAny()
+    public function viewAny(User $user)
     {
-        return true;
+        return $user->can([
+            PermissionsEnum::READ_OWN_CREDIT_REQUEST->value,
+            PermissionsEnum::READ_CREDIT_REQUEST->value,
+        ]);
     }
 
     public function view(User $user)
     {
-        return $user->can(PermissionsEnum::READ_BANK->value);
+        return $user->canAny([
+            PermissionsEnum::READ_OWN_CREDIT_REQUEST->value,
+            PermissionsEnum::READ_CREDIT_REQUEST->value,
+        ]);
     }
 
     public function create($user)
     {
-        return $user->can(PermissionsEnum::CREATE_BANK->value);
+        return $user->can(PermissionsEnum::CREATE_CREDIT_REQUEST->value);
     }
 
     public function update(?User $user)
     {
-        return $user->can(PermissionsEnum::UPDATE_BANK->value);
+        return $user->can(PermissionsEnum::UPDATE_CREDIT_REQUEST->value);
     }
 
     public function delete(User $user)
     {
-        return $user->can(PermissionsEnum::DELETE_BANK->value);
+        return $user->can(PermissionsEnum::DELETE_CREDIT_REQUEST->value);
     }
 
     public function restore(User $user)
     {
-        return $user->can(PermissionsEnum::CREATE_BANK->value);
+        return $user->can(PermissionsEnum::CREATE_CREDIT_REQUEST->value);
     }
 
     public function forceDelete(User $user)
     {
-        return $user->can(PermissionsEnum::DELETE_BANK->value);
+        return $user->can(PermissionsEnum::DELETE_CREDIT_REQUEST->value);
     }
 }

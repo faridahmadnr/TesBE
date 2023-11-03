@@ -3,6 +3,7 @@
 namespace Modules\Location\Entities;
 
 use App\Models\BaseModel;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Modules\Location\Entities\Province
@@ -43,5 +44,17 @@ use App\Models\BaseModel;
  */
 class Province extends BaseModel
 {
-    protected $fillable = [];
+    protected $fillable = [
+        'name',
+    ];
+
+    /**
+     * Get the regencies associated with the model.
+     *
+     * @return HasMany<Regency>
+     */
+    public function regencies(): HasMany
+    {
+        return $this->hasMany(Regency::class);
+    }
 }

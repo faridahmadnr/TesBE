@@ -35,14 +35,14 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
          * Credit Request
          */
         Route::controller(V1\CreditRequestController::class)->group(function () {
-            Route::post('credit-request/{creditRequest}/restore', 'restore')
+            Route::post('credit-requests/{creditRequest}/restore', 'restore')
                 ->name('credit-request.restore')
                 ->withTrashed();
-            Route::delete('credit-request/{creditRequest}/delete', 'forceDelete')
+            Route::delete('credit-requests/{creditRequest}/delete', 'forceDelete')
                 ->name('credit-request.delete')
                 ->withTrashed();
         });
-        Route::apiResource('credit-request', V1\CreditRequestController::class)
+        Route::apiResource('credit-requests', V1\CreditRequestController::class)
             ->parameters([
                 'credit-request' => 'creditRequest',
             ]);
