@@ -8,6 +8,9 @@ class BusinessTypeResource extends JsonResource
 {
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->hashId,
+            'name' => $this->name,
+        ];
     }
 }

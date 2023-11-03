@@ -41,6 +41,8 @@ class BusinessTypeDatabaseSeeder extends Seeder
             ->map(function ($businessType) {
                 return [
                     'name' => $businessType,
+                    'created_at' => now(),
+                    'updated_at' => now(),
                 ];
             })->toArray();
 

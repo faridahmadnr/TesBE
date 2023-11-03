@@ -2,10 +2,14 @@
 
 namespace Modules\BusinessType\Http\Requests;
 
+use Elegant\Sanitizer\Laravel\SanitizesInput;
 use Illuminate\Foundation\Http\FormRequest;
+use Modules\User\Enums\PermissionsEnum;
 
 class UpdateBusinessTypeRequest extends FormRequest
 {
+    use SanitizesInput;
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -14,7 +18,14 @@ class UpdateBusinessTypeRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'required|string',
+        ];
+    }
+
+    public function filters()
+    {
+        return [
+            'name' => 'trim|escape',
         ];
     }
 
@@ -25,6 +36,6 @@ class UpdateBusinessTypeRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return $this->user()->can(PermissionsEnum::UPDATE_BUSINESS_TYPE->value);
     }
 }
