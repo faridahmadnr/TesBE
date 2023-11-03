@@ -3,5 +3,6 @@
     "User": true,
     "BusinessPermit": true,
     "BusinessType": true,
-    "Location": true
+    "Location": true,
+    "Termin": true
 }

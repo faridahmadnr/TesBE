@@ -2,10 +2,14 @@
 
 namespace Modules\BusinessPermit\Http\Requests;
 
+use Elegant\Sanitizer\Laravel\SanitizesInput;
 use Illuminate\Foundation\Http\FormRequest;
+use Modules\User\Enums\PermissionsEnum;
 
 class StoreBusinessPermitRequest extends FormRequest
 {
+    use SanitizesInput;
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -14,7 +18,14 @@ class StoreBusinessPermitRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'required|string',
+        ];
+    }
+
+    public function filters()
+    {
+        return [
+            'name' => 'trim|escape',
         ];
     }
 
@@ -25,6 +36,6 @@ class StoreBusinessPermitRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return $this->user()->can(PermissionsEnum::CREATE_BUSINESS_PERMIT->value);
     }
 }

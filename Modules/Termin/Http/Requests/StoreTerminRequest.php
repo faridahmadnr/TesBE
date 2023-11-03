@@ -1,15 +1,12 @@
 <?php
 
-namespace Modules\BusinessPermit\Http\Requests;
+namespace Modules\Termin\Http\Requests;
 
-use Elegant\Sanitizer\Laravel\SanitizesInput;
 use Illuminate\Foundation\Http\FormRequest;
 use Modules\User\Enums\PermissionsEnum;
 
-class UpdateBusinessPermitRequest extends FormRequest
+class StoreTerminRequest extends FormRequest
 {
-    use SanitizesInput;
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -18,14 +15,8 @@ class UpdateBusinessPermitRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string',
-        ];
-    }
-
-    public function filters()
-    {
-        return [
-            'name' => 'trim|escape',
+            'name' => 'required|string|max:255',
+            'value' => 'required|numeric',
         ];
     }
 
@@ -36,6 +27,6 @@ class UpdateBusinessPermitRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->can(PermissionsEnum::UPDATE_BUSINESS_PERMIT->value);
+        return $this->user()->can(PermissionsEnum::CREATE_CREDIT_TERM->value);
     }
 }

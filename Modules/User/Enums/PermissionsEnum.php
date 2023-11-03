@@ -31,6 +31,14 @@ enum PermissionsEnum: string
     case DELETE_BUSINESS_TYPE = 'delete-business-type';
 
     /**
+     * Credit Term Permissions
+     */
+    case CREATE_CREDIT_TERM = 'create-credit-term';
+    case READ_CREDIT_TERM = 'read-credit-term';
+    case UPDATE_CREDIT_TERM = 'update-credit-term';
+    case DELETE_CREDIT_TERM = 'delete-credit-term';
+
+    /**
      * User Permissions
      */
     case CREATE_USER = 'create-user';
@@ -146,6 +154,11 @@ enum PermissionsEnum: string
             self::CONFIRM_CREDIT_REQUEST => 'Confirm Credit Request',
             self::APPROVE_CREDIT_REQUEST => 'Approve Credit Request',
             self::REJECT_CREDIT_REQUEST => 'Reject Credit Request',
+
+            self::CREATE_CREDIT_TERM => 'Create Credit Term',
+            self::READ_CREDIT_TERM => 'Read Credit Term',
+            self::UPDATE_CREDIT_TERM => 'Update Credit Term',
+            self::DELETE_CREDIT_TERM => 'Delete Credit Term',
         };
     }
 }
