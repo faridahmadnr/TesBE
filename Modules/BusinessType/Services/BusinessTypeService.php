@@ -22,7 +22,7 @@ final class BusinessTypeService extends BaseService
         $query = $this->model::select(['id', 'name', 'created_at']);
         $businessTypes = QueryBuilder::for($query)
             ->defaultSort('-created_at')
-            ->allowedFields(['id'])
+            ->allowedFields(['name'])
             ->allowedFilters(['name', AllowedFilter::trashed()])
             ->allowedSorts([
                 'name',
