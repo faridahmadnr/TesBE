@@ -40,6 +40,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Province withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Province withoutTrashed()
  *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Modules\Location\Entities\Regency> $regencies
+ * @property-read int|null $regencies_count
+ *
  * @mixin \Eloquent
  */
 class Province extends BaseModel

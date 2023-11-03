@@ -54,6 +54,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Member withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Member withoutTrashed()
  *
+ * @property-read \Modules\User\Entities\User $user
+ *
  * @mixin \Eloquent
  */
 class Member extends BaseModel
