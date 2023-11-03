@@ -218,10 +218,10 @@ return [
     */
 
     'composer' => [
-        'vendor' => 'nwidart',
+        'vendor' => 'kahasolusi',
         'author' => [
-            'name' => 'Nicolas Widart',
-            'email' => 'n.widart@gmail.com',
+            'name' => 'PT. Kaha Solusi Indonesia',
+            'email' => 'info@kahasolusi.com',
         ],
         'composer-output' => false,
     ],
