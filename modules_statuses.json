@@ -4,5 +4,6 @@
     "BusinessPermit": true,
     "BusinessType": true,
     "Location": true,
-    "Termin": true
+    "Termin": true,
+    "Testimoni": true
 }

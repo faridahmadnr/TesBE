@@ -2,9 +2,9 @@
 
 namespace $NAMESPACE$;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Transformer\BaseTransformerCollection;
 
-class $CLASS$ extends ResourceCollection
+class $CLASS$ extends BaseTransformerCollection
 {
     /**
      * Transform the resource collection into an array.

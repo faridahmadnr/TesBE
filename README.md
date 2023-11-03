@@ -106,3 +106,11 @@ sudo apt-get install gifsicle
 sudo apt-get install webp
 sudo apt-get install libavif-bin # minimum 0.9.3
 ```
+
+sail artisan module:make Testimoni --api && \
+sail artisan module:make-request StoreTestimoniRequest Testimoni && \
+sail artisan module:make-request UpdateTestimoniRequest Testimoni && \
+sail artisan module:make-resource TestimoniCollection --collection Testimoni && \
+sail artisan module:make-resource TestimoniResource Testimoni && \
+sail artisan module:make-policy TestimoniPolicy Testimoni && \
+sail artisan module:make-model Testimoni Testimoni -m
