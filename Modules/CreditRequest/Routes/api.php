@@ -13,6 +13,10 @@ use Modules\CreditRequest\Http\Controllers\API\V1;
 |
 */
 
+Route::group(['prefix' => 'v1', 'as' => 'api.v1.'], function () {
+    Route::apiResource('credit-request-types', V1\CreditRequestTypeController::class)
+        ->only(['index']);
+});
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::group(['prefix' => 'v1', 'as' => 'api.v1.'], function () {
         /**
@@ -27,6 +31,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
                 ->withTrashed();
         });
         Route::apiResource('credit-request-types', V1\CreditRequestTypeController::class)
+            ->except(['index'])
             ->parameters([
                 'credit-request-types' => 'creditRequestType',
             ]);

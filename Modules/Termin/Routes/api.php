@@ -13,8 +13,11 @@ use Modules\Termin\Http\Controllers\API\V1;
 |
 */
 
-Route::group(['middleware' => 'auth:sanctum'], function () {
-    Route::group(['prefix' => 'v1', 'as' => 'api.v1.'], function () {
+Route::group(['prefix' => 'v1', 'as' => 'api.v1.'], function () {
+    Route::apiResource('termins', V1\TerminController::class)
+        ->only(['index']);
+
+    Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::controller(V1\TerminController::class)->group(function () {
             Route::post('termins/{termin}/restore', 'restore')
                 ->name('termins.restore')
@@ -23,6 +26,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
                 ->name('termins.delete')
                 ->withTrashed();
         });
-        Route::apiResource('termins', V1\TerminController::class);
+        Route::apiResource('termins', V1\TerminController::class)
+            ->except(['index']);
     });
 });

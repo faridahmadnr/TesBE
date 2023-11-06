@@ -13,8 +13,13 @@ use Modules\BusinessType\Http\Controllers\API\V1;
 |
 */
 
-Route::group(['middleware' => 'auth:sanctum'], function () {
-    Route::group(['prefix' => 'v1', 'as' => 'api.v1.'], function () {
+Route::group(['prefix' => 'v1', 'as' => 'api.v1.'], function () {
+    Route::apiResource('business-types', V1\BusinessTypeController::class)
+        ->parameters([
+            'business-types' => 'businessType',
+        ])
+        ->only(['index']);
+    Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::controller(V1\BusinessTypeController::class)->group(function () {
             Route::post('business-types/{businessType}/restore', 'restore')
                 ->name('business-types.restore')
@@ -26,6 +31,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::apiResource('business-types', V1\BusinessTypeController::class)
             ->parameters([
                 'business-types' => 'businessType',
-            ]);
+            ])
+            ->except(['index']);
     });
 });

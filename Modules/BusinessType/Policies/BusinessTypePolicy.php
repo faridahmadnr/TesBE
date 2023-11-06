@@ -10,7 +10,7 @@ class BusinessTypePolicy
 {
     use HandlesAuthorization;
 
-    public function viewAny()
+    public function viewAny(?User $user)
     {
         return true;
     }

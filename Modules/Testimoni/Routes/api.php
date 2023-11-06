@@ -13,8 +13,11 @@ use Modules\Testimoni\Http\Controllers\API\V1;
 |
 */
 
-Route::group(['middleware' => 'auth:sanctum'], function () {
-    Route::group(['prefix' => 'v1', 'as' => 'api.v1.'], function () {
+Route::group(['prefix' => 'v1', 'as' => 'api.v1.'], function () {
+    Route::apiResource('testimonials', V1\TestimoniController::class)
+        ->only(['index']);
+
+    Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::controller(V1\TestimoniController::class)->group(function () {
             Route::post('testimonials/{testimonial}/restore', 'restore')
                 ->name('testimonials.restore')
@@ -23,6 +26,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
                 ->name('testimonials.delete')
                 ->withTrashed();
         });
-        Route::apiResource('testimonials', V1\TestimoniController::class);
+        Route::apiResource('testimonials', V1\TestimoniController::class)
+            ->except(['index']);
     });
 });
