@@ -69,7 +69,7 @@ class CreditRequestController extends BaseController
 
     public function simulation(CreditRequestSimulationRequest $request): JsonResponse
     {
-        $creditRequestSimulation = $this->creditRequestService->simulation($request->input());
+        $creditRequestSimulation = $this->creditRequestService->simulation($request->validated());
 
         return $this->okResponse($creditRequestSimulation);
     }

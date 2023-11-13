@@ -17,7 +17,7 @@ class CreditRequestSimulationRequest extends FormRequest
     public function rules()
     {
         return [
-            'credit_request_type' => [
+            'creditRequestType' => [
                 'required',
                 function (string $attribute, mixed $value, Closure $fail) {
                     $creditRequestType = CreditRequestType::findByHashId($value);
@@ -27,7 +27,7 @@ class CreditRequestSimulationRequest extends FormRequest
                     }
                 },
             ],
-            'loan_duration' => [
+            'loanDuration' => [
                 'required',
                 function (string $attribute, mixed $value, Closure $fail) {
                     $termin = Termin::findByHashId($value);

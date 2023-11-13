@@ -152,7 +152,7 @@ final class CreditRequestService extends BaseService
 
     public function simulation(array $data = [])
     {
-        $creditRequestType = CreditRequestType::findByHashId($data['credit_request_type']);
+        $creditRequestType = CreditRequestType::findByHashId($data['creditRequestType']);
 
         $loanDuration = Termin::findByHashId($data['loanDuration']);
 
