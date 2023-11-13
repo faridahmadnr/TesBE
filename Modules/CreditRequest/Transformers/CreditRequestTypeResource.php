@@ -13,6 +13,7 @@ class CreditRequestTypeResource extends JsonResource
             'name' => $this->name,
             'minValue' => $this->min_value,
             'maxValue' => $this->max_value,
+            'interest' => $this->interest,
             'createdAt' => $this->created_at,
         ];
     }

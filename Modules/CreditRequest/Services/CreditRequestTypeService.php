@@ -19,7 +19,7 @@ final class CreditRequestTypeService extends BaseService
 
     public function getAll()
     {
-        $query = $this->model::select(['id', 'name', 'min_value', 'max_value', 'created_at']);
+        $query = $this->model::select(['id', 'name', 'min_value', 'max_value', 'interest', 'created_at']);
         $results = QueryBuilder::for($query)
             ->defaultSort('-created_at')
             ->allowedFields(['name', 'min_value', 'max_value'])
@@ -121,6 +121,7 @@ final class CreditRequestTypeService extends BaseService
             'name' => $data['name'] ?? null,
             'min_value' => $data['min'] ?? 0,
             'max_value' => $data['max'] ?? 0,
+            'interest' => $data['interest'] ?? 0,
         ]);
     }
 }

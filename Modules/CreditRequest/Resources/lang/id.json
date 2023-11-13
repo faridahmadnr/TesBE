@@ -1,0 +1,13 @@
+{
+    "The loan amount must be less than or equal to :amount": "Jumlah pinjaman harus kurang atau sama dengan :amount",
+    "The loan amount must be greater than or equal to :amount": "Jumlah pinjaman harus lebih atau sama dengan :amount",
+    "There was a problem registering this credit request. Please try again.": "Terjadi kesalahan saat mendaftarkan permintaan kredit. Silahkan coba lagi.",
+    "There was a problem updating this credit request. Please try again.": "Terjadi kesalahan saat memperbarui permintaan kredit. Silahkan coba lagi.",
+    "There was a problem deleting this credit request. Please try again.": "Terjadi kesalahan saat menghapus permintaan kredit. Silahkan coba lagi.",
+    "There was a problem restoring this credit request. Please try again.": "Terjadi kesalahan saat memulihkan permintaan kredit. Silahkan coba lagi.",
+    "This credit request can not be deleted because it is not in a deleted state.": "Permintaan kredit ini tidak dapat dihapus karena bukan dalam keadaan dihapus.",
+    "There was a problem permanently deleting this credit request. Please try again.": "Terjadi kesalahan saat menghapus permintaan kredit secara permanen. Silahkan coba lagi.",
+    "Credit request type not found": "Tipe permintaan kredit tidak ditemukan",
+    "Loan duration not found": "Durasi pinjaman tidak ditemukan",
+    "Bank not found": "Bank tidak ditemukan"
+}

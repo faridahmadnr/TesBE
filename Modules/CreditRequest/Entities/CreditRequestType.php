@@ -11,6 +11,7 @@ use App\Models\BaseModel;
  * @property string $name
  * @property int $min_value
  * @property int $max_value
+ * @property float $interest
  * @property int|null $created_by
  * @property int|null $updated_by
  * @property int|null $deleted_by
@@ -51,5 +52,6 @@ class CreditRequestType extends BaseModel
         'name',
         'min_value',
         'max_value',
+        'interest',
     ];
 }

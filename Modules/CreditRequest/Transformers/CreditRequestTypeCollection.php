@@ -11,8 +11,9 @@ class CreditRequestTypeCollection extends BaseTransformerCollection
         return [
             'id' => $item->hashId,
             'name' => $item->name,
-            'minValue' => $item->min_value,
-            'maxValue' => $item->max_value,
+            'interest' => $item->interest ?? 0,
+            'minValue' => $item->min_value ?? 0,
+            'maxValue' => $item->max_value ?? 0,
             'createdAt' => $item->created_at,
         ];
     }

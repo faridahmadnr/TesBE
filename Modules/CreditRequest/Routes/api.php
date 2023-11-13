@@ -16,6 +16,8 @@ use Modules\CreditRequest\Http\Controllers\API\V1;
 Route::group(['prefix' => 'v1', 'as' => 'api.v1.'], function () {
     Route::apiResource('credit-request-types', V1\CreditRequestTypeController::class)
         ->only(['index']);
+    Route::post('credit-requests/simulation', [V1\CreditRequestController::class, 'simulation'])
+        ->name('credit-request.simulation');
 });
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::group(['prefix' => 'v1', 'as' => 'api.v1.'], function () {

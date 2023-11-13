@@ -5,6 +5,7 @@ namespace Modules\CreditRequest\Http\Controllers\API\V1;
 use App\Http\Controllers\Controller as BaseController;
 use Illuminate\Http\JsonResponse;
 use Modules\CreditRequest\Entities\CreditRequest;
+use Modules\CreditRequest\Http\Requests\CreditRequestSimulationRequest;
 use Modules\CreditRequest\Http\Requests\StoreCreditRequestRequest;
 use Modules\CreditRequest\Http\Requests\UpdateCreditRequestRequest;
 use Modules\CreditRequest\Services\CreditRequestService;
@@ -64,5 +65,12 @@ class CreditRequestController extends BaseController
         $this->creditRequestService->destroy($creditRequest);
 
         return $this->okResponse(new CreditRequestResource($creditRequest));
+    }
+
+    public function simulation(CreditRequestSimulationRequest $request): JsonResponse
+    {
+        $creditRequestSimulation = $this->creditRequestService->simulation($request->input());
+
+        return $this->okResponse($creditRequestSimulation);
     }
 }

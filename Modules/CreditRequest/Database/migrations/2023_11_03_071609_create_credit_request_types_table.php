@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('credit_request_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->float('interest')->default(0.0);
             $table->integer('min_value')->default(0);
             $table->integer('max_value')->default(0);
 

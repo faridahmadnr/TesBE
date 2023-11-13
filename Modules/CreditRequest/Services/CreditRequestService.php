@@ -136,7 +136,7 @@ final class CreditRequestService extends BaseService
     public function destroy(CreditRequest $creditRequest): bool
     {
         if (! $creditRequest->trashed()) {
-            throw new GeneralException(__('This creditRequest can not be deleted because it is not in a deleted state.'));
+            throw new GeneralException(__('This credit request can not be deleted because it is not in a deleted state.'));
         }
 
         if ($creditRequest->forceDelete()) {
@@ -148,6 +148,37 @@ final class CreditRequestService extends BaseService
         }
 
         throw new GeneralException(__('There was a problem permanently deleting this credit request. Please try again.'));
+    }
+
+    public function simulation(array $data = [])
+    {
+        $creditRequestType = CreditRequestType::findByHashId($data['credit_request_type']);
+
+        $loanDuration = Termin::findByHashId($data['loanDuration']);
+
+        $lenghtOfLoan = $loanDuration->value;
+        $loanAmount = $data['amount'];
+        $loanInterest = $creditRequestType->interest ?? 6 / 100;
+
+        $instalment = round(($loanAmount * ($loanInterest / 12)) / (1 - 1 / pow((1 + $loanInterest / 12), $lenghtOfLoan)));
+        $remainingLoan = $loanAmount;
+
+        $data = [];
+        for ($i = 0; $i < $lenghtOfLoan; $i++) {
+            $principalInterest = round($remainingLoan * $loanInterest / 12);
+            $principalInstalment = round($instalment - $principalInterest);
+            $remainingLoan -= $principalInstalment;
+
+            $data[] = [
+                'month' => $i + 1,
+                'principalInstalment' => $principalInstalment,
+                'loanInterest' => $principalInterest,
+                'instalment' => $instalment,
+                'remainingLoan' => $remainingLoan,
+            ];
+        }
+
+        return $data;
     }
 
     protected function uploadImage(CreditRequest $creditRequest, UploadedFile $file): string

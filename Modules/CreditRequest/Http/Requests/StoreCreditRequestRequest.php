@@ -77,7 +77,7 @@ class StoreCreditRequestRequest extends FormRequest
                     $creditRequestType = CreditRequestType::findByHashId($value);
 
                     if (is_null($creditRequestType)) {
-                        $fail('Credit request type is not exists.');
+                        $fail('Credit request type is not found');
                     }
                 },
             ],
@@ -88,7 +88,7 @@ class StoreCreditRequestRequest extends FormRequest
                     $termin = Termin::findByHashId($value);
 
                     if (is_null($termin)) {
-                        $fail('Termin is not exists.');
+                        $fail('Loan duration not found');
                     }
                 },
             ],
@@ -98,7 +98,7 @@ class StoreCreditRequestRequest extends FormRequest
                     $bank = Bank::findByHashId($value);
 
                     if (is_null($bank)) {
-                        $fail('Termin is not exists.');
+                        $fail('Bank not found');
                     }
                 },
             ],
