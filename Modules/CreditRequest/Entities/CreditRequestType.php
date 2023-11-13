@@ -43,6 +43,7 @@ use App\Models\BaseModel;
  * @method static \Illuminate\Database\Eloquent\Builder|CreditRequestType whereUpdatedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CreditRequestType withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|CreditRequestType withoutTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|CreditRequestType whereInterest($value)
  *
  * @mixin \Eloquent
  */
