@@ -27,3 +27,17 @@ if (! function_exists('carbon')) {
         return new Carbon($time);
     }
 }
+
+if (! function_exists('formatCurrency')) {
+
+    /**
+     * Formats a number as currency.
+     *
+     * @param  float  $number The number to be formatted.
+     * @return string The formatted currency string.
+     */
+    function formatCurrency($number)
+    {
+        return 'Rp '.number_format($number, 0, ',', '.');
+    }
+}
