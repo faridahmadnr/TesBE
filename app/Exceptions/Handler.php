@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -33,8 +34,12 @@ class Handler extends ExceptionHandler
 
         $this->renderable(function (NotFoundHttpException $e, $request) {
             if ($request->is('api/*')) {
+                Log::error("{$request->url()} - {$e->getMessage()}");
+
                 return response()->json([
                     'apiVersion' => '1.0',
+                    'type' => 'NotFoundException',
+                    'code' => 404,
                     'error' => [
                         'code' => 404,
                         'message' => 'Not Found',
@@ -45,8 +50,12 @@ class Handler extends ExceptionHandler
 
         $this->renderable(function (\Illuminate\Auth\AuthenticationException $e, $request) {
             if ($request->is('api/*')) {
+                Log::error("{$request->url()} - {$e->getMessage()}");
+
                 return response()->json([
                     'apiVersion' => '1.0',
+                    'type' => 'AuthenticationException',
+                    'code' => 401,
                     'error' => [
                         'code' => 401,
                         'message' => 'Unauthenticated',
@@ -57,9 +66,14 @@ class Handler extends ExceptionHandler
 
         $this->renderable(function (ValidationException $e, $request) {
             if ($request->is('api/*')) {
+                Log::error($e->errors(), [
+                    'url' => $request->url(),
+                ]);
+
                 return response()->json([
                     'apiVersion' => '1.0',
-                    'message' => $e->getMessage(),
+                    'type' => 'ValidationException',
+                    'code' => $e->status,
                     'errors' => $e->errors(),
                 ], $e->status);
             }
@@ -67,8 +81,14 @@ class Handler extends ExceptionHandler
 
         $this->renderable(function (AccessDeniedHttpException $e, $request) {
             if ($request->is('api/*')) {
+                Log::error($e->getMessage(), [
+                    'url' => $request->url(),
+                ]);
+
                 return response()->json([
                     'apiVersion' => '1.0',
+                    'type' => 'AccessDeniedException',
+                    'code' => 403,
                     'message' => $e->getMessage(),
                 ], 403);
             }
@@ -76,8 +96,14 @@ class Handler extends ExceptionHandler
 
         $this->renderable(function (HttpException $e, $request) {
             if ($request->is('api/*')) {
+                Log::error($e->getMessage(), [
+                    'url' => $request->url(),
+                ]);
+
                 return response()->json([
                     'apiVersion' => '1.0',
+                    'type' => 'HttpException',
+                    'code' => 403,
                     'message' => $e->getMessage(),
                 ], 403);
             }
