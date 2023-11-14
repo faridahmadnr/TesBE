@@ -164,6 +164,13 @@ final class CreditRequestService extends BaseService
         $remainingLoan = $loanAmount;
 
         $data = [];
+        $data[] = [
+            'month' => 0,
+            'principalInstalment' => '',
+            'loanInterest' => '',
+            'instalment' => '',
+            'remainingLoan' => formatCurrency($loanAmount),
+        ];
         for ($i = 0; $i < $lenghtOfLoan; $i++) {
             $principalInterest = round($remainingLoan * $loanInterest / 12);
             $principalInstalment = round($instalment - $principalInterest);
@@ -171,10 +178,10 @@ final class CreditRequestService extends BaseService
 
             $data[] = [
                 'month' => $i + 1,
-                'principalInstalment' => $principalInstalment,
-                'loanInterest' => $principalInterest,
-                'instalment' => $instalment,
-                'remainingLoan' => $remainingLoan,
+                'principalInstalment' => formatCurrency($principalInstalment),
+                'loanInterest' => formatCurrency($principalInterest),
+                'instalment' => formatCurrency($instalment),
+                'remainingLoan' => formatCurrency($remainingLoan),
             ];
         }
 

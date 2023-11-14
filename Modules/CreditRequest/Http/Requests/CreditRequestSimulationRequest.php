@@ -41,7 +41,7 @@ class CreditRequestSimulationRequest extends FormRequest
                 'required',
                 'numeric',
                 function (string $attribute, mixed $value, Closure $fail) {
-                    $termin = CreditRequestType::findByHashId($this->credit_request_type);
+                    $termin = CreditRequestType::findByHashId($this->creditRequestType);
                     $terminMinAmount = $termin->min_value;
                     $terminMaxAmount = $termin->max_value;
 
