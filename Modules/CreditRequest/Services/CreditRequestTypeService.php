@@ -33,7 +33,7 @@ final class CreditRequestTypeService extends BaseService
                 AllowedSort::field('max_value', 'max'),
                 AllowedSort::field('created_at', 'createdAt'),
             ])
-            ->paginate(10)
+            ->paginate(request()->query('pageSize') ?? 10)
             ->appends(request()->query());
 
         return $results;

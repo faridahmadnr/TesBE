@@ -28,7 +28,7 @@ final class BusinessPermitService extends BaseService
                 'name',
                 AllowedSort::field('created_at', 'createdAt'),
             ])
-            ->paginate(10)
+            ->paginate(request()->query('pageSize') ?? 10)
             ->appends(request()->query());
 
         return $results;

@@ -43,7 +43,7 @@ final class BankService extends BaseService
                 'code',
                 AllowedSort::field('created_at', 'createdAt'),
             ])
-            ->paginate(10)
+            ->paginate(request()->query('pageSize') ?? 10)
             ->appends(request()->query());
 
         return $banks;

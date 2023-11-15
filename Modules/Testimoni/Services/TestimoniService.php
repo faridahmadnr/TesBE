@@ -32,7 +32,7 @@ final class TestimoniService extends BaseService
                 'is_anonymous',
                 AllowedSort::field('created_at', 'createdAt'),
             ])
-            ->paginate(10)
+            ->paginate(request()->query('pageSize') ?? 10)
             ->appends(request()->query());
 
         return $results;
