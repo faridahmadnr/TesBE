@@ -4,7 +4,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 10.29.0.
+ * Generated for Laravel 10.32.1.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -5551,6 +5551,18 @@
                         return $instance->pretend($callback);
         }
                     /**
+         * Execute the given callback without "pretending".
+         *
+         * @param \Closure $callback
+         * @return mixed 
+         * @static 
+         */ 
+        public static function withoutPretending($callback)
+        {            //Method inherited from \Illuminate\Database\Connection         
+                        /** @var \Illuminate\Database\PostgresConnection $instance */
+                        return $instance->withoutPretending($callback);
+        }
+                    /**
          * Bind values to their parameters in the given statement.
          *
          * @param \PDOStatement $statement
@@ -6476,6 +6488,18 @@
         {
                         /** @var \Illuminate\Events\Dispatcher $instance */
                         return $instance->setQueueResolver($resolver);
+        }
+                    /**
+         * Set the database transaction manager resolver implementation.
+         *
+         * @param callable $resolver
+         * @return \Illuminate\Events\Dispatcher 
+         * @static 
+         */ 
+        public static function setTransactionManagerResolver($resolver)
+        {
+                        /** @var \Illuminate\Events\Dispatcher $instance */
+                        return $instance->setTransactionManagerResolver($resolver);
         }
                     /**
          * Gets the raw, unprepared listeners.
@@ -8142,6 +8166,17 @@
         {
                         /** @var \Illuminate\Http\Client\Factory $instance */
                         return $instance->getDispatcher();
+        }
+                    /**
+         * Get the array of global middleware.
+         *
+         * @return array 
+         * @static 
+         */ 
+        public static function getGlobalMiddleware()
+        {
+                        /** @var \Illuminate\Http\Client\Factory $instance */
+                        return $instance->getGlobalMiddleware();
         }
                     /**
          * Register a custom macro.
@@ -14549,16 +14584,16 @@
                         return $instance->getAllTypes();
         }
                     /**
-         * Get the column listing for a given table.
+         * Get the columns for a given table.
          *
          * @param string $table
          * @return array 
          * @static 
          */ 
-        public static function getColumnListing($table)
+        public static function getColumns($table)
         {
                         /** @var \Illuminate\Database\Schema\PostgresBuilder $instance */
-                        return $instance->getColumnListing($table);
+                        return $instance->getColumns($table);
         }
                     /**
          * Set the default string length for migrations.
@@ -14673,13 +14708,26 @@
          *
          * @param string $table
          * @param string $column
+         * @param bool $fullDefinition
          * @return string 
          * @static 
          */ 
-        public static function getColumnType($table, $column)
+        public static function getColumnType($table, $column, $fullDefinition = false)
         {            //Method inherited from \Illuminate\Database\Schema\Builder         
                         /** @var \Illuminate\Database\Schema\PostgresBuilder $instance */
-                        return $instance->getColumnType($table, $column);
+                        return $instance->getColumnType($table, $column, $fullDefinition);
+        }
+                    /**
+         * Get the column listing for a given table.
+         *
+         * @param string $table
+         * @return array 
+         * @static 
+         */ 
+        public static function getColumnListing($table)
+        {            //Method inherited from \Illuminate\Database\Schema\Builder         
+                        /** @var \Illuminate\Database\Schema\PostgresBuilder $instance */
+                        return $instance->getColumnListing($table);
         }
                     /**
          * Modify a table on the schema.
@@ -14855,6 +14903,28 @@
         {
                         /** @var \Illuminate\Session\SessionManager $instance */
                         return $instance->blockDriver();
+        }
+                    /**
+         * Get the maximum number of seconds the session lock should be held for.
+         *
+         * @return int 
+         * @static 
+         */ 
+        public static function defaultRouteBlockLockSeconds()
+        {
+                        /** @var \Illuminate\Session\SessionManager $instance */
+                        return $instance->defaultRouteBlockLockSeconds();
+        }
+                    /**
+         * Get the maximum number of seconds to wait while attempting to acquire a route block session lock.
+         *
+         * @return int 
+         * @static 
+         */ 
+        public static function defaultRouteBlockWaitSeconds()
+        {
+                        /** @var \Illuminate\Session\SessionManager $instance */
+                        return $instance->defaultRouteBlockWaitSeconds();
         }
                     /**
          * Get the session configuration.
