@@ -135,6 +135,31 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasRole(RolesEnum::SUPER_ADMIN);
     }
 
+    public function isMember()
+    {
+        return $this->hasRole(RolesEnum::MEMBER);
+    }
+
+    public function isAdmin()
+    {
+        return $this->hasRole(RolesEnum::ADMIN);
+    }
+
+    public function isAdminOJK()
+    {
+        return $this->hasRole(RolesEnum::ADMIN_OJK);
+    }
+
+    public function isAdminBank()
+    {
+        return $this->hasRole(RolesEnum::ADMIN_BANK);
+    }
+
+    public function isSupervisor()
+    {
+        return $this->hasRole(RolesEnum::SUPERVISOR);
+    }
+
     /**
      * Send a password reset notification to the user.
      *

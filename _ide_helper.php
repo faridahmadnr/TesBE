@@ -15078,7 +15078,6 @@
                     /**
          * Get a subset of the session data.
          *
-         * @param array $keys
          * @return array 
          * @static 
          */ 
@@ -15177,7 +15176,6 @@
                     /**
          * Replace the given session attributes entirely.
          *
-         * @param array $attributes
          * @return void 
          * @static 
          */ 
@@ -15203,7 +15201,6 @@
          * Get an item from the session, or store the default value.
          *
          * @param string $key
-         * @param \Closure $callback
          * @return mixed 
          * @static 
          */ 
@@ -15254,7 +15251,6 @@
                     /**
          * Flash a key / value pair to the session.
          *
-         * @param string $key
          * @param mixed $value
          * @return void 
          * @static 
@@ -15303,7 +15299,6 @@
                     /**
          * Flash an input array to the session.
          *
-         * @param array $value
          * @return void 
          * @static 
          */ 
@@ -15533,7 +15528,6 @@
                     /**
          * Set the underlying session handler implementation.
          *
-         * @param \SessionHandlerInterface $handler
          * @return \SessionHandlerInterface 
          * @static 
          */ 

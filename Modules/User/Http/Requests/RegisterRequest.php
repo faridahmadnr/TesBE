@@ -2,6 +2,7 @@
 
 namespace Modules\User\Http\Requests;
 
+use Closure;
 use Elegant\Sanitizer\Laravel\SanitizesInput;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -9,6 +10,7 @@ use Illuminate\Validation\Rules;
 use LangleyFoxall\LaravelNISTPasswordRules\PasswordRules;
 use Modules\User\Entities\User;
 use Modules\User\Enums\UserGenderEnum;
+use Modules\User\Rules\Captcha;
 
 class RegisterRequest extends FormRequest
 {
@@ -32,17 +34,35 @@ class RegisterRequest extends FormRequest
                 'max:255',
                 'unique:'.User::class,
             ],
-            'nik' => 'required|numeric|valid_nik|unique:members,nik',
-            'phone' => 'phone:INTERNATIONAL,ID',
+            'identity_number' => 'required|numeric|valid_identity_number|unique:members,identity_number',
+            'first_phone' => ['required', 'phone:INTERNATIONAL,ID'],
+            'second_phone' => [
+                'nullable',
+                'phone:INTERNATIONAL,ID',
+                function (string $attribute, mixed $value, Closure $fail) {
+                    if ($this->first_phone === $value) {
+                        $fail('The second phone number must be different from the first phone number.');
+                    }
+                },
+            ],
             'address' => 'required',
             'gender' => ['required', Rule::in(UserGenderEnum::cases())],
             'dob' => 'required|date_format:Y-m-d',
             'password' => [
                 'required',
-                'confirmed',
                 Rules\Password::defaults(),
                 PasswordRules::register($this->email),
             ],
+            'agreement' => 'required',
+            'password_confirmed' => 'required|same:password',
+            // 'g-recaptcha-response' => ['required', new Captcha],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'g-recaptcha-response.required' => 'Please verify that you are not a robot.',
         ];
     }
 
@@ -50,7 +70,7 @@ class RegisterRequest extends FormRequest
     {
         return [
             'name' => 'trim|escape',
-            'nik' => 'digit',
+            'identity_number' => 'digit',
         ];
     }
 

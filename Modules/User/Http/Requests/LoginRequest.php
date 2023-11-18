@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Modules\User\Rules\Captcha;
 
 class LoginRequest extends FormRequest
 {
@@ -29,6 +30,9 @@ class LoginRequest extends FormRequest
         return [
             'email' => ['required', 'string', 'email', 'indisposable'],
             'password' => ['required', 'string'],
+            'remember' => 'nullable|boolean',
+            'member' => 'nullable|boolean',
+            'g-recaptcha-response' => ['required', new Captcha],
         ];
     }
 
@@ -40,12 +44,25 @@ class LoginRequest extends FormRequest
     public function authenticate(): void
     {
         $this->ensureIsNotRateLimited();
-
         if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
+            ]);
+        }
+
+        /** @var \Modules\User\Entities\User $user */
+        $user = auth()->user();
+        if ($this->member && ! $user->isMember()) {
+            throw ValidationException::withMessages([
+                'role' => 'Hanya pengguna yang memiliki status anggota yang diizinkan masuk.',
+            ]);
+        }
+
+        if (! $this->member && $user->isMember()) {
+            throw ValidationException::withMessages([
+                'role' => 'Pengguna yang memiliki status anggota tidak diizinkan masuk.',
             ]);
         }
 

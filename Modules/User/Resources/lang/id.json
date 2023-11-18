@@ -58,5 +58,7 @@
     "Create Location": "Buat Lokasi",
     "Read Location": "Lihat Lokasi",
     "Update Location": "Edit Lokasi",
-    "Delete Location": "Hapus Lokasi"
+    "Delete Location": "Hapus Lokasi",
+    "The second phone number must be different from the first phone number.": "Nomor telepon kedua harus berbeda dari nomor telepon pertama.",
+    "The identity number is not valid.": "Nomor Induk Kependudukan tidak valid."
 }

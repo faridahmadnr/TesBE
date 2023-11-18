@@ -3,6 +3,7 @@
 namespace Modules\User\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller as BaseController;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\JsonResponse;
 use Modules\User\Entities\User;
 use Modules\User\Http\Requests\StoreUserRequest;
@@ -114,6 +115,17 @@ class UserController extends BaseController
     public function forceDelete(User $user): JsonResponse
     {
         $this->userService->destroy($user);
+
+        return $this->okResponse(new UserResource($user));
+    }
+
+    public function me(): JsonResponse
+    {
+        if (auth()->check()) {
+            throw new AuthenticationException('You are not logged in.');
+        }
+
+        $user = auth()->user();
 
         return $this->okResponse(new UserResource($user));
     }

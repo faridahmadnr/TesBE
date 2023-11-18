@@ -19,7 +19,7 @@ return new class extends Migration
                 ->index()
                 ->constrained('users')
                 ->cascadeOnDelete();
-            $table->char('nik', 36);
+            $table->text('identity_number');
             $table->string('phone', 20)->nullable();
             $table->string('second_phone', 20)->nullable();
             $table->string('address')->nullable();

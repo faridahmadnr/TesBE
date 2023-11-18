@@ -75,6 +75,7 @@ class Handler extends ExceptionHandler
                     'type' => 'ValidationException',
                     'code' => $e->status,
                     'errors' => $e->errors(),
+                    'message' => $e->getMessage(),
                 ], $e->status);
             }
         });

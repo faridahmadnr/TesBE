@@ -17,6 +17,8 @@ Route::group([
     'prefix' => 'v1',
     'as' => 'api.v1.',
 ], function () {
+    Route::get('auth/me', V1\MeController::class)
+        ->name('auth.me');
     Route::group(['middleware' => 'guest'], function () {
         Route::post('auth/login', V1\LoginController::class)
             ->name('auth.login');

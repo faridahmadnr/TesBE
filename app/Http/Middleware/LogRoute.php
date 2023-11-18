@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Log;
 use Symfony\Component\HttpFoundation\Response;
 
 class LogRoute
@@ -16,6 +17,10 @@ class LogRoute
      */
     public function handle(Request $request, Closure $next): Response
     {
+        Log::info($request->getUri(), [
+            'payload' => $request->all(),
+        ]);
+
         $response = $next($request);
         $requestId = Str::uuid();
         $response->headers->set('X-Request-Id', $requestId);
@@ -26,6 +31,7 @@ class LogRoute
                 'method' => $request->getMethod(),
                 'request_body' => $request->all(),
                 'response' => $response->getContent(),
+                // 'ip_address' => $request->ip(),
             ])
             ->event('route')
             ->log($requestId);

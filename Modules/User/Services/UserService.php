@@ -40,7 +40,7 @@ final class UserService extends BaseService
             ]);
 
             $user->member()->create([
-                'nik' => $data['nik'],
+                'identity_number' => $data['identity_number'],
                 'phone' => $data['phone'] ?? null,
                 'address' => $data['address'],
                 'second_phone' => $data['second_phone'] ?? null,

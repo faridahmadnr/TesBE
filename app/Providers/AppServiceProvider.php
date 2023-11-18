@@ -28,10 +28,14 @@ class AppServiceProvider extends ServiceProvider
             return ! $accessToken->last_used_at || $accessToken->last_used_at->gte(now()->subHours(72));
         };
 
-        Validator::extend('valid_nik', function ($attribute, $value, $parameters, $validator) {
-            $nikParser = new NikParser($value);
+        Validator::extend('valid_identity_number', function ($attribute, $value, $parameters, $validator) {
+            try {
+                $nikParser = new NikParser($value);
 
-            return $nikParser->isValid();
+                return $nikParser->isValid();
+            } catch (\Throwable $th) {
+                return false;
+            }
         });
     }
 }
