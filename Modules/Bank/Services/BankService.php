@@ -84,7 +84,10 @@ final class BankService extends BaseService
         DB::beginTransaction();
 
         try {
-            $bank->fill($data);
+            $bank->fill([
+                ...$data,
+                'status' => $data['status'] === 'active',
+            ]);
 
             if (isset($data['logo'])) {
                 /** @var UploadedFile $logo */
@@ -146,6 +149,7 @@ final class BankService extends BaseService
 
     protected function uploadLogo(Bank $bank, UploadedFile $file): string
     {
+        // @phpstan-ignore-next-line
         $filename = \Str::slug($bank->name).'.'.$file->getClientOriginalExtension();
         $file->storeAs('banks', $filename, [
             'disk' => 's3',
@@ -161,15 +165,20 @@ final class BankService extends BaseService
         }
     }
 
-    protected function createBank(array $data = []): Bank
+    protected function createRow(array $data = []): array
     {
-        return $this->model::create([
+        return [
             'name' => $data['name'] ?? null,
             'link' => $data['link'] ?? null,
             'code' => $data['code'] ?? null,
-            'status' => $data['status'] ?? null,
+            'status' => $data['status'] === 'active',
             'reason_status' => $data['reason_status'] ?? null,
             'logo' => $data['logo'] ?? null,
-        ]);
+        ];
+    }
+
+    protected function createBank(array $data = []): Bank
+    {
+        return $this->model::create($this->createRow($data));
     }
 }

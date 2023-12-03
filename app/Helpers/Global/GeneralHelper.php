@@ -41,3 +41,10 @@ if (! function_exists('formatCurrency')) {
         return 'Rp '.number_format($number, 0, ',', '.');
     }
 }
+
+if (! function_exists('isDevelopment')) {
+    function isDevelopment()
+    {
+        return config('app.env') !== 'production';
+    }
+}

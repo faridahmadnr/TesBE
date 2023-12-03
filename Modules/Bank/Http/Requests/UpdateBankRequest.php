@@ -18,9 +18,9 @@ class UpdateBankRequest extends FormRequest
             'name' => 'required|max:255',
             'code' => 'required|max:50',
             'link' => 'sometimes|url',
-            'status' => 'required|boolean',
+            'status' => 'required|in:active,inactive',
             'reason_status' => 'nullable|max:255',
-            'logo' => 'sometimes|image|mimes:jpeg,png,jpg|max:2048',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ];
     }
 

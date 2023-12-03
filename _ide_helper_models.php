@@ -18,7 +18,7 @@ namespace App\Models{
  * @property-read int|null $activities_count
  * @property-read \Modules\User\Entities\User|null $creator
  * @property-read string|null $hash_id
- * @property-read string $hash_id_raw
+ * @property-read string|null $hash_id_raw
  * @property-read \Modules\User\Entities\User|null $updater
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel newModelQuery()
@@ -38,11 +38,11 @@ namespace Modules\Bank\Entities{
  *
  * @property int $id
  * @property string $name
- * @property string $link
+ * @property string|null $link
  * @property string|null $code
- * @property int|null $status
+ * @property bool|null $status
  * @property string|null $reason_status
- * @property string $logo
+ * @property string|null $logo
  * @property int|null $created_by
  * @property int|null $updated_by
  * @property int|null $deleted_by
@@ -53,7 +53,7 @@ namespace Modules\Bank\Entities{
  * @property-read int|null $activities_count
  * @property-read \Modules\User\Entities\User|null $creator
  * @property-read string|null $hash_id
- * @property-read string $hash_id_raw
+ * @property-read string|null $hash_id_raw
  * @property-read \Modules\User\Entities\User|null $updater
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|Bank newModelQuery()
@@ -76,7 +76,6 @@ namespace Modules\Bank\Entities{
  * @method static \Illuminate\Database\Eloquent\Builder|Bank whereUpdatedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Bank withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Bank withoutTrashed()
- * @mixin \Eloquent
  */
 	class Bank extends \Eloquent {}
 }
@@ -502,12 +501,12 @@ namespace Modules\User\Entities{
  *
  * @property int $id
  * @property int $user_id
- * @property string $nik
+ * @property mixed $identity_number
  * @property string|null $phone
  * @property string|null $second_phone
  * @property string|null $address
  * @property string $gender
- * @property string $dob
+ * @property \Illuminate\Support\Carbon $dob
  * @property string|null $photo
  * @property int|null $created_by
  * @property int|null $updated_by
@@ -519,8 +518,9 @@ namespace Modules\User\Entities{
  * @property-read int|null $activities_count
  * @property-read \Modules\User\Entities\User|null $creator
  * @property-read string|null $hash_id
- * @property-read string $hash_id_raw
+ * @property-read string|null $hash_id_raw
  * @property-read \Modules\User\Entities\User|null $updater
+ * @property-read \Modules\User\Entities\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|Member newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Member newQuery()
@@ -535,7 +535,7 @@ namespace Modules\User\Entities{
  * @method static \Illuminate\Database\Eloquent\Builder|Member whereDob($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Member whereGender($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Member whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Member whereNik($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Member whereIdentityNumber($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Member wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Member wherePhoto($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Member whereSecondPhone($value)
@@ -544,8 +544,6 @@ namespace Modules\User\Entities{
  * @method static \Illuminate\Database\Eloquent\Builder|Member whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Member withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Member withoutTrashed()
- * @property-read \Modules\User\Entities\User $user
- * @mixin \Eloquent
  */
 	class Member extends \Eloquent {}
 }
@@ -638,7 +636,7 @@ namespace Modules\User\Entities{
  * @method static \Illuminate\Database\Eloquent\Builder|User withoutTrashed()
  * @mixin \Eloquent
  */
-	class User extends \Eloquent implements \Illuminate\Contracts\Auth\MustVerifyEmail {}
+	class User extends \Eloquent {}
 }
 
 namespace Modules\User\Entities{

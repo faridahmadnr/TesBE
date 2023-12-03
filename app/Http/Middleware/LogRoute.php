@@ -18,7 +18,9 @@ class LogRoute
     public function handle(Request $request, Closure $next): Response
     {
         Log::info($request->getUri(), [
+            'method' => $request->getMethod(),
             'payload' => $request->all(),
+            'headers' => $request->headers->all(),
         ]);
 
         $response = $next($request);

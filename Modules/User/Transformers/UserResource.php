@@ -47,6 +47,10 @@ class UserResource extends JsonResource
                 ];
             }),
             'isVerified' => $this->email_verified_at !== null,
+            'permissions' => $this->whenLoaded('permissions', function () {
+                // @phpstan-ignore-next-line
+                return $this->getAllPermissions()->pluck('name');
+            }),
         ];
     }
 }

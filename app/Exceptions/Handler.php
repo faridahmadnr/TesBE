@@ -56,10 +56,11 @@ class Handler extends ExceptionHandler
                     'apiVersion' => '1.0',
                     'type' => 'AuthenticationException',
                     'code' => 401,
-                    'error' => [
+                    'errors' => [
                         'code' => 401,
                         'message' => 'Unauthenticated',
                     ],
+                    'message' => $e->getMessage(),
                 ], 401);
             }
         });

@@ -17,7 +17,7 @@ class MeController extends BaseController
             throw new AuthenticationException('You are not logged in.');
         }
 
-        $user->loadMissing(['roles', 'profile']);
+        $user->loadMissing(['roles', 'profile', 'permissions']);
 
         return $this->okResponse(new UserResource($user));
     }

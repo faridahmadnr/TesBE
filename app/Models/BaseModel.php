@@ -17,7 +17,7 @@ class BaseModel extends Model
 {
     use BlameableTrait, HasFactory, HasHashId, HasHashIdRouting, LogsActivity, QueryCacheable, Searchable, SoftDeletes;
 
-    public $cacheFor = 3600;
+    public $cacheFor = 600;
 
     protected static $flushCacheOnUpdate = true;
 
