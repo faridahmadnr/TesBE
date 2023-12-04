@@ -36,11 +36,13 @@ final class BankService extends BaseService
             ->allowedFilters([
                 'name',
                 'code',
+                'status',
                 AllowedFilter::trashed(),
             ])
             ->allowedSorts([
                 'name',
                 'code',
+                'status',
                 AllowedSort::field('created_at', 'createdAt'),
             ])
             ->paginate(request()->query('pageSize') ?? 10)
