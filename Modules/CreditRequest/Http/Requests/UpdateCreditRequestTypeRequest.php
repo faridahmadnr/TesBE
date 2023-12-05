@@ -20,6 +20,7 @@ class UpdateCreditRequestTypeRequest extends FormRequest
             'name' => 'required',
             'min' => 'required|numeric|min:0|lt:max',
             'max' => 'required|numeric|gt:min',
+            'interest' => 'required|numeric|min:0|max:100',
         ];
     }
 
