@@ -6,6 +6,7 @@ use App\Enums\RolesEnum;
 use Closure;
 use Elegant\Sanitizer\Laravel\SanitizesInput;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 use LangleyFoxall\LaravelNISTPasswordRules\PasswordRules;
@@ -48,6 +49,7 @@ class StoreUserRequest extends FormRequest
                 },
             ],
             'bank_id' => [
+                'sometimes',
                 Rule::requiredIf(function () {
                     $role = Role::findByHashId($this->role_id);
 
@@ -57,25 +59,30 @@ class StoreUserRequest extends FormRequest
                     ]);
                 }),
                 function (string $attribute, mixed $value, Closure $fail) {
-                    $bank = Bank::findByHashId($value);
+                    Log::info('BANK', [
+                        'value' => $value,
+                    ]);
+                    if ($value) {
+                        $bank = Bank::findByHashId($value);
 
-                    if (is_null($bank)) {
-                        $fail('Bank is not exists.');
+                        if (is_null($bank)) {
+                            $fail('Bank is not exists.');
+                        }
                     }
                 },
             ],
             'password' => [
                 'required',
-                'confirmed',
                 Rules\Password::defaults(),
                 PasswordRules::register($this->email),
             ],
+            'password_confirmed' => 'required|same:password',
             'permissions' => ['sometimes', 'array'],
             'permissions.*' => [Rule::exists('permissions', 'id')->where('type', $this->type)],
-            'email_verified' => ['sometimes', 'boolean'],
-            'send_confirmation_email' => ['sometimes', 'boolean'],
+            'email_verified' => ['sometimes', 'in:y,n'],
+            'send_confirmation_email' => ['sometimes', 'in:y,n'],
             'photo' => 'sometimes|image|max:2048|mimes:jpg,png,jpeg',
-            'active' => 'required|boolean',
+            'active' => 'required|in:y,n',
         ];
     }
 

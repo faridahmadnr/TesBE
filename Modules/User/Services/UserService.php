@@ -8,6 +8,7 @@ use App\Services\BaseService;
 use Exception;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -41,7 +42,7 @@ final class UserService extends BaseService
 
             $user->member()->create([
                 'identity_number' => $data['identity_number'],
-                'phone' => $data['phone'] ?? null,
+                'phone' => $data['first_phone'] ?? null,
                 'address' => $data['address'],
                 'second_phone' => $data['second_phone'] ?? null,
                 'gender' => $data['gender'],
@@ -108,21 +109,29 @@ final class UserService extends BaseService
             'name',
             'email',
             'created_at',
+            'deleted_at',
             'status',
         ])
-            ->with(['profile', 'roles'])
+            ->with(['profile', 'roles', 'profile.bank', 'member'])
             ->withoutRole(RolesEnum::SUPER_ADMIN);
+
         $users = QueryBuilder::for($userQuery)
             ->defaultSort('-created_at')
             ->allowedFields(['id', 'name', 'email'])
             ->allowedFilters([
                 'name',
                 'email',
+                AllowedFilter::callback('role', function (Builder $query, $value) {
+                    $query->whereHas('roles', function (Builder $query) use ($value) {
+                        $query->where('name', $value);
+                    });
+                }),
                 AllowedFilter::trashed(),
             ])
             ->allowedSorts([
                 'name',
                 'email',
+                'status',
                 AllowedSort::field('created_at', 'createdAt'), ])
             ->paginate(request()->query('pageSize') ?? 10)
             ->appends(request()->query());
@@ -140,7 +149,9 @@ final class UserService extends BaseService
                 'email' => $data['email'],
                 'password' => $data['password'],
                 'status' => $data['active'],
-                'email_verified_at' => $data['email_verified'] ? now() : null,
+                'email_verified_at' => isset($data['email_verified']) && $data['email_verified'] === 'y'
+                    ? now()
+                    : null,
             ]);
 
             $filename = null;
@@ -162,6 +173,7 @@ final class UserService extends BaseService
             $user->syncRoles([Role::keyFromHashId($data['role_id'])]);
             $user->syncPermissions($data['permissions'] ?? []);
         } catch (\Throwable $th) {
+            report($th);
             DB::rollBack();
 
             throw new GeneralException(__('There was a problem registering this user. Please try again.'));
@@ -169,7 +181,7 @@ final class UserService extends BaseService
 
         DB::commit();
 
-        if (! $data['email_verified'] && $data['send_confirmation_email']) {
+        if (isset($data['email_verified']) && ! $data['email_verified'] && $data['send_confirmation_email']) {
             $user->sendEmailVerificationNotification();
         }
 
@@ -181,10 +193,13 @@ final class UserService extends BaseService
         DB::beginTransaction();
 
         try {
+            $isNotVerified = is_null($user->email_verified_at) && isset($data['email_verified']) && $data['email_verified'] === 'y';
             $user->fill($this->createUserData([
                 'name' => $data['name'],
                 'email' => $data['email'],
-                'email_verified_at' => $data['email_verified'] ? now() : $user->email_verified_at,
+                'email_verified_at' => $isNotVerified
+                    ? now()
+                    : $user->email_verified_at,
             ]));
 
             if (isset($data['password'])) {
@@ -212,6 +227,7 @@ final class UserService extends BaseService
             $user->syncRoles([Role::keyFromHashId($data['role_id'])]);
             $user->syncPermissions($data['permissions'] ?? []);
         } catch (\Throwable $th) {
+            report($th);
             DB::rollBack();
 
             throw new GeneralException(__('There was a problem updating this user. Please try again.'));
@@ -219,7 +235,7 @@ final class UserService extends BaseService
 
         DB::commit();
 
-        if (! $data['email_verified'] && $data['send_confirmation_email']) {
+        if (isset($data['email_verified']) && ! $data['email_verified'] && $data['send_confirmation_email'] && ! $user->email_verified_at) {
             $user->sendEmailVerificationNotification();
         }
 
@@ -259,7 +275,7 @@ final class UserService extends BaseService
             && $user->trashed()
             && $user->forceDelete()) {
 
-            if ($user->profile->photo) {
+            if (! is_null($user->profile) && $user->profile->photo) {
                 Storage::disk('s3')->delete($user->hashId.'/'.$user->profile->photo);
             }
             // event(new UserDestroyed($user));
@@ -297,7 +313,7 @@ final class UserService extends BaseService
             'name' => $data['name'] ?? null,
             'email' => $data['email'] ?? null,
             'password' => $data['password'] ?? null,
-            'status' => $data['status'] ?? false,
+            'status' => ! isset($data['status']) ? false : $data['status'] === 'y',
             'email_verified_at' => $data['email_verified_at'] ?? null,
         ];
 

@@ -42,6 +42,7 @@ class GeneralException extends Exception
                     'code' => $this->code,
                     'message' => $this->message,
                 ],
+                'message' => $this->message,
             ], 400);
         }
     }

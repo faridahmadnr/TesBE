@@ -19,6 +19,9 @@ class VerifyEmailController extends BaseController
         }
 
         if ($user->markEmailAsVerified()) {
+            $user->update([
+                'status' => true,
+            ]);
             event(new Verified($user));
         }
 

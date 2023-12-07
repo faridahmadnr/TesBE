@@ -13,6 +13,8 @@ class RegisterController extends BaseController
     {
         $user = $userService->register($request->validated());
 
+        $user->loadMissing(['member']);
+
         return $this->successResponse(new UserResource($user));
     }
 }

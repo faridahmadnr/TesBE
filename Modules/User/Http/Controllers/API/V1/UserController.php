@@ -48,6 +48,8 @@ class UserController extends BaseController
     {
         $user = $this->userService->store($request->validated());
 
+        $user->loadMissing(['roles', 'profile', 'profile.bank']);
+
         return $this->okResponse(new UserResource($user));
     }
 
@@ -59,7 +61,7 @@ class UserController extends BaseController
      */
     public function show(User $user): JsonResponse
     {
-        $user->loadMissing(['roles', 'profile']);
+        $user->loadMissing(['roles', 'profile', 'profile.bank']);
 
         return $this->okResponse(new UserResource($user));
     }
@@ -75,7 +77,7 @@ class UserController extends BaseController
     {
         $user = $this->userService->update($user, $request->validated());
 
-        $user->loadMissing(['roles', 'profile']);
+        $user->loadMissing(['roles', 'profile', 'profile.bank']);
 
         return $this->okResponse(new UserResource($user));
     }
@@ -88,6 +90,8 @@ class UserController extends BaseController
      */
     public function destroy(User $user): JsonResponse
     {
+        $user->loadMissing(['roles', 'profile', 'profile.bank']);
+
         $this->userService->delete($user);
 
         return $this->okResponse(new UserResource($user));
@@ -101,6 +105,8 @@ class UserController extends BaseController
      */
     public function restore(User $user): JsonResponse
     {
+        $user->loadMissing(['roles', 'profile', 'profile.bank']);
+
         $this->userService->restore($user);
 
         return $this->okResponse(new UserResource($user));
@@ -114,6 +120,8 @@ class UserController extends BaseController
      */
     public function forceDelete(User $user): JsonResponse
     {
+        $user->loadMissing(['roles', 'profile', 'profile.bank']);
+
         $this->userService->destroy($user);
 
         return $this->okResponse(new UserResource($user));
