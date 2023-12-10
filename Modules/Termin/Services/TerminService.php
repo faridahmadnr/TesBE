@@ -98,10 +98,6 @@ final class TerminService extends BaseService
 
     public function destroy(Termin $termin): bool
     {
-        if (! $termin->trashed()) {
-            throw new GeneralException(__('This termin can not be deleted because it is not in a deleted state.'));
-        }
-
         if ($termin->forceDelete()) {
             // event(new TerminDestroyed($termin));
 

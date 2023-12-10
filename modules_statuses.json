@@ -6,5 +6,6 @@
     "Location": true,
     "Termin": true,
     "Testimoni": true,
-    "CreditRequest": true
+    "CreditRequest": true,
+    "News": true
 }

@@ -7,6 +7,7 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -35,6 +36,41 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
+        });
+
+        Route::macro('apiRoutes', function (string $routeName, $controller) {
+            Route::group(['prefix' => 'v1', 'as' => 'api.v1.'], function () use ($routeName, $controller) {
+                $namedRoute = str_replace('/', '.', $routeName);
+
+                Route::apiResource($routeName, $controller)
+                    ->only(['index', 'show'])
+                    ->names([
+                        'index' => "{$namedRoute}.index",
+                        'show' => "{$namedRoute}.show",
+                    ]);
+
+                Route::group(['middleware' => 'auth:sanctum'], function () use ($routeName, $controller, $namedRoute) {
+
+                    Route::controller($controller)->group(function () use ($routeName, $namedRoute) {
+                        $routePathname = Str::contains($routeName, '/') ? Str::after($routeName, '/') : $routeName;
+                        $routeSingular = Str::singular($routePathname);
+
+                        Route::post("{$routeName}/{{$routeSingular}}/restore", 'restore')
+                            ->name($namedRoute.'.restore')
+                            ->withTrashed();
+                        Route::delete("{$routeName}/{{$routeSingular}}/delete", 'forceDelete')
+                            ->name($namedRoute.'.delete')
+                            ->withTrashed();
+                    });
+                    Route::apiResource($routeName, $controller)
+                        ->except(['index', 'show'])
+                        ->names([
+                            'store' => "{$namedRoute}.store",
+                            'update' => "{$namedRoute}.update",
+                            'destroy' => "{$namedRoute}.destroy",
+                        ]);
+                });
+            });
         });
     }
 }

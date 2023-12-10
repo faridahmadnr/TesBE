@@ -111,8 +111,7 @@ final class ProvinceService extends BaseService
 
     public function destroy(Province $province): bool
     {
-        if ($province->trashed()
-            && $province->forceDelete()) {
+        if ($province->forceDelete()) {
 
             // event(new ProvinceDestroyed($province));
 

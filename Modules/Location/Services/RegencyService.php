@@ -115,8 +115,7 @@ final class RegencyService extends BaseService
 
     public function destroy(Regency $regency): bool
     {
-        if ($regency->trashed()
-            && $regency->forceDelete()) {
+        if ($regency->forceDelete()) {
 
             // event(new RegencyDestroyed($regency));
 

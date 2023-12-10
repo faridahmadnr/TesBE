@@ -10,7 +10,7 @@ class $CLASS$
 {
     use HandlesAuthorization;
 
-    public function viewAny()
+    public function viewAny(?User $user)
     {
         return true;
     }
@@ -20,12 +20,12 @@ class $CLASS$
         return $user->can(PermissionsEnum::READ_BANK->value);
     }
 
-    public function create($user)
+    public function create(User $user)
     {
         return $user->can(PermissionsEnum::CREATE_BANK->value);
     }
 
-    public function update(?User $user)
+    public function update(User $user)
     {
         return $user->can(PermissionsEnum::UPDATE_BANK->value);
     }

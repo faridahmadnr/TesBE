@@ -135,10 +135,6 @@ final class CreditRequestService extends BaseService
 
     public function destroy(CreditRequest $creditRequest): bool
     {
-        if (! $creditRequest->trashed()) {
-            throw new GeneralException(__('This credit request can not be deleted because it is not in a deleted state.'));
-        }
-
         if ($creditRequest->forceDelete()) {
 
             $this->deleteImage($creditRequest);

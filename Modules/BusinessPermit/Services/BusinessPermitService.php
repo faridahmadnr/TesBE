@@ -97,10 +97,6 @@ final class BusinessPermitService extends BaseService
 
     public function destroy(BusinessPermit $businessPermit): bool
     {
-        if (! $businessPermit->trashed()) {
-            throw new GeneralException(__('This business permit can not be deleted because it is not in a deleted state.'));
-        }
-
         if ($businessPermit->forceDelete()) {
             // event(new BusinessPermitDestroyed($businessPermit));
 
