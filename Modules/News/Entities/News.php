@@ -4,7 +4,6 @@ namespace Modules\News\Entities;
 
 use App\Models\BaseModel;
 use Mews\Purifier\Casts\CleanHtml;
-use Mews\Purifier\Casts\CleanHtmlInput;
 
 class News extends BaseModel
 {
@@ -19,7 +18,6 @@ class News extends BaseModel
 
     protected $casts = [
         'content' => CleanHtml::class,
-        'title' => CleanHtmlInput::class,
         'status' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
