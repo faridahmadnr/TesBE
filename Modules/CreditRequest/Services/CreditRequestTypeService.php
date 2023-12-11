@@ -102,10 +102,6 @@ final class CreditRequestTypeService extends BaseService
 
     public function destroy(CreditRequestType $testimoni): bool
     {
-        if (! $testimoni->trashed()) {
-            throw new GeneralException(__('This testimoni can not be deleted because it is not in a deleted state.'));
-        }
-
         if ($testimoni->forceDelete()) {
             // event(new CreditRequestTypeDestroyed($testimoni));
 

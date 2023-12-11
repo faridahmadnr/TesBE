@@ -14473,6 +14473,18 @@
                         /** @var \Illuminate\Routing\Router $instance */
                         return $instance->macroCall($method, $parameters);
         }
+                    /**
+         * 
+         *
+         * @see \App\Providers\RouteServiceProvider::boot()
+         * @param string $routeName
+         * @param mixed $controller
+         * @static 
+         */ 
+        public static function apiRoutes($routeName, $controller)
+        {
+                        return \Illuminate\Routing\Router::apiRoutes($routeName, $controller);
+        }
          
     }
             /**
@@ -18429,6 +18441,37 @@
         class Str {
          
     }
+            /**
+     * 
+     *
+     * @template TKey of array-key
+     * @template-covariant TValue
+     * @implements \ArrayAccess<TKey, TValue>
+     * @implements \Illuminate\Support\Enumerable<TKey, TValue>
+     */ 
+        class Collection {
+                    /**
+         * 
+         *
+         * @see \App\Models\BaseModel::observe()
+         * @static 
+         */ 
+        public static function searchable()
+        {
+                        return \Illuminate\Support\Collection::searchable();
+        }
+                    /**
+         * 
+         *
+         * @see \App\Models\BaseModel::bootLogsActivity()
+         * @static 
+         */ 
+        public static function unsearchable()
+        {
+                        return \Illuminate\Support\Collection::unsearchable();
+        }
+         
+    }
      
 }
 
@@ -18670,6 +18713,43 @@
         {
                         /** @var \Laravel\Pennant\FeatureManager $instance */
                         return $instance->setContainer($container);
+        }
+         
+    }
+     
+}
+
+    namespace Mews\Purifier\Facades { 
+            /**
+     * 
+     *
+     * @see \Mews\Purifier
+     */ 
+        class Purifier {
+                    /**
+         * 
+         *
+         * @param $dirty
+         * @param null $config
+         * @param \Closure|null $postCreateConfigHook
+         * @return mixed 
+         * @static 
+         */ 
+        public static function clean($dirty, $config = null, $postCreateConfigHook = null)
+        {
+                        /** @var \Mews\Purifier\Purifier $instance */
+                        return $instance->clean($dirty, $config, $postCreateConfigHook);
+        }
+                    /**
+         * Get HTMLPurifier instance.
+         *
+         * @return \HTMLPurifier 
+         * @static 
+         */ 
+        public static function getInstance()
+        {
+                        /** @var \Mews\Purifier\Purifier $instance */
+                        return $instance->getInstance();
         }
          
     }
@@ -19674,6 +19754,26 @@
             /**
      * 
      *
+     * @mixin \Illuminate\Routing\RouteRegistrar
+     */ 
+        class Router {
+                    /**
+         * 
+         *
+         * @see \App\Providers\RouteServiceProvider::boot()
+         * @param string $routeName
+         * @param mixed $controller
+         * @static 
+         */ 
+        public static function apiRoutes($routeName, $controller)
+        {
+                        return \Illuminate\Routing\Router::apiRoutes($routeName, $controller);
+        }
+         
+    }
+            /**
+     * 
+     *
      */ 
         class Route {
                     /**
@@ -19698,6 +19798,17 @@
         {
                         return \Illuminate\Routing\Route::permission($permissions);
         }
+         
+    }
+     
+}
+
+    namespace Nwidart\Modules { 
+            /**
+     * 
+     *
+     */ 
+        class Collection {
          
     }
      
@@ -23754,6 +23865,7 @@ namespace  {
             class Vite extends \Illuminate\Support\Facades\Vite {}
             class Sanitizer extends \Elegant\Sanitizer\Laravel\Facade {}
             class Feature extends \Laravel\Pennant\Feature {}
+            class Purifier extends \Mews\Purifier\Facades\Purifier {}
             class Module extends \Nwidart\Modules\Facades\Module {}
             class Flare extends \Spatie\LaravelIgnition\Facades\Flare {}
      

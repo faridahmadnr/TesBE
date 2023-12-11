@@ -28,6 +28,7 @@
         "league/flysystem-path-prefixing": "^3.16",
         "league/flysystem-read-only": "^3.16",
         "meilisearch/meilisearch-php": "^1.4",
+        "mews/purifier": "^3.4",
         "nwidart/laravel-modules": "^10.0",
         "predis/predis": "^2.2",
         "propaganistas/laravel-disposable-email": "^2.2",

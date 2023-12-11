@@ -18,7 +18,7 @@ namespace App\Models{
  * @property-read int|null $activities_count
  * @property-read \Modules\User\Entities\User|null $creator
  * @property-read string|null $hash_id
- * @property-read string|null $hash_id_raw
+ * @property-read string $hash_id_raw
  * @property-read \Modules\User\Entities\User|null $updater
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel newModelQuery()
@@ -53,7 +53,7 @@ namespace Modules\Bank\Entities{
  * @property-read int|null $activities_count
  * @property-read \Modules\User\Entities\User|null $creator
  * @property-read string|null $hash_id
- * @property-read string|null $hash_id_raw
+ * @property-read string $hash_id_raw
  * @property-read \Modules\User\Entities\User|null $updater
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|Bank newModelQuery()
@@ -407,6 +407,98 @@ namespace Modules\Location\Entities{
 	class Regency extends \Eloquent {}
 }
 
+namespace Modules\News\Entities{
+/**
+ * Modules\News\Entities\News
+ *
+ * @property int $id
+ * @property array $title
+ * @property string $slug
+ * @property array $content
+ * @property string|null $summary
+ * @property string|null $featured_image
+ * @property bool $status
+ * @property int|null $created_by
+ * @property int|null $updated_by
+ * @property int|null $deleted_by
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Modules\News\Entities\NewsCategory> $categories
+ * @property-read int|null $categories_count
+ * @property-read \Modules\User\Entities\User|null $creator
+ * @property-read string|null $hash_id
+ * @property-read string $hash_id_raw
+ * @property-read \Modules\User\Entities\User|null $updater
+ * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
+ * @method static \Illuminate\Database\Eloquent\Builder|News newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|News newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|News onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|News query()
+ * @method static \Illuminate\Database\Eloquent\Builder|BaseModel updatedBy($userId)
+ * @method static \Illuminate\Database\Eloquent\Builder|News whereContent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|News whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|News whereCreatedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|News whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|News whereDeletedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|News whereFeaturedImage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|News whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|News whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|News whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|News whereSummary($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|News whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|News whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|News whereUpdatedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|News withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|News withoutTrashed()
+ */
+	class News extends \Eloquent {}
+}
+
+namespace Modules\News\Entities{
+/**
+ * Modules\News\Entities\NewsCategory
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $slug
+ * @property int|null $created_by
+ * @property int|null $updated_by
+ * @property int|null $deleted_by
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \Modules\User\Entities\User|null $creator
+ * @property-read string|null $hash_id
+ * @property-read string $hash_id_raw
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Modules\News\Entities\News> $news
+ * @property-read int|null $news_count
+ * @property-read \Modules\User\Entities\User|null $updater
+ * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
+ * @method static \Illuminate\Database\Eloquent\Builder|NewsCategory newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|NewsCategory newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|NewsCategory onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|NewsCategory query()
+ * @method static \Illuminate\Database\Eloquent\Builder|BaseModel updatedBy($userId)
+ * @method static \Illuminate\Database\Eloquent\Builder|NewsCategory whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|NewsCategory whereCreatedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|NewsCategory whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|NewsCategory whereDeletedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|NewsCategory whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|NewsCategory whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|NewsCategory whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|NewsCategory whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|NewsCategory whereUpdatedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|NewsCategory withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|NewsCategory withoutTrashed()
+ */
+	class NewsCategory extends \Eloquent {}
+}
+
 namespace Modules\Termin\Entities{
 /**
  * Modules\Termin\Entities\Termin
@@ -518,7 +610,7 @@ namespace Modules\User\Entities{
  * @property-read int|null $activities_count
  * @property-read \Modules\User\Entities\User|null $creator
  * @property-read string|null $hash_id
- * @property-read string|null $hash_id_raw
+ * @property-read string $hash_id_raw
  * @property-read \Modules\User\Entities\User|null $updater
  * @property-read \Modules\User\Entities\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)

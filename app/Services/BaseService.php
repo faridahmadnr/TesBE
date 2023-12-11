@@ -2,6 +2,10 @@
 
 namespace App\Services;
 
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\AllowedSort;
+use Spatie\QueryBuilder\QueryBuilder;
+
 /**
  * Class BaseRepository.
  *
@@ -12,7 +16,7 @@ abstract class BaseService
     /**
      * The repository model.
      */
-    protected $model;
+    public $model;
 
     /**
      * The query builder.
@@ -118,6 +122,24 @@ abstract class BaseService
      * @var array
      */
     protected $scopes = [];
+
+    /**
+     * Array of field names that are allowed to be selected.
+     * Only applies when using the toQueryBuilder() method.
+     */
+    protected array $allowedFields = [];
+
+    /**
+     * Array of field names that are allowed to be filtered.
+     * Only applies when using the toQueryBuilder() method.
+     */
+    protected array $allowedFilters = [];
+
+    /**
+     * Array of field names that are allowed to be sorted.
+     * Only applies when using the toQueryBuilder() method.
+     */
+    protected array $allowedSorts = [];
 
     /**
      * Get all the model records in the database.
@@ -502,6 +524,49 @@ abstract class BaseService
         $this->unsetClauses();
 
         return $models;
+    }
+
+    public function allowedFields(array $fields)
+    {
+        $this->allowedFields = $fields;
+
+        return $this;
+    }
+
+    public function allowedFilters(array $filters)
+    {
+        $this->allowedFilters = $filters;
+
+        return $this;
+    }
+
+    public function allowedSorts(array $sorts)
+    {
+        $this->allowedSorts = $sorts;
+
+        return $this;
+    }
+
+    public function toQueryBuilder()
+    {
+        $this->newQuery()->eagerLoad()->setClauses()->setScopes();
+
+        $filters = $this->allowedFilters;
+        $sorts = $this->allowedSorts;
+
+        $queryBuilder = QueryBuilder::for($this->query)
+            ->defaultSort('-created_at')
+            ->allowedFilters([...$filters, AllowedFilter::trashed()])
+            ->allowedSorts([
+                ...$sorts,
+                AllowedSort::field('created_at', 'createdAt'),
+            ])
+            ->paginate(request()->query('pageSize') ?? 10)
+            ->appends(request()->query());
+
+        $this->unsetClauses();
+
+        return $queryBuilder;
     }
 
     /**

@@ -114,8 +114,7 @@ final class DistrictService extends BaseService
 
     public function destroy(District $district): bool
     {
-        if ($district->trashed()
-            && $district->forceDelete()) {
+        if ($district->forceDelete()) {
 
             // event(new DistrictDestroyed($district));
 

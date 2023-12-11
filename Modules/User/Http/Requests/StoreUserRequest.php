@@ -3,6 +3,7 @@
 namespace Modules\User\Http\Requests;
 
 use App\Enums\RolesEnum;
+use App\Rules\HashIdExists;
 use Closure;
 use Elegant\Sanitizer\Laravel\SanitizesInput;
 use Illuminate\Foundation\Http\FormRequest;
@@ -40,13 +41,7 @@ class StoreUserRequest extends FormRequest
             'phone' => 'required|phone:INTERNATIONAL,ID',
             'role_id' => [
                 'required',
-                function (string $attribute, mixed $value, Closure $fail) {
-                    $role = Role::findByHashId($value);
-
-                    if (is_null($role)) {
-                        $fail('Role is not exists.');
-                    }
-                },
+                new HashIdExists(Role::class),
             ],
             'bank_id' => [
                 'sometimes',

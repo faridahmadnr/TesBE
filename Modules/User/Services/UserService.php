@@ -272,7 +272,6 @@ final class UserService extends BaseService
     {
         if (
             ! $user->isSuperAdmin()
-            && $user->trashed()
             && $user->forceDelete()) {
 
             if (! is_null($user->profile) && $user->profile->photo) {

@@ -97,10 +97,6 @@ final class BusinessTypeService extends BaseService
 
     public function destroy(BusinessType $businessType): bool
     {
-        if (! $businessType->trashed()) {
-            throw new GeneralException(__('This business type can not be deleted because it is not in a deleted state.'));
-        }
-
         if ($businessType->forceDelete()) {
             // event(new BusinessTypeDestroyed($businessType));
 

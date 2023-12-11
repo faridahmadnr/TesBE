@@ -137,8 +137,7 @@ final class BankService extends BaseService
 
     public function destroy(Bank $bank): bool
     {
-        if ($bank->trashed()
-            && $bank->forceDelete()) {
+        if ($bank->forceDelete()) {
 
             $this->deleteLogo($bank);
             // event(new UserDestroyed($bank));

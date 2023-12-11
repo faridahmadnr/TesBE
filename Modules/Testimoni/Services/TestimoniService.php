@@ -119,10 +119,6 @@ final class TestimoniService extends BaseService
 
     public function destroy(Testimoni $testimoni): bool
     {
-        if (! $testimoni->trashed()) {
-            throw new GeneralException(__('This testimoni can not be deleted because it is not in a deleted state.'));
-        }
-
         if ($testimoni->forceDelete()) {
             // event(new TestimoniDestroyed($testimoni));
 
