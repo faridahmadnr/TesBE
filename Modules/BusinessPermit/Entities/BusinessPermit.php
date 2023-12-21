@@ -21,7 +21,6 @@ use App\Models\BaseModel;
  * @property-read string|null $hash_id
  * @property-read string $hash_id_raw
  * @property-read \Modules\User\Entities\User|null $updater
- *
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|BusinessPermit newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|BusinessPermit newQuery()
@@ -38,7 +37,7 @@ use App\Models\BaseModel;
  * @method static \Illuminate\Database\Eloquent\Builder|BusinessPermit whereUpdatedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|BusinessPermit withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|BusinessPermit withoutTrashed()
- *
+ * @mixin IdeHelperBusinessPermit
  * @mixin \Eloquent
  */
 class BusinessPermit extends BaseModel

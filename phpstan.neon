@@ -5,6 +5,7 @@ parameters:
 
     paths:
         - app/
+        - Modules/
 
     # Level 9 is the highest level
     level: 5
@@ -14,6 +15,9 @@ parameters:
     universalObjectCratesClasses:
         - Illuminate\Http\Resources\Json\JsonResource
         - Illuminate\Http\Resources\Json\ResourceCollection
+
+    scanFiles:
+        - _ide_helper_models.php
 
 #    ignoreErrors:
 #        - '#PHPDoc tag @var#'

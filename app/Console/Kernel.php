@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command('disposable:update')->weekly();
-        $schedule->command('activitylog:clean')->monthly();
+        // $schedule->command('activitylog:clean')->monthly();
     }
 
     /**

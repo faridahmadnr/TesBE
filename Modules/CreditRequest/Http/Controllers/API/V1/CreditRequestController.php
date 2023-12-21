@@ -73,4 +73,11 @@ class CreditRequestController extends BaseController
 
         return $this->okResponse($creditRequestSimulation);
     }
+
+    public function confirm(CreditRequest $creditRequest): JsonResponse
+    {
+        $creditRequest = $this->creditRequestService->confirm($creditRequest);
+
+        return $this->okResponse(new CreditRequestResource($creditRequest));
+    }
 }

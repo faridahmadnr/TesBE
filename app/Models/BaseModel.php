@@ -10,21 +10,29 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
 use Rennokki\QueryCache\Traits\QueryCacheable;
 use RichanFongdasen\EloquentBlameable\BlameableTrait;
-use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Traits\LogsActivity;
 
-class BaseModel extends Model
+// use Spatie\Activitylog\LogOptions;
+// use Spatie\Activitylog\Traits\LogsActivity;
+
+abstract class BaseModel extends Model
 {
-    use BlameableTrait, HasFactory, HasHashId, HasHashIdRouting, LogsActivity, QueryCacheable, Searchable, SoftDeletes;
+    use BlameableTrait, HasFactory, HasHashId, HasHashIdRouting, QueryCacheable, Searchable, SoftDeletes;
 
     public $cacheFor = 600;
 
     protected static $flushCacheOnUpdate = true;
 
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-            ->logFillable()
-            ->dontSubmitEmptyLogs();
-    }
+    // TODO:
+    /**
+     * TODO:
+     * I need to figure out how to change description for this, we unable to use the auto way because of this
+     */
+    // protected static $logOnlyDirty = true;
+
+    // public function getActivitylogOptions(): LogOptions
+    // {
+    //     return LogOptions::defaults()
+    //         ->logFillable()
+    //         ->dontSubmitEmptyLogs();
+    // }
 }

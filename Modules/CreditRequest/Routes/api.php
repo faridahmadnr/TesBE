@@ -48,6 +48,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
             Route::delete('credit-requests/{creditRequest}/delete', 'forceDelete')
                 ->name('credit-request.delete')
                 ->withTrashed();
+            Route::post('credit-requests/{creditRequest}/confirm', 'confirm')
+                ->name('credit-request.confirm');
         });
         Route::apiResource('credit-requests', V1\CreditRequestController::class)
             ->parameters([

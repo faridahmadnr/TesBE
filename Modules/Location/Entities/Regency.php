@@ -27,7 +27,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read string $hash_id_raw
  * @property-read \Modules\Location\Entities\Province $province
  * @property-read \Modules\User\Entities\User|null $updater
- *
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|Regency newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Regency newQuery()
@@ -45,7 +44,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Regency whereUpdatedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Regency withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Regency withoutTrashed()
- *
+ * @mixin IdeHelperRegency
  * @mixin \Eloquent
  */
 class Regency extends BaseModel

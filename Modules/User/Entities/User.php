@@ -37,7 +37,6 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read int|null $roles_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
- *
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User permission($permissions, $without = false)
@@ -53,7 +52,6 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User withoutPermission($permissions)
  * @method static \Illuminate\Database\Eloquent\Builder|User withoutRole($roles, $guard = null)
- *
  * @property \Illuminate\Support\Carbon|null $password_changed_at
  * @property int $active
  * @property \Illuminate\Support\Carbon|null $last_login_at
@@ -61,7 +59,6 @@ use Spatie\Permission\Traits\HasRoles;
  * @property int $status
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Modules\User\Entities\Member|null $member
- *
  * @method static \Illuminate\Database\Eloquent\Builder|User onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|User whereActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereDeletedAt($value)
@@ -71,7 +68,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|User withoutTrashed()
- *
+ * @mixin IdeHelperUser
  * @mixin \Eloquent
  */
 class User extends Authenticatable implements MustVerifyEmail

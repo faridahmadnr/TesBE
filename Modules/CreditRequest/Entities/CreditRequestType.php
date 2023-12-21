@@ -24,7 +24,6 @@ use App\Models\BaseModel;
  * @property-read string|null $hash_id
  * @property-read string $hash_id_raw
  * @property-read \Modules\User\Entities\User|null $updater
- *
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|CreditRequestType newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CreditRequestType newQuery()
@@ -44,7 +43,7 @@ use App\Models\BaseModel;
  * @method static \Illuminate\Database\Eloquent\Builder|CreditRequestType withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|CreditRequestType withoutTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|CreditRequestType whereInterest($value)
- *
+ * @mixin IdeHelperCreditRequestType
  * @mixin \Eloquent
  */
 class CreditRequestType extends BaseModel

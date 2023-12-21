@@ -13,6 +13,7 @@ use Modules\BusinessType\Entities\BusinessType;
 use Modules\CreditRequest\Entities\CreditRequest;
 use Modules\CreditRequest\Entities\CreditRequestType;
 use Modules\CreditRequest\Enums\CreditRequestStatusEnum;
+use Modules\CreditRequest\Events\CreditRequestConfirmed;
 use Modules\Location\Entities\District;
 use Modules\Location\Entities\Regency;
 use Modules\Termin\Entities\Termin;
@@ -193,6 +194,31 @@ final class CreditRequestService extends BaseService
         return $data;
     }
 
+    public function confirm(CreditRequest $creditRequest): CreditRequest
+    {
+        if ($creditRequest->status !== CreditRequestStatusEnum::PENDING->value) {
+            throw new GeneralException(__('This credit request has already been confirmed.'));
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $creditRequest->update([
+                'status' => CreditRequestStatusEnum::CONFIRMED->value,
+            ]);
+        } catch (\Throwable $th) {
+            report($th);
+            DB::rollBack();
+            throw new GeneralException(__('There was a problem confirming this credit request. Please try again.'));
+        }
+
+        DB::commit();
+
+        event(new CreditRequestConfirmed($creditRequest));
+
+        return $creditRequest;
+    }
+
     protected function uploadImage(CreditRequest $creditRequest, UploadedFile $file): string
     {
         $filename = sha1($creditRequest->registration_number.$creditRequest->user_id)
@@ -227,7 +253,7 @@ final class CreditRequestService extends BaseService
     {
         return $this->model::create([
             'user_id' => auth()->user()->id,
-            'registration_number' => $this->getRegistrationNumber(),
+            'registration_number' => trim($this->getRegistrationNumber()),
             'business_type_id' => BusinessType::keyFromHashId($data['business_type_id']),
             'business_permit_id' => BusinessPermit::keyFromHashId($data['business_permit_id']),
             'business_tin' => $data['business_tin'] ?? null,

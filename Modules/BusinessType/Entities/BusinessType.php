@@ -21,7 +21,6 @@ use App\Models\BaseModel;
  * @property-read string|null $hash_id
  * @property-read string $hash_id_raw
  * @property-read \Modules\User\Entities\User|null $updater
- *
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|BusinessType newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|BusinessType newQuery()
@@ -38,7 +37,7 @@ use App\Models\BaseModel;
  * @method static \Illuminate\Database\Eloquent\Builder|BusinessType whereUpdatedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|BusinessType withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|BusinessType withoutTrashed()
- *
+ * @mixin IdeHelperBusinessType
  * @mixin \Eloquent
  */
 class BusinessType extends BaseModel
