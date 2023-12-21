@@ -142,6 +142,12 @@ abstract class BaseService
     protected array $allowedSorts = [];
 
     /**
+     * Array of field names that are allowed to be aggregated.
+     * Only applies when using the toQueryBuilder() method.
+     */
+    protected array $withAggregates = [];
+
+    /**
      * Get all the model records in the database.
      *
      * @return \Illuminate\Database\Eloquent\Collection
@@ -526,6 +532,13 @@ abstract class BaseService
         return $models;
     }
 
+    public function withAggregate(string $relation, string $column)
+    {
+        $this->withAggregates[] = compact('relation', 'column');
+
+        return $this;
+    }
+
     public function allowedFields(array $fields)
     {
         $this->allowedFields = $fields;
@@ -559,7 +572,7 @@ abstract class BaseService
             ->allowedFilters([...$filters, AllowedFilter::trashed()])
             ->allowedSorts([
                 ...$sorts,
-                AllowedSort::field('created_at', 'createdAt'),
+                AllowedSort::field('createdAt', 'created_at'),
             ])
             ->paginate(request()->query('pageSize') ?? 10)
             ->appends(request()->query());
@@ -649,6 +662,10 @@ abstract class BaseService
 
         foreach ($this->when as $whens) {
             $this->query->when($whens['condition'] ?? false, $whens['callback']);
+        }
+
+        foreach ($this->withAggregates as $aggregate) {
+            $this->query->withAggregate($aggregate['relation'], $aggregate['column']);
         }
 
         if (isset($this->skip)) {

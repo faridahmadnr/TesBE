@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Modules\News\Entities\News;
 use Modules\News\Entities\NewsCategory;
+use Spatie\QueryBuilder\AllowedSort;
 
 final class NewsService extends BaseService
 {
@@ -28,6 +29,10 @@ final class NewsService extends BaseService
             'status',
             'created_at',
         ])
+            ->allowedSorts([
+                'title',
+                AllowedSort::field('createdAt', 'created_at'),
+            ])
             ->toQueryBuilder();
 
         return $query;

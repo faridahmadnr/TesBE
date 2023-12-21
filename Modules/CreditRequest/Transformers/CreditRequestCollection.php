@@ -3,6 +3,7 @@
 namespace Modules\CreditRequest\Transformers;
 
 use App\Transformer\BaseTransformerCollection;
+use Modules\CreditRequest\Enums\CreditRequestStatusEnum;
 
 class CreditRequestCollection extends BaseTransformerCollection
 {
@@ -21,6 +22,7 @@ class CreditRequestCollection extends BaseTransformerCollection
             'creditRequestType' => $item->whenLoaded('creditRequestType', $item->creditRequestType->name),
             'createdAt' => $item->created_at,
             'user' => $item->whenLoaded('user', $item->user->name),
+            'status' => strtolower(CreditRequestStatusEnum::from($item->status)->name),
         ];
     }
 }

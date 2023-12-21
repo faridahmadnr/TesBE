@@ -47,6 +47,11 @@ class CreditRequestResource extends JsonResource
                 'name' => $this->termin->name,
             ]),
             'village' => $this->village,
+            'user' => $this->whenLoaded('user', [
+                'id' => $this->user->hashId,
+                'name' => $this->user->name,
+                'email' => $this->user->email,
+            ]),
         ];
     }
 }

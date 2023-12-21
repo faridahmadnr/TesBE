@@ -12,12 +12,12 @@ use Modules\BusinessPermit\Entities\BusinessPermit;
 use Modules\BusinessType\Entities\BusinessType;
 use Modules\CreditRequest\Entities\CreditRequest;
 use Modules\CreditRequest\Entities\CreditRequestType;
+use Modules\CreditRequest\Enums\CreditRequestStatusEnum;
 use Modules\Location\Entities\District;
 use Modules\Location\Entities\Regency;
 use Modules\Termin\Entities\Termin;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
-use Spatie\QueryBuilder\QueryBuilder;
 
 final class CreditRequestService extends BaseService
 {
@@ -28,28 +28,37 @@ final class CreditRequestService extends BaseService
 
     public function getAll()
     {
-        $query = $this->model::select([
-            '*',
-        ])->with([
+        $results = $this->with([
             'district',
             'user',
             'user.member',
             'creditRequestType',
             'businessType',
-        ]);
-        $results = QueryBuilder::for($query)
-            ->defaultSort('-created_at')
-            ->allowedFields(['name'])
-            ->allowedFilters([
-                'name',
-                AllowedFilter::trashed(),
-            ])
+        ])
             ->allowedSorts([
-                'name',
-                AllowedSort::field('created_at', 'createdAt'),
+                AllowedSort::field('user', 'user_name'),
+                AllowedSort::field('address', 'business_address'),
+                AllowedSort::field('amount', 'amount'),
+                AllowedSort::field('district', 'district_name'),
+                AllowedSort::field('type', 'business_type_name'),
+                AllowedSort::field('creditRequestType', 'credit_request_type_name'),
+                AllowedSort::callback('status', function ($query, $descending) {
+                    $direction = $descending ? 'DESC' : 'ASC';
+                    $query->orderBy('status', $direction);
+                }),
+                AllowedSort::field('createdAt', 'created_at'),
             ])
-            ->paginate(request()->query('pageSize') ?? 10)
-            ->appends(request()->query());
+            ->allowedFilters([
+                AllowedFilter::callback('status', function ($query, $value) {
+                    $status = CreditRequestStatusEnum::fromValue($value);
+                    $query->where('status', $status->value);
+                }),
+            ])
+            ->withAggregate('user', 'name')
+            ->withAggregate('district', 'name')
+            ->withAggregate('businessType', 'name')
+            ->withAggregate('creditRequestType', 'name')
+            ->toQueryBuilder();
 
         return $results;
     }
