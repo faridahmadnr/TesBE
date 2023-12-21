@@ -22,6 +22,7 @@ use App\Models\BaseModel;
  * @property-read string|null $hash_id
  * @property-read string|null $hash_id_raw
  * @property-read \Modules\User\Entities\User|null $updater
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|Termin newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Termin newQuery()
@@ -39,7 +40,7 @@ use App\Models\BaseModel;
  * @method static \Illuminate\Database\Eloquent\Builder|Termin whereValue($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Termin withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Termin withoutTrashed()
- * @mixin IdeHelperTermin
+ *
  * @mixin \Eloquent
  */
 class Termin extends BaseModel

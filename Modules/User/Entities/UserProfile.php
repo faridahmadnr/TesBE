@@ -22,6 +22,7 @@ use Modules\Bank\Entities\Bank;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Modules\User\Entities\User $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|UserProfile newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserProfile newQuery()
@@ -42,6 +43,7 @@ use Modules\Bank\Entities\Bank;
  * @method static \Illuminate\Database\Eloquent\Builder|UserProfile whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserProfile withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|UserProfile withoutTrashed()
+ *
  * @property-read \Modules\User\Entities\User|null $creator
  * @property-read \Modules\User\Entities\User|null $updater
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -50,8 +52,9 @@ use Modules\Bank\Entities\Bank;
  * @property-read Bank|null $bank
  * @property-read string|null $hash_id
  * @property-read string $hash_id_raw
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|UserProfile whereDeletedAt($value)
- * @mixin IdeHelperUserProfile
+ *
  * @mixin \Eloquent
  */
 class UserProfile extends BaseModel

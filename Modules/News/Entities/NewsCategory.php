@@ -24,6 +24,7 @@ use App\Models\BaseModel;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Modules\News\Entities\News> $news
  * @property-read int|null $news_count
  * @property-read \Modules\User\Entities\User|null $updater
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|NewsCategory newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|NewsCategory newQuery()
@@ -41,7 +42,7 @@ use App\Models\BaseModel;
  * @method static \Illuminate\Database\Eloquent\Builder|NewsCategory whereUpdatedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|NewsCategory withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|NewsCategory withoutTrashed()
- * @mixin IdeHelperNewsCategory
+ *
  * @mixin \Eloquent
  */
 class NewsCategory extends BaseModel

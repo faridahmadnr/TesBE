@@ -9,7 +9,6 @@ use Illuminate\Support\Str;
 /**
  * Modules\Bank\Entities\Bank
  *
- * @mixin IdeHelperBank
  * @property int $id
  * @property string $name
  * @property string|null $link
@@ -25,8 +24,9 @@ use Illuminate\Support\Str;
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Modules\User\Entities\User|null $creator
  * @property-read string|null $hash_id
- * @property-read \App\Models\?string $hash_id_raw
+ * @property-read string $hash_id_raw
  * @property-read \Modules\User\Entities\User|null $updater
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|Bank newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Bank newQuery()
@@ -48,6 +48,7 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|Bank whereUpdatedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Bank withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Bank withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class Bank extends BaseModel

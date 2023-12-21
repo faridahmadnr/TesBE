@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read string $hash_id_raw
  * @property-read \Modules\Location\Entities\Regency $regency
  * @property-read \Modules\User\Entities\User|null $updater
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|District newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|District newQuery()
@@ -41,7 +42,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|District whereUpdatedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|District withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|District withoutTrashed()
- * @mixin IdeHelperDistrict
+ *
  * @mixin \Eloquent
  */
 class District extends BaseModel

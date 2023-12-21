@@ -16,8 +16,8 @@ parameters:
         - Illuminate\Http\Resources\Json\JsonResource
         - Illuminate\Http\Resources\Json\ResourceCollection
 
-    scanFiles:
-        - _ide_helper_models.php
+#    scanFiles:
+#        - _ide_helper_models.php
 
 #    ignoreErrors:
 #        - '#PHPDoc tag @var#'

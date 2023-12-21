@@ -8,7 +8,6 @@ use Mews\Purifier\Casts\CleanHtml;
 /**
  * Modules\News\Entities\News
  *
- * @mixin IdeHelperNews
  * @property int $id
  * @property string $title
  * @property string $slug
@@ -26,8 +25,9 @@ use Mews\Purifier\Casts\CleanHtml;
  * @property-read int|null $categories_count
  * @property-read \Modules\User\Entities\User|null $creator
  * @property-read string|null $hash_id
- * @property-read \App\Models\?string $hash_id_raw
+ * @property-read string $hash_id_raw
  * @property-read \Modules\User\Entities\User|null $updater
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|News newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|News newQuery()
@@ -49,6 +49,7 @@ use Mews\Purifier\Casts\CleanHtml;
  * @method static \Illuminate\Database\Eloquent\Builder|News whereUpdatedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|News withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|News withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class News extends BaseModel

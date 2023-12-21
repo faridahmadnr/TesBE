@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * Modules\User\Entities\Member
  *
- * @mixin IdeHelperMember
  * @property int $id
  * @property int $user_id
  * @property mixed $identity_number
@@ -26,9 +25,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Modules\User\Entities\User|null $creator
  * @property-read string|null $hash_id
- * @property-read \App\Models\?string $hash_id_raw
+ * @property-read string $hash_id_raw
  * @property-read \Modules\User\Entities\User|null $updater
  * @property-read \Modules\User\Entities\User $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|Member newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Member newQuery()
@@ -52,6 +52,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Member whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Member withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Member withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class Member extends BaseModel
