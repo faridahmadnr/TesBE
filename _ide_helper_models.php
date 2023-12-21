@@ -18,7 +18,7 @@ namespace App\Models{
  * @property-read int|null $activities_count
  * @property-read \Modules\User\Entities\User|null $creator
  * @property-read string|null $hash_id
- * @property-read string $hash_id_raw
+ * @property-read \App\Models\?string $hash_id_raw
  * @property-read \Modules\User\Entities\User|null $updater
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel newModelQuery()
@@ -53,7 +53,7 @@ namespace Modules\Bank\Entities{
  * @property-read int|null $activities_count
  * @property-read \Modules\User\Entities\User|null $creator
  * @property-read string|null $hash_id
- * @property-read string $hash_id_raw
+ * @property-read \App\Models\?string $hash_id_raw
  * @property-read \Modules\User\Entities\User|null $updater
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|Bank newModelQuery()
@@ -187,18 +187,18 @@ namespace Modules\CreditRequest\Entities{
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
  * @property-read int|null $activities_count
- * @property-read Bank $bank
- * @property-read BusinessPermit $businessPermit
- * @property-read BusinessType $businessType
- * @property-read User|null $creator
+ * @property-read \Modules\Bank\Entities\Bank $bank
+ * @property-read \Modules\BusinessPermit\Entities\BusinessPermit $businessPermit
+ * @property-read \Modules\BusinessType\Entities\BusinessType $businessType
+ * @property-read \Modules\User\Entities\User|null $creator
  * @property-read \Modules\CreditRequest\Entities\CreditRequestType $creditRequestType
- * @property-read District $district
+ * @property-read \Modules\Location\Entities\District $district
  * @property-read string|null $hash_id
- * @property-read string $hash_id_raw
- * @property-read Regency $regency
- * @property-read Termin $termin
- * @property-read User|null $updater
- * @property-read User $user
+ * @property-read \App\Models\?string $hash_id_raw
+ * @property-read \Modules\Location\Entities\Regency $regency
+ * @property-read \Modules\Termin\Entities\Termin $termin
+ * @property-read \Modules\User\Entities\User|null $updater
+ * @property-read \Modules\User\Entities\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|CreditRequest newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CreditRequest newQuery()
@@ -230,7 +230,6 @@ namespace Modules\CreditRequest\Entities{
  * @method static \Illuminate\Database\Eloquent\Builder|CreditRequest whereVillage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CreditRequest withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|CreditRequest withoutTrashed()
- * @mixin \Eloquent
  */
 	class CreditRequest extends \Eloquent {}
 }
@@ -412,7 +411,7 @@ namespace Modules\News\Entities{
  * Modules\News\Entities\News
  *
  * @property int $id
- * @property array $title
+ * @property string $title
  * @property string $slug
  * @property array $content
  * @property string|null $summary
@@ -430,7 +429,7 @@ namespace Modules\News\Entities{
  * @property-read int|null $categories_count
  * @property-read \Modules\User\Entities\User|null $creator
  * @property-read string|null $hash_id
- * @property-read string $hash_id_raw
+ * @property-read \App\Models\?string $hash_id_raw
  * @property-read \Modules\User\Entities\User|null $updater
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|News newModelQuery()
@@ -610,7 +609,7 @@ namespace Modules\User\Entities{
  * @property-read int|null $activities_count
  * @property-read \Modules\User\Entities\User|null $creator
  * @property-read string|null $hash_id
- * @property-read string $hash_id_raw
+ * @property-read \App\Models\?string $hash_id_raw
  * @property-read \Modules\User\Entities\User|null $updater
  * @property-read \Modules\User\Entities\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
@@ -728,7 +727,7 @@ namespace Modules\User\Entities{
  * @method static \Illuminate\Database\Eloquent\Builder|User withoutTrashed()
  * @mixin \Eloquent
  */
-	class User extends \Eloquent {}
+	class User extends \Eloquent implements \Illuminate\Contracts\Auth\MustVerifyEmail {}
 }
 
 namespace Modules\User\Entities{
