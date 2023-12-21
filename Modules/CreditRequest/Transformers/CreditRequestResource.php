@@ -3,6 +3,7 @@
 namespace Modules\CreditRequest\Transformers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\CreditRequest\Enums\CreditRequestStatusEnum;
 
 class CreditRequestResource extends JsonResource
 {
@@ -52,6 +53,7 @@ class CreditRequestResource extends JsonResource
                 'name' => $this->user->name,
                 'email' => $this->user->email,
             ]),
+            'status' => strtolower(CreditRequestStatusEnum::from($this->status)->name),
         ];
     }
 }
