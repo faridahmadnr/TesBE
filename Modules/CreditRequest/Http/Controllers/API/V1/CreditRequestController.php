@@ -5,6 +5,7 @@ namespace Modules\CreditRequest\Http\Controllers\API\V1;
 use App\Http\Controllers\Controller as BaseController;
 use Illuminate\Http\JsonResponse;
 use Modules\CreditRequest\Entities\CreditRequest;
+use Modules\CreditRequest\Http\Requests\CreditRequestPendingRequest;
 use Modules\CreditRequest\Http\Requests\CreditRequestSimulationRequest;
 use Modules\CreditRequest\Http\Requests\StoreCreditRequestRequest;
 use Modules\CreditRequest\Http\Requests\UpdateCreditRequestRequest;
@@ -77,6 +78,45 @@ class CreditRequestController extends BaseController
     public function confirm(CreditRequest $creditRequest): JsonResponse
     {
         $creditRequest = $this->creditRequestService->confirm($creditRequest);
+
+        return $this->okResponse(new CreditRequestResource($creditRequest));
+    }
+
+    public function pending(
+        CreditRequestPendingRequest $request,
+        CreditRequest $creditRequest
+    ): JsonResponse {
+        $creditRequest = $this->creditRequestService
+            ->pending($creditRequest, $request->validated());
+
+        return $this->okResponse(new CreditRequestResource($creditRequest));
+    }
+
+    public function reject(
+        CreditRequestPendingRequest $request,
+        CreditRequest $creditRequest
+    ): JsonResponse {
+        $creditRequest = $this->creditRequestService
+            ->reject($creditRequest, $request->validated());
+
+        return $this->okResponse(new CreditRequestResource($creditRequest));
+    }
+
+    public function approve(
+        CreditRequestPendingRequest $request,
+        CreditRequest $creditRequest
+    ): JsonResponse {
+        $creditRequest = $this->creditRequestService
+            ->approved($creditRequest, $request->validated());
+
+        return $this->okResponse(new CreditRequestResource($creditRequest));
+    }
+
+    public function redirect(
+        CreditRequest $creditRequest
+    ): JsonResponse {
+        $creditRequest = $this->creditRequestService
+            ->redirected($creditRequest);
 
         return $this->okResponse(new CreditRequestResource($creditRequest));
     }

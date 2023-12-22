@@ -50,6 +50,14 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
                 ->withTrashed();
             Route::post('credit-requests/{creditRequest}/confirm', 'confirm')
                 ->name('credit-request.confirm');
+            Route::post('credit-requests/{creditRequest}/pending', 'pending')
+                ->name('credit-request.pending');
+            Route::post('credit-requests/{creditRequest}/reject', 'reject')
+                ->name('credit-request.reject');
+            Route::post('credit-requests/{creditRequest}/approve', 'approve')
+                ->name('credit-request.approve');
+            Route::post('credit-requests/{creditRequest}/redirect', 'redirect')
+                ->name('credit-request.redirect');
         });
         Route::apiResource('credit-requests', V1\CreditRequestController::class)
             ->parameters([

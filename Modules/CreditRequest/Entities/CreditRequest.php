@@ -128,6 +128,7 @@ final class CreditRequest extends BaseModel
         'termin_id',
         'bank_id',
         'status',
+        'remark',
 
         'reject_message',
         'pending_message',

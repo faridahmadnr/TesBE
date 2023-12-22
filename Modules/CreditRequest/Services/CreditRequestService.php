@@ -13,7 +13,11 @@ use Modules\BusinessType\Entities\BusinessType;
 use Modules\CreditRequest\Entities\CreditRequest;
 use Modules\CreditRequest\Entities\CreditRequestType;
 use Modules\CreditRequest\Enums\CreditRequestStatusEnum;
+use Modules\CreditRequest\Events\CreditRequestApproved;
 use Modules\CreditRequest\Events\CreditRequestConfirmed;
+use Modules\CreditRequest\Events\CreditRequestPending;
+use Modules\CreditRequest\Events\CreditRequestRedirected;
+use Modules\CreditRequest\Events\CreditRequestRejected;
 use Modules\Location\Entities\District;
 use Modules\Location\Entities\Regency;
 use Modules\Termin\Entities\Termin;
@@ -196,7 +200,7 @@ final class CreditRequestService extends BaseService
 
     public function confirm(CreditRequest $creditRequest): CreditRequest
     {
-        if ($creditRequest->status !== CreditRequestStatusEnum::PENDING->value) {
+        if ($creditRequest->status !== CreditRequestStatusEnum::DRAFT->value) {
             throw new GeneralException(__('This credit request has already been confirmed.'));
         }
 
@@ -215,6 +219,130 @@ final class CreditRequestService extends BaseService
         DB::commit();
 
         event(new CreditRequestConfirmed($creditRequest));
+
+        return $creditRequest;
+    }
+
+    public function pending(CreditRequest $creditRequest, array $data = []): CreditRequest
+    {
+        if ($creditRequest->status !== CreditRequestStatusEnum::CONFIRMED->value) {
+            throw new GeneralException(__('This credit request has not been confirmed yet.'));
+        }
+
+        if ($creditRequest->status === CreditRequestStatusEnum::PENDING->value) {
+            throw new GeneralException(__('This credit request has already been pending.'));
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $creditRequest->update([
+                'status' => CreditRequestStatusEnum::PENDING->value,
+                'remark' => $data['message'],
+            ]);
+        } catch (\Throwable $th) {
+            report($th);
+            DB::rollBack();
+            throw new GeneralException(__('There was a problem pending this credit request. Please try again.'));
+        }
+
+        DB::commit();
+
+        event(new CreditRequestPending($creditRequest));
+
+        return $creditRequest;
+    }
+
+    public function reject(CreditRequest $creditRequest, array $data = []): CreditRequest
+    {
+        if ($creditRequest->status !== CreditRequestStatusEnum::CONFIRMED->value) {
+            throw new GeneralException(__('This credit request has not been confirmed yet.'));
+        }
+
+        if ($creditRequest->status === CreditRequestStatusEnum::REJECTED->value) {
+            throw new GeneralException(__('This credit request has already been rejected.'));
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $creditRequest->update([
+                'status' => CreditRequestStatusEnum::REJECTED->value,
+                'remark' => $data['message'],
+            ]);
+        } catch (\Throwable $th) {
+            report($th);
+            DB::rollBack();
+            throw new GeneralException(__('There was a problem rejecting this credit request. Please try again.'));
+        }
+
+        DB::commit();
+
+        event(new CreditRequestRejected($creditRequest));
+
+        return $creditRequest;
+    }
+
+    public function approved(CreditRequest $creditRequest, array $data = []): CreditRequest
+    {
+        if ($creditRequest->status === CreditRequestStatusEnum::APPROVED->value) {
+            throw new GeneralException(__('This credit request has already been approved.'));
+        }
+
+        if ($creditRequest->status !== CreditRequestStatusEnum::CONFIRMED->value) {
+            throw new GeneralException(__('This credit request has not been confirmed yet.'));
+        }
+
+        if ($creditRequest->status === CreditRequestStatusEnum::REJECTED->value) {
+            throw new GeneralException(__('This credit request has already been rejected.'));
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $creditRequest->update([
+                'status' => CreditRequestStatusEnum::APPROVED->value,
+                'remark' => $data['message'],
+            ]);
+        } catch (\Throwable $th) {
+            report($th);
+            DB::rollBack();
+            throw new GeneralException(__('There was a problem approving this credit request. Please try again.'));
+        }
+
+        DB::commit();
+
+        event(new CreditRequestApproved($creditRequest));
+
+        return $creditRequest;
+    }
+
+    public function redirected(CreditRequest $creditRequest, array $data = []): CreditRequest
+    {
+        if ($creditRequest->status === CreditRequestStatusEnum::PROCESSED->value) {
+            throw new GeneralException(__('This credit request has already been processed.'));
+        }
+
+        if ($creditRequest->status !== CreditRequestStatusEnum::CONFIRMED->value) {
+            throw new GeneralException(__('This credit request has not been confirmed yet.'));
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $creditRequest->update([
+                'status' => CreditRequestStatusEnum::PROCESSED->value,
+                'remark' => $data['message'],
+            ]);
+        } catch (\Throwable $th) {
+            report($th);
+            DB::rollBack();
+            throw new GeneralException(__('There was a problem approving this credit request. Please try again.'));
+        }
+
+        DB::commit();
+
+        event(new CreditRequestRedirected($creditRequest));
 
         return $creditRequest;
     }

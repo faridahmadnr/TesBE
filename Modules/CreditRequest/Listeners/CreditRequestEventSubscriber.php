@@ -6,7 +6,11 @@ use Illuminate\Contracts\Events\ShouldHandleEventsAfterCommit;
 use Illuminate\Events\Dispatcher;
 use Mail;
 use Modules\CreditRequest\Emails\CreditRequestConfirmedMail;
+use Modules\CreditRequest\Events\CreditRequestApproved;
 use Modules\CreditRequest\Events\CreditRequestConfirmed;
+use Modules\CreditRequest\Events\CreditRequestPending;
+use Modules\CreditRequest\Events\CreditRequestRedirected;
+use Modules\CreditRequest\Events\CreditRequestRejected;
 
 class CreditRequestEventSubscriber implements ShouldHandleEventsAfterCommit
 {
@@ -45,10 +49,46 @@ class CreditRequestEventSubscriber implements ShouldHandleEventsAfterCommit
             ->queue(new CreditRequestConfirmedMail($event->creditRequest));
     }
 
+    public function onPending(CreditRequestConfirmed $event)
+    {
+        activity('creditRequest')
+            ->performedOn($event->creditRequest)
+            ->withProperties($event->creditRequest)
+            ->log('Pengajuan KUR ditunda oleh :causer.name dengan alasan :properties.remark');
+    }
+
+    public function onRejected(CreditRequestConfirmed $event)
+    {
+        activity('creditRequest')
+            ->performedOn($event->creditRequest)
+            ->withProperties($event->creditRequest)
+            ->log('Pengajuan KUR ditolak oleh :causer.name dengan alasan :properties.remark');
+    }
+
+    public function onApproved(CreditRequestConfirmed $event)
+    {
+        activity('creditRequest')
+            ->performedOn($event->creditRequest)
+            ->withProperties($event->creditRequest)
+            ->log('Pengajuan KUR disetujui oleh :causer.name dengan plafond yang diterima sebesar :properties.remark');
+    }
+
+    public function onRedirected(CreditRequestConfirmed $event)
+    {
+        activity('creditRequest')
+            ->performedOn($event->creditRequest)
+            ->withProperties($event->creditRequest)
+            ->log('Pengajuan KUR dialihkan oleh :causer.name');
+    }
+
     public function subscribe(Dispatcher $events): array
     {
         return [
             CreditRequestConfirmed::class => 'onConfirmed',
+            CreditRequestPending::class => 'onPending',
+            CreditRequestRejected::class => 'onRejected',
+            CreditRequestApproved::class => 'onApproved',
+            CreditRequestRedirected::class => 'onRedirected',
         ];
     }
 }
