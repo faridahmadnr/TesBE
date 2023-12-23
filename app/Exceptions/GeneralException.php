@@ -26,13 +26,6 @@ class GeneralException extends Exception
         parent::__construct($message, $code, $previous);
     }
 
-    /**
-     * Report the exception.
-     */
-    public function report()
-    {
-    }
-
     public function render($request)
     {
         if ($request->is('api/*')) {

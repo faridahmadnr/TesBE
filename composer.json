@@ -42,8 +42,8 @@
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.13",
         "fakerphp/faker": "^1.9.1",
-        "jedymatt/laravel-sail-env": "^1.1",
         "friendsofphp/php-cs-fixer": "^3.13",
+        "jedymatt/laravel-sail-env": "^1.1",
         "laravel/envoy": "^2.8",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
@@ -51,6 +51,7 @@
         "nunomaduro/collision": "^7.0",
         "nunomaduro/larastan": "^2.0",
         "pestphp/pest": "^2.0",
+        "pestphp/pest-plugin-faker": "^2.0",
         "pestphp/pest-plugin-laravel": "^2.0",
         "spatie/laravel-ignition": "^2.0"
     },

@@ -124,10 +124,10 @@ return [
     'helper_files' => [
         base_path().'/vendor/laravel/framework/src/Illuminate/Support/helpers.php',
         base_path().'/app/Helpers/Global/GeneralHelper.php',
-        base_path().'/app/Helpers/Global/HtmlHelper.php',
-        base_path().'/app/Helpers/Global/LocaleHelper.php',
-        base_path().'/app/Helpers/Global/SystemHelper.php',
-        base_path().'/app/Helpers/Global/TimezoneHelper.php',
+        // base_path().'/app/Helpers/Global/HtmlHelper.php',
+        // base_path().'/app/Helpers/Global/LocaleHelper.php',
+        // base_path().'/app/Helpers/Global/SystemHelper.php',
+        // base_path().'/app/Helpers/Global/TimezoneHelper.php',
     ],
 
     /*
