@@ -114,3 +114,7 @@ sail artisan module:make-resource NewsCategoryCollection --collection News && \
 sail artisan module:make-resource NewsCategoryResource News && \
 sail artisan module:make-policy NewsCategoryPolicy News && \
 sail artisan module:make-model NewsCategory News -m
+
+### TODO
+
+[] Create unit test
