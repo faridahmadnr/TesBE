@@ -55,6 +55,11 @@ enum PermissionsEnum: string
     case UPDATE_PROFILE = 'update-profile';
     case DELETE_USER = 'delete-user';
 
+    case CREATE_MEMBER = 'create-member';
+    case READ_MEMBER = 'read-member';
+    case UPDATE_MEMBER = 'update-member';
+    case DELETE_MEMBER = 'delete-member';
+
     /**
      * News Permissions
      */
@@ -136,6 +141,11 @@ enum PermissionsEnum: string
             self::UPDATE_USER => 'Update User',
             self::UPDATE_PROFILE => 'Update Profile',
             self::DELETE_USER => 'Delete User',
+
+            self::CREATE_MEMBER => 'Create Member',
+            self::READ_MEMBER => 'Read Member',
+            self::UPDATE_MEMBER => 'Update Member',
+            self::DELETE_MEMBER => 'Delete Member',
 
             self::CREATE_NEWS => 'Create News',
             self::READ_NEWS => 'Read News',

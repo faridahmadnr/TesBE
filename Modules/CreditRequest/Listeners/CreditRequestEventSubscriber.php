@@ -5,7 +5,11 @@ namespace Modules\CreditRequest\Listeners;
 use Illuminate\Contracts\Events\ShouldHandleEventsAfterCommit;
 use Illuminate\Events\Dispatcher;
 use Mail;
+use Modules\CreditRequest\Emails\CreditRequestApprovedMail;
 use Modules\CreditRequest\Emails\CreditRequestConfirmedMail;
+use Modules\CreditRequest\Emails\CreditRequestPendingMail;
+use Modules\CreditRequest\Emails\CreditRequestRedirectedMail;
+use Modules\CreditRequest\Emails\CreditRequestRejectedMail;
 use Modules\CreditRequest\Events\CreditRequestApproved;
 use Modules\CreditRequest\Events\CreditRequestConfirmed;
 use Modules\CreditRequest\Events\CreditRequestPending;
@@ -49,36 +53,48 @@ class CreditRequestEventSubscriber implements ShouldHandleEventsAfterCommit
             ->queue(new CreditRequestConfirmedMail($event->creditRequest));
     }
 
-    public function onPending(CreditRequestConfirmed $event)
+    public function onPending(CreditRequestPending $event)
     {
         activity('creditRequest')
             ->performedOn($event->creditRequest)
             ->withProperties($event->creditRequest)
             ->log('Pengajuan KUR ditunda oleh :causer.name dengan alasan :properties.remark');
+
+        Mail::to($event->creditRequest->user->email)
+            ->queue(new CreditRequestPendingMail($event->creditRequest));
     }
 
-    public function onRejected(CreditRequestConfirmed $event)
+    public function onRejected(CreditRequestRejected $event)
     {
         activity('creditRequest')
             ->performedOn($event->creditRequest)
             ->withProperties($event->creditRequest)
             ->log('Pengajuan KUR ditolak oleh :causer.name dengan alasan :properties.remark');
+
+        Mail::to($event->creditRequest->user->email)
+            ->queue(new CreditRequestRejectedMail($event->creditRequest));
     }
 
-    public function onApproved(CreditRequestConfirmed $event)
+    public function onApproved(CreditRequestApproved $event)
     {
         activity('creditRequest')
             ->performedOn($event->creditRequest)
             ->withProperties($event->creditRequest)
             ->log('Pengajuan KUR disetujui oleh :causer.name dengan plafond yang diterima sebesar :properties.remark');
+
+        Mail::to($event->creditRequest->user->email)
+            ->queue(new CreditRequestApprovedMail($event->creditRequest));
     }
 
-    public function onRedirected(CreditRequestConfirmed $event)
+    public function onRedirected(CreditRequestRedirected $event)
     {
         activity('creditRequest')
             ->performedOn($event->creditRequest)
             ->withProperties($event->creditRequest)
             ->log('Pengajuan KUR dialihkan oleh :causer.name');
+
+        Mail::to($event->creditRequest->user->email)
+            ->queue(new CreditRequestRedirectedMail($event->creditRequest));
     }
 
     public function subscribe(Dispatcher $events): array

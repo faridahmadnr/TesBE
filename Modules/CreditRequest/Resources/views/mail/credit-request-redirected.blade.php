@@ -1,11 +1,7 @@
 Yth. Bpk/Ibu {{$fullname}},
 <br>
 <br>
-Pengajuan anda dengan nomor {{ $registrationNumber }} telah dikonfirmasi oleh Bank
-penyalur KUR yang anda tuju, silahkan menunggu panggilan oleh pihak Bank.
-<br>
-<br>
-Terima Kasih.
+Pengajuan KUR dengan nomor Registrasi :  {{$registrationNumber}} sedang <b>DIPROSES</b>.
 <br>
 <br>
 Simpan nomor registrasi anda dengan baik dan cek status pengajuan pada https://kur.jogjaprov.go.id/

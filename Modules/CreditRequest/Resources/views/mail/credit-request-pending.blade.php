@@ -1,8 +1,7 @@
 Yth. Bpk/Ibu {{$fullname}},
 <br>
 <br>
-Pengajuan anda dengan nomor {{ $registrationNumber }} telah dikonfirmasi oleh Bank
-penyalur KUR yang anda tuju, silahkan menunggu panggilan oleh pihak Bank.
+Pengajuan KUR dengan nomor Registrasi :  {{$registrationNumber}} telah <b>DIPENDING</b>, dengan alasan {{ $remark }}.
 <br>
 <br>
 Terima Kasih.
