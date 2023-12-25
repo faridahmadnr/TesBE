@@ -7,4 +7,4 @@ Pengajuan KUR dengan nomor Registrasi :  {{$registrationNumber}} telah <b>DITOLA
 Data pengajuan anda adalah sebagai berikut :
 <br><br>
 
-@include('credit-request::mail.credit-request-data')
+@include('creditrequest::mail.credit-request-data')

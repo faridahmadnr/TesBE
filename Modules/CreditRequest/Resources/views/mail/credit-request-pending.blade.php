@@ -13,4 +13,4 @@ Simpan nomor registrasi anda dengan baik dan cek status pengajuan pada https://k
 Data pengajuan anda adalah sebagai berikut :
 <br><br>
 
-@include('credit-request::mail.credit-request-data')
+@include('creditrequest::mail.credit-request-data')

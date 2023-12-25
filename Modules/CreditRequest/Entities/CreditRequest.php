@@ -35,6 +35,7 @@ use Modules\User\Entities\User;
  * @property int $bank_id
  * @property int $amount
  * @property int $status
+ * @property string $remark
  * @property int|null $created_by
  * @property int|null $updated_by
  * @property int|null $deleted_by

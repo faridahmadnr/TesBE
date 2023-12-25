@@ -39,25 +39,24 @@ class CreditRequestRejectedMail extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            view: 'creditrequest::mail.credit-request-approved',
+            view: 'creditrequest::mail.credit-request-rejected',
             with: [
                 'fullname' => $this->creditRequest->user->name,
                 'registrationNumber' => $this->creditRequest->registration_number,
-                'gender' => '',
-                'phone' => '',
-                'email' => '',
-                'regencyName' => '',
-                'districtName' => '',
-                'village' => '',
-                'address' => '',
-                'businessName' => '',
-                'businessType' => '',
-                'businessPermit' => '',
-                'businessTin' => '',
-                'amount' => 'Rp'.number_format(0000, 0, ',', '.'),
-                'termin' => '',
-                'bankName' => '',
-                'remark' => '',
+                'gender' => $this->creditRequest->user->member->gender ?? '-',
+                'phone' => $this->creditRequest->user->member->phone ?? '-',
+                'email' => $this->creditRequest->user->email ?? '-',
+                'regencyName' => $this->creditRequest->regency->name ?? '-',
+                'districtName' => $this->creditRequest->district->name ?? '-',
+                'village' => $this->creditRequest->village ?? '-',
+                'address' => $this->creditRequest->business_address ?? '-',
+                'businessType' => $this->creditRequest->businessType->name ?? '-',
+                'businessPermit' => $this->creditRequest->businessPermit->name ?? '-',
+                'businessTin' => $this->creditRequest->business_tin ?? '-',
+                'amount' => 'Rp'.number_format($this->creditRequest->amount, 0, ',', '.'),
+                'termin' => $this->creditRequest->termin->name ?? '-',
+                'bankName' => $this->creditRequest->bank->name ?? '-',
+                'remark' => $this->creditRequest->remark ?? '-',
             ]
         );
     }
