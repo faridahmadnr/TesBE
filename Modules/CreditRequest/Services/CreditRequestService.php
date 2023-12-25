@@ -225,12 +225,12 @@ final class CreditRequestService extends BaseService
 
     public function pending(CreditRequest $creditRequest, array $data = []): CreditRequest
     {
-        if ($creditRequest->status !== CreditRequestStatusEnum::CONFIRMED->value) {
-            throw new GeneralException(__('This credit request has not been confirmed yet.'));
-        }
-
         if ($creditRequest->status === CreditRequestStatusEnum::PENDING->value) {
             throw new GeneralException(__('This credit request has already been pending.'));
+        }
+
+        if ($creditRequest->status === CreditRequestStatusEnum::DRAFT->value) {
+            throw new GeneralException(__('This credit request has not been confirmed yet.'));
         }
 
         DB::beginTransaction();
@@ -259,7 +259,11 @@ final class CreditRequestService extends BaseService
             throw new GeneralException(__('This credit request has already been rejected.'));
         }
 
-        if ($creditRequest->status !== CreditRequestStatusEnum::CONFIRMED->value) {
+        if ($creditRequest->status === CreditRequestStatusEnum::APPROVED->value) {
+            throw new GeneralException(__('This credit request has already been approved.'));
+        }
+
+        if ($creditRequest->status === CreditRequestStatusEnum::DRAFT->value) {
             throw new GeneralException(__('This credit request has not been confirmed yet.'));
         }
 
@@ -293,7 +297,7 @@ final class CreditRequestService extends BaseService
             throw new GeneralException(__('This credit request has already been rejected.'));
         }
 
-        if ($creditRequest->status !== CreditRequestStatusEnum::CONFIRMED->value) {
+        if ($creditRequest->status === CreditRequestStatusEnum::DRAFT->value) {
             throw new GeneralException(__('This credit request has not been confirmed yet.'));
         }
 
