@@ -20,7 +20,13 @@ class VerifySignature
         $signTimestamp = $request->header('X-Sign-Timestamp');
 
         if (! $this->isValidTimestamp($signTimestamp)) {
-            return response()->json(['error' => 'Invalid timestamp'], 401);
+            return response()->json([
+                'errors' => [
+                    'code' => 401,
+                    'message' => 'Invalid timestamp',
+                ],
+                'message' => 'Invalid timestamp',
+            ], 401);
         }
 
         $backendSign = $this->generateBackendSignature(
@@ -29,7 +35,13 @@ class VerifySignature
         );
         // Log::info("Frontend: $sign From backend: $backendSign");
         if ($sign !== $backendSign) {
-            return response()->json(['error' => 'Invalid signature'], 401);
+            return response()->json([
+                'errors' => [
+                    'code' => 401,
+                    'message' => 'Invalid signature',
+                ],
+                'message' => 'Invalid signature',
+            ], 401);
         }
 
         return $next($request);
@@ -50,7 +62,7 @@ class VerifySignature
             'url' => rawurlencode($request->url()),
             'method' => $request->method(),
             'requestId' => $request->header('X-Request-Id', ''),
-            'xsrfToken' => $request->header('X-Xsrf-Token', ''),
+            'xsrfToken' => md5($request->header('X-Xsrf-Token', '')),
             'timestamp' => $timestamp,
         ]));
         $string = $request->method().$request->url().$timestamp.$md5;
