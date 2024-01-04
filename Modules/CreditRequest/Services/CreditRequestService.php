@@ -21,6 +21,7 @@ use Modules\CreditRequest\Events\CreditRequestRejected;
 use Modules\Location\Entities\District;
 use Modules\Location\Entities\Regency;
 use Modules\Termin\Entities\Termin;
+use Modules\User\Entities\User;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 
@@ -33,6 +34,9 @@ final class CreditRequestService extends BaseService
 
     public function getAll()
     {
+        /** @var User $user */
+        $user = auth()->user();
+
         $results = $this->with([
             'district',
             'user',
@@ -40,6 +44,9 @@ final class CreditRequestService extends BaseService
             'creditRequestType',
             'businessType',
         ])
+            ->when($user->isMember(), function ($query) use ($user) {
+                $query->createdBy($user->id);
+            })
             ->allowedSorts([
                 AllowedSort::field('user', 'user_name'),
                 AllowedSort::field('address', 'business_address'),

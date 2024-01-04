@@ -12,7 +12,7 @@ class CreditRequestPolicy
 
     public function viewAny(User $user)
     {
-        return $user->can([
+        return $user->canAny([
             PermissionsEnum::READ_OWN_CREDIT_REQUEST->value,
             PermissionsEnum::READ_CREDIT_REQUEST->value,
         ]);
