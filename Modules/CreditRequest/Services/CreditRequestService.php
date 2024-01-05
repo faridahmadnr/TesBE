@@ -47,6 +47,10 @@ final class CreditRequestService extends BaseService
             ->when($user->isMember(), function ($query) use ($user) {
                 $query->createdBy($user->id);
             })
+            ->when($user->isAdminBank(), function ($query) use ($user) {
+                $user->loadMissing(['profile']);
+                $query->where('bank_id', $user->profile->bank_id);
+            })
             ->allowedSorts([
                 AllowedSort::field('user', 'user_name'),
                 AllowedSort::field('address', 'business_address'),
