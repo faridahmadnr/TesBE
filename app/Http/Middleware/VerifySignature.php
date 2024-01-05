@@ -17,12 +17,12 @@ class VerifySignature
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $isProduction = config('app.env') === 'production';
+        $isDebug = config('app.debug');
         $sign = $request->header('X-Sign');
         $signTimestamp = $request->header('X-Sign-Timestamp');
 
         if (! $this->isValidTimestamp($signTimestamp)) {
-            if (! $isProduction) {
+            if ($isDebug) {
                 throw new GeneralException(
                     message: 'Invalid timestamp',
                     code: 401
@@ -41,7 +41,7 @@ class VerifySignature
         );
         // Log::info("Frontend: $sign From backend: $backendSign");
         if ($sign !== $backendSign) {
-            if (! $isProduction) {
+            if ($isDebug) {
                 throw new GeneralException(
                     message: 'Invalid signature',
                     code: 401
