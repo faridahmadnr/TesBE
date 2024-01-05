@@ -17,8 +17,10 @@ class LogRoute
      */
     public function handle(Request $request, Closure $next): Response
     {
-        Log::info($request->getUri(), [
+        Log::info('{ip_address} {method} {uri}', [
+            'ip_address' => $request->ip(),
             'method' => $request->getMethod(),
+            'uri' => $request->fullUrl(),
             'payload' => $request->all(),
             'headers' => $request->headers->all(),
         ]);
@@ -26,17 +28,6 @@ class LogRoute
         $response = $next($request);
         $requestId = Str::uuid();
         $response->headers->set('X-Request-Id', $requestId);
-
-        activity('request')
-            ->withProperties([
-                'uri' => $request->getUri(),
-                'method' => $request->getMethod(),
-                'request_body' => $request->all(),
-                'response' => $response->getContent(),
-                // 'ip_address' => $request->ip(),
-            ])
-            ->event('route')
-            ->log($requestId);
 
         return $response;
     }
