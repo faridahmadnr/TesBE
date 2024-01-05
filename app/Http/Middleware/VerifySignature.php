@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Exceptions\GeneralException;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -16,17 +17,22 @@ class VerifySignature
      */
     public function handle(Request $request, Closure $next): Response
     {
+        $isProduction = config('app.env') === 'production';
         $sign = $request->header('X-Sign');
         $signTimestamp = $request->header('X-Sign-Timestamp');
 
         if (! $this->isValidTimestamp($signTimestamp)) {
-            return response()->json([
-                'errors' => [
-                    'code' => 401,
-                    'message' => 'Invalid timestamp',
-                ],
-                'message' => 'Invalid timestamp',
-            ], 401);
+            if (! $isProduction) {
+                throw new GeneralException(
+                    message: 'Invalid timestamp',
+                    code: 401
+                );
+            }
+
+            throw new GeneralException(
+                message: 'Forbidden',
+                code: 403
+            );
         }
 
         $backendSign = $this->generateBackendSignature(
@@ -35,13 +41,17 @@ class VerifySignature
         );
         // Log::info("Frontend: $sign From backend: $backendSign");
         if ($sign !== $backendSign) {
-            return response()->json([
-                'errors' => [
-                    'code' => 401,
-                    'message' => 'Invalid signature',
-                ],
-                'message' => 'Invalid signature',
-            ], 401);
+            if (! $isProduction) {
+                throw new GeneralException(
+                    message: 'Invalid signature',
+                    code: 401
+                );
+            }
+
+            throw new GeneralException(
+                message: 'Forbidden',
+                code: 403
+            );
         }
 
         return $next($request);
