@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\DB;
 use Modules\BusinessType\Entities\BusinessType;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
-use Spatie\QueryBuilder\QueryBuilder;
 
 final class BusinessTypeService extends BaseService
 {
@@ -19,17 +18,13 @@ final class BusinessTypeService extends BaseService
 
     public function getAll()
     {
-        $query = $this->model::select(['id', 'name', 'created_at']);
-        $businessTypes = QueryBuilder::for($query)
-            ->defaultSort('-created_at')
-            ->allowedFields(['name'])
+        $businessTypes = $this->select(['id', 'name', 'created_at'])
             ->allowedFilters(['name', AllowedFilter::trashed()])
             ->allowedSorts([
                 'name',
                 AllowedSort::field('created_at', 'createdAt'),
             ])
-            ->paginate(request()->query('pageSize') ?? 10)
-            ->appends(request()->query());
+            ->toQueryBuilder();
 
         return $businessTypes;
     }
