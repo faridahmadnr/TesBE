@@ -41,19 +41,23 @@ class RouteServiceProvider extends ServiceProvider
         Route::macro('apiRoutes', function (string $routeName, $controller) {
             Route::group(['prefix' => 'v1', 'as' => 'api.v1.'], function () use ($routeName, $controller) {
                 $namedRoute = str_replace('/', '.', $routeName);
+                $parameter = Str::singular(Str::camel($namedRoute));
 
                 Route::apiResource($routeName, $controller)
                     ->only(['index', 'show'])
                     ->names([
                         'index' => "{$namedRoute}.index",
                         'show' => "{$namedRoute}.show",
+                    ])
+                    ->parameters([
+                        $namedRoute => $parameter,
                     ]);
 
-                Route::group(['middleware' => 'auth:sanctum'], function () use ($routeName, $controller, $namedRoute) {
+                Route::group(['middleware' => 'auth:sanctum'], function () use ($routeName, $controller, $namedRoute, $parameter) {
 
                     Route::controller($controller)->group(function () use ($routeName, $namedRoute) {
                         $routePathname = Str::contains($routeName, '/') ? Str::after($routeName, '/') : $routeName;
-                        $routeSingular = Str::singular($routePathname);
+                        $routeSingular = Str::singular(Str::camel($routePathname));
 
                         Route::post("{$routeName}/{{$routeSingular}}/restore", 'restore')
                             ->name($namedRoute.'.restore')
@@ -68,6 +72,9 @@ class RouteServiceProvider extends ServiceProvider
                             'store' => "{$namedRoute}.store",
                             'update' => "{$namedRoute}.update",
                             'destroy' => "{$namedRoute}.destroy",
+                        ])
+                        ->parameters([
+                            $namedRoute => $parameter,
                         ]);
                 });
             });
