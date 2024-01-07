@@ -9,7 +9,7 @@ use Modules\BusinessType\Entities\BusinessType;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 
-final class BusinessTypeService extends BaseService
+class BusinessTypeService extends BaseService
 {
     public function __construct(BusinessType $model)
     {

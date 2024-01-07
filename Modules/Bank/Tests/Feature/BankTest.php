@@ -1,9 +1,5 @@
 <?php
 
-use Tests\FeatureTestCase;
-
-uses(FeatureTestCase::class);
-
 use function Pest\Laravel\{get};
 
 test('should get bank list', function () {

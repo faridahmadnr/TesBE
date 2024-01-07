@@ -4,6 +4,7 @@ namespace Tests\Feature\Middleware;
 
 use App\Http\Middleware\VerifySignature;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
@@ -46,6 +47,47 @@ class VerifySignatureMiddlewareTest extends TestCase
         $this->assertEquals(json_encode([
             'message' => 'Invalid signature',
             'code' => 400,
+        ]), $response->getContent());
+    }
+
+    public function test_it_should_show_forbidden_if_header_x_sign_timestamp_is_missing_on_production()
+    {
+        Config::set('app.debug', false);
+
+        $request = Request::create(route('api.v1.banks.index'));
+
+        $next = function () {
+            return response('This is a secret place');
+        };
+
+        $middleware = new VerifySignature();
+        $response = $middleware->handle($request, $next);
+
+        $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertEquals(json_encode([
+            'message' => 'Forbidden',
+            'code' => 403,
+        ]), $response->getContent());
+    }
+
+    public function test_it_should_show_forbidden_if_header_x_sign_is_missing_on_production()
+    {
+        Config::set('app.debug', false);
+
+        $request = Request::create(route('api.v1.banks.index'));
+        $request->headers->set('X-Sign-Timestamp', (string) time());
+
+        $next = function () {
+            return response('This is a secret place');
+        };
+
+        $middleware = new VerifySignature();
+        $response = $middleware->handle($request, $next);
+
+        $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertEquals(json_encode([
+            'message' => 'Forbidden',
+            'code' => 403,
         ]), $response->getContent());
     }
 

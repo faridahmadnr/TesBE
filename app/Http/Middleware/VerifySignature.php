@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Exceptions\GeneralException;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -23,16 +22,16 @@ class VerifySignature
 
         if (! $this->isValidTimestamp($signTimestamp)) {
             if ($isDebug) {
-                throw new GeneralException(
-                    message: 'Invalid timestamp',
-                    code: 401
-                );
+                return response()->json([
+                    'message' => 'Invalid timestamp',
+                    'code' => 400,
+                ], 400);
             }
 
-            throw new GeneralException(
-                message: 'Forbidden',
-                code: 403
-            );
+            return response()->json([
+                'message' => 'Forbidden',
+                'code' => 403,
+            ], 403);
         }
 
         $backendSign = $this->generateBackendSignature(
@@ -42,22 +41,22 @@ class VerifySignature
         // Log::info("Frontend: $sign From backend: $backendSign");
         if ($sign !== $backendSign) {
             if ($isDebug) {
-                throw new GeneralException(
-                    message: 'Invalid signature',
-                    code: 401
-                );
+                return response()->json([
+                    'message' => 'Invalid signature',
+                    'code' => 400,
+                ], 400);
             }
 
-            throw new GeneralException(
-                message: 'Forbidden',
-                code: 403
-            );
+            return response()->json([
+                'message' => 'Forbidden',
+                'code' => 403,
+            ], 403);
         }
 
         return $next($request);
     }
 
-    private function isValidTimestamp($timestamp)
+    public function isValidTimestamp($timestamp)
     {
         if ($timestamp && (time() - $timestamp <= 5)) {
             return true;
@@ -66,7 +65,7 @@ class VerifySignature
         return false;
     }
 
-    private function generateBackendSignature(Request $request, $timestamp)
+    public function generateBackendSignature(Request $request, $timestamp)
     {
         $md5 = md5(json_encode([
             'url' => rawurlencode($request->url()),

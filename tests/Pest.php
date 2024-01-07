@@ -1,7 +1,11 @@
 <?php
 
+use App\Enums\RolesEnum;
+use Modules\User\Entities\User;
 use Tests\FeatureTestCase;
 use Tests\TestCase;
+
+use function Pest\Laravel\actingAs;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,8 +18,11 @@ use Tests\TestCase;
 |
 */
 
-uses(FeatureTestCase::class)->in('Feature');
-uses(TestCase::class)->in('Unit');
+$modules = glob(dirname(__DIR__).'/Modules/*/Tests/Feature', GLOB_ONLYDIR);
+$modulesUnits = glob(dirname(__DIR__).'/Modules/*/Tests/Unit', GLOB_ONLYDIR);
+
+uses(FeatureTestCase::class)->in('Feature', ...$modules);
+uses(TestCase::class)->in('Unit', ...$modulesUnits);
 
 /*
 |--------------------------------------------------------------------------
@@ -41,4 +48,24 @@ uses(TestCase::class)->in('Unit');
 
 function something()
 {
+}
+
+function loginAsAdmin()
+{
+    $user = User::first();
+    actingAs($user);
+}
+
+function loginAsMember()
+{
+    $user = User::create([
+        'name' => 'Member',
+        'email' => 'member@member.com',
+        'password' => 'password',
+        'role' => 'member',
+    ]);
+    $user->profile()->create(['phone' => '081234567890']);
+    $user->syncRoles([RolesEnum::MEMBER]);
+
+    actingAs($user);
 }
