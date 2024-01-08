@@ -45,13 +45,13 @@ jobs:
       - name: Static analysis via PHPStan
         run: vendor/bin/phpstan analyze --memory-limit 4G
       - name: Execute tests (Unit and Feature tests) via PHPUnit
-        run: vendor/bin/pest --parallel --coverage-cobertura coverage.xml
-      - name: Report test coverage to DeepSource
-        uses: deepsourcelabs/test-coverage-action@master
-        with:
-          key: php
-          coverage-file: coverage.xml
-          dsn: ${{ secrets.DEEPSOURCE_DSN }}
+        run: vendor/bin/pest --parallel
+      # - name: Report test coverage to DeepSource
+      #   uses: deepsourcelabs/test-coverage-action@master
+      #   with:
+      #     key: php
+      #     coverage-file: coverage.xml
+      #     dsn: ${{ secrets.DEEPSOURCE_DSN }}
 
   deploy-staging:
     name: Deploy Project to Staging Server
