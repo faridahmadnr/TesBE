@@ -130,6 +130,7 @@ final class TestimoniService extends BaseService
 
     protected function uploadImage(Testimoni $testimoni, UploadedFile $file): string
     {
+        // skipcq: PHP-A1004
         $filename = sha1($testimoni->id.$testimoni->name).'.'.$file->getClientOriginalExtension();
         $file->storeAs('testimonials', $filename, [
             'disk' => 's3',

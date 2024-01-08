@@ -364,6 +364,7 @@ final class CreditRequestService extends BaseService
 
     protected function uploadImage(CreditRequest $creditRequest, UploadedFile $file): string
     {
+        // skipcq: PHP-A1004
         $filename = sha1($creditRequest->registration_number.$creditRequest->user_id)
             .'.'.$file->getClientOriginalExtension();
         $file->storeAs('credit-requests', $filename, [

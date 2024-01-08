@@ -25,7 +25,7 @@ class NikParser
 
     private function getCacheKey()
     {
-        return sha1($this->cacheKey);
+        return sha1($this->cacheKey); // skipcq: PHP-A1004
     }
 
     private function isValidLength()

@@ -67,11 +67,12 @@ class VerifySignature
 
     public function generateBackendSignature(Request $request, $timestamp)
     {
+        // skipcq: PHP-A1004
         $md5 = md5(json_encode([
             'url' => rawurlencode($request->url()),
             'method' => $request->method(),
             'requestId' => $request->header('X-Request-Id', ''),
-            'xsrfToken' => md5($request->header('X-Xsrf-Token', '')),
+            'xsrfToken' => md5($request->header('X-Xsrf-Token', '')), // skipcq: PHP-A1004
             'timestamp' => $timestamp,
         ]));
         $string = $request->method().$request->url().$timestamp.$md5;

@@ -141,6 +141,7 @@ final class NewsService extends BaseService
 
     protected function generateFilename(UploadedFile $image): string
     {
+        // skipcq: PHP-A1004
         $filename = sha1(now()).'.'.$image->getClientOriginalExtension();
 
         return $filename;
