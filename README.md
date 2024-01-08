@@ -1,5 +1,7 @@
 # KUR Jogja
 
+[![DeepSource](https://app.deepsource.com/gh/agungkes/kur-jogja-backend.svg/?label=active+issues&show_trend=true&token=4lskwfhwPmXmShTJ4-Kf5aAv)](https://app.deepsource.com/gh/agungkes/kur-jogja-backend/)
+
 ## Local Development
 
 This project uses
