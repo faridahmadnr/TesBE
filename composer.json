@@ -109,7 +109,7 @@
         ],
         "test": "./vendor/bin/pest --coverage-html coverage",
         "test-coverage": "vendor/bin/pest --parallel --coverage-html coverage",
-        "format": "vendor/bin/php-cs-fixer fix --allow-risky=yes -q -n",
+        "format": "vendor/bin/pint",
         "lint": "./vendor/bin/phpstan analyse --memory-limit=2G"
     },
     "extra": {

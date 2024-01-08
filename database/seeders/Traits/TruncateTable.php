@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\DB;
 trait TruncateTable
 {
     /**
-     * @param $table
      * @return bool
      */
     protected function truncate($table)
@@ -20,7 +19,7 @@ trait TruncateTable
                 return DB::table($table)->truncate();
 
             case 'pgsql':
-                return  DB::statement('TRUNCATE TABLE '.$table.' RESTART IDENTITY CASCADE');
+                return DB::statement('TRUNCATE TABLE '.$table.' RESTART IDENTITY CASCADE');
 
             case 'sqlite': case 'sqlsrv':
                 return DB::statement('DELETE FROM '.$table);
@@ -29,9 +28,6 @@ trait TruncateTable
         return false;
     }
 
-    /**
-     * @param  array  $tables
-     */
     protected function truncateMultiple(array $tables)
     {
         foreach ($tables as $table) {

@@ -228,7 +228,7 @@ abstract class BaseService
      * @param  callable|null  $callback An optional callback function to be executed after each chunk is retrieved.
      * @return bool The resulting models.
      */
-    public function chunk(int $chunkCount, callable $callback = null)
+    public function chunk(int $chunkCount, ?callable $callback = null)
     {
         $this->newQuery()->eagerLoad()->setClauses()->setScopes();
 
