@@ -18,6 +18,3 @@ name = "php"
 
   [analyzers.meta]
   bootstrap_files = ["vendor/autoload.php"]
-
-[[transformers]]
-name = "php-cs-fixer"
