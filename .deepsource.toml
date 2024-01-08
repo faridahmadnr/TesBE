@@ -18,3 +18,7 @@ name = "php"
 
   [analyzers.meta]
   bootstrap_files = ["vendor/autoload.php"]
+
+[[analyzers]]
+name = "test-coverage"
+enabled = true
