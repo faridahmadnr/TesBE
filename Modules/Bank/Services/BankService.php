@@ -150,7 +150,6 @@ final class BankService extends BaseService
 
     protected function uploadLogo(Bank $bank, UploadedFile $file): string
     {
-        // @phpstan-ignore-next-line
         $filename = \Str::slug($bank->name).'.'.$file->getClientOriginalExtension();
         $file->storeAs('banks', $filename, [
             'disk' => 's3',
