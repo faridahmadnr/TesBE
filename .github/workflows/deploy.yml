@@ -15,9 +15,44 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: shivammathur/setup-php
+        with:
+          php-version: "8.2"
+      - uses: actions/checkout@v3
+      - name: Validate composer.json and composer.lock
+        run: composer validate --strict
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+      - name: Install Dependencies
+        run: composer install -q --ignore-platform-reqs --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      - name: Generate key
+        run: php artisan key:generate
+      - name: Directory Permissions
+        run: chmod -R 777 storage bootstrap/cache
+      - name: Static analysis via PHPStan
+        run: vendor/bin/phpstan analyze --memory-limit 4G
+      - name: Execute tests (Unit and Feature tests) via PHPUnit
+        run: vendor/bin/pest --parallel --coverage-clover coverage.xml
+      # - uses: codecov/codecov-action@v2.1.0
+      #   with:
+      #     file: coverage.xml
+
   deploy-staging:
     name: Deploy Project to Staging Server
     runs-on: ubuntu-latest
+    needs: unit-tests
     if: github.ref == 'refs/heads/dev'
     steps:
       - uses: actions/checkout@v3
@@ -57,6 +92,7 @@ jobs:
   deploy-production:
     name: Deploy Project to Production Server
     runs-on: ubuntu-latest
+    needs: unit-tests
     if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v3
