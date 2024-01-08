@@ -10,7 +10,10 @@ exclude_patterns = [
   "database/**",
   "stubs/**",
   "storage/**",
-  "public/**"
+  "public/**",
+  "_ide_helper.php",
+  ".phpstorm.meta.php",
+  "deploy.php"
 ]
 
 [[analyzers]]
