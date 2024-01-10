@@ -52,6 +52,12 @@ class CreditRequestResource extends JsonResource
                 'id' => $this->user->hashId,
                 'name' => $this->user->name,
                 'email' => $this->user->email,
+                'phone_1' => $this->user->member->phone,
+                'phone_2' => $this->user->member->second_phone,
+                'identityNumber' => $this->user->member->identity_number,
+                'gender' => $this->user->member->gender,
+                'address' => $this->user->member->address,
+                'dob' => $this->user->member->dob,
             ]),
             'status' => strtolower(CreditRequestStatusEnum::from($this->status)->name),
         ];
