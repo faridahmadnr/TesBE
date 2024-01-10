@@ -61,7 +61,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         });
         Route::apiResource('credit-requests', V1\CreditRequestController::class)
             ->parameters([
-                'credit-request' => 'creditRequest',
+                'credit-requests' => 'creditRequest',
             ]);
     });
 });
