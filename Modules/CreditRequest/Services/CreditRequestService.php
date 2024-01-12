@@ -81,6 +81,23 @@ final class CreditRequestService extends BaseService
 
     public function store(array $data = []): CreditRequest
     {
+        /** @var CreditRequest $previousCreditRequest */
+        $previousCreditRequest = $this->select(['id', 'created_at'])
+            ->limit(1)
+            ->orderBy('created_at', 'desc');
+
+        if ($previousCreditRequest) {
+            $previousCreditRequestDate = carbon($previousCreditRequest->first()->created_at);
+
+            if (now()->diffInDays($previousCreditRequestDate) <= 30) {
+                throw new GeneralException(__('There was a problem registering this credit request. Please try again.'));
+            }
+
+            if (now()->diffInYears($previousCreditRequestDate) < 1) {
+                throw new GeneralException(__('There was a problem registering this credit request. Please try again.'));
+            }
+        }
+
         DB::beginTransaction();
 
         try {
