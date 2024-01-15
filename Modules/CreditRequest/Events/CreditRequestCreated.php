@@ -1,12 +1,13 @@
 <?php
 
-namespace $NAMESPACE$;
+namespace Modules\CreditRequest\Events;
 
 use Illuminate\Contracts\Events\ShouldDispatchAfterCommit;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Modules\CreditRequest\Entities\CreditRequest;
 
-class $CLASS$ implements ShouldDispatchAfterCommit
+class CreditRequestCreated implements ShouldDispatchAfterCommit
 {
     use Dispatchable, SerializesModels;
 
@@ -15,9 +16,9 @@ class $CLASS$ implements ShouldDispatchAfterCommit
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(
+        public CreditRequest $creditRequest)
     {
-        //
     }
 
     /**

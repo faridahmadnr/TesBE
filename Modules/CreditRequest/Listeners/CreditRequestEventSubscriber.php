@@ -12,13 +12,18 @@ use Modules\CreditRequest\Emails\CreditRequestRedirectedMail;
 use Modules\CreditRequest\Emails\CreditRequestRejectedMail;
 use Modules\CreditRequest\Events\CreditRequestApproved;
 use Modules\CreditRequest\Events\CreditRequestConfirmed;
+use Modules\CreditRequest\Events\CreditRequestCreated;
+use Modules\CreditRequest\Events\CreditRequestDeleted;
+use Modules\CreditRequest\Events\CreditRequestDestroyed;
 use Modules\CreditRequest\Events\CreditRequestPending;
 use Modules\CreditRequest\Events\CreditRequestRedirected;
 use Modules\CreditRequest\Events\CreditRequestRejected;
+use Modules\CreditRequest\Events\CreditRequestRestored;
+use Modules\CreditRequest\Events\CreditRequestUpdated;
 
 class CreditRequestEventSubscriber implements ShouldHandleEventsAfterCommit
 {
-    public function onCreated(CreditRequestConfirmed $event)
+    public function onCreated(CreditRequestCreated $event)
     {
         activity('creditRequest')
             ->performedOn($event->creditRequest)
@@ -26,7 +31,7 @@ class CreditRequestEventSubscriber implements ShouldHandleEventsAfterCommit
             ->log('Pengajuan KUR telah dibuat oleh :causer.name.');
     }
 
-    public function onUpdated(CreditRequestConfirmed $event)
+    public function onUpdated(CreditRequestUpdated $event)
     {
         activity('creditRequest')
             ->performedOn($event->creditRequest)
@@ -34,12 +39,28 @@ class CreditRequestEventSubscriber implements ShouldHandleEventsAfterCommit
             ->log('Pengajuan KUR telah diperbarui oleh :causer.name.');
     }
 
-    public function onDeleted(CreditRequestConfirmed $event)
+    public function onDeleted(CreditRequestDeleted $event)
     {
         activity('creditRequest')
             ->performedOn($event->creditRequest)
             ->withProperties($event->creditRequest)
             ->log('Pengajuan KUR telah dihapus oleh :causer.name.');
+    }
+
+    public function onDestroyed(CreditRequestDestroyed $event)
+    {
+        activity('creditRequest')
+            ->performedOn($event->creditRequest)
+            ->withProperties($event->creditRequest)
+            ->log('Pengajuan KUR telah dihapus oleh permanen :causer.name.');
+    }
+
+    public function onRestored(CreditRequestRestored $event)
+    {
+        activity('creditRequest')
+            ->performedOn($event->creditRequest)
+            ->withProperties($event->creditRequest)
+            ->log('Pengajuan KUR telah dikembalikan oleh :causer.name.');
     }
 
     public function onConfirmed(CreditRequestConfirmed $event)
@@ -105,6 +126,11 @@ class CreditRequestEventSubscriber implements ShouldHandleEventsAfterCommit
             CreditRequestRejected::class => 'onRejected',
             CreditRequestApproved::class => 'onApproved',
             CreditRequestRedirected::class => 'onRedirected',
+            CreditRequestCreated::class => 'onCreated',
+            CreditRequestUpdated::class => 'onUpdated',
+            CreditRequestDeleted::class => 'onDeleted',
+            CreditRequestDestroyed::class => 'onDestroyed',
+            CreditRequestRestored::class => 'onRestored',
         ];
     }
 }

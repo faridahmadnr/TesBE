@@ -58,6 +58,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
                 ->name('credit-request.approve');
             Route::post('credit-requests/{creditRequest}/redirect', 'redirect')
                 ->name('credit-request.redirect');
+            Route::get('credit-requests/{creditRequest}/histories', 'history')
+                ->name('credit-request.history');
         });
         Route::apiResource('credit-requests', V1\CreditRequestController::class)
             ->parameters([

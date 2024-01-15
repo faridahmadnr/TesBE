@@ -15,9 +15,14 @@ use Modules\CreditRequest\Entities\CreditRequestType;
 use Modules\CreditRequest\Enums\CreditRequestStatusEnum;
 use Modules\CreditRequest\Events\CreditRequestApproved;
 use Modules\CreditRequest\Events\CreditRequestConfirmed;
+use Modules\CreditRequest\Events\CreditRequestCreated;
+use Modules\CreditRequest\Events\CreditRequestDeleted;
+use Modules\CreditRequest\Events\CreditRequestDestroyed;
 use Modules\CreditRequest\Events\CreditRequestPending;
 use Modules\CreditRequest\Events\CreditRequestRedirected;
 use Modules\CreditRequest\Events\CreditRequestRejected;
+use Modules\CreditRequest\Events\CreditRequestRestored;
+use Modules\CreditRequest\Events\CreditRequestUpdated;
 use Modules\Location\Entities\District;
 use Modules\Location\Entities\Regency;
 use Modules\Termin\Entities\Termin;
@@ -118,7 +123,7 @@ final class CreditRequestService extends BaseService
             throw new GeneralException(__('There was a problem registering this credit request. Please try again.'));
         }
 
-        // event(new CreditRequestCreated($creditRequest));
+        event(new CreditRequestCreated($creditRequest));
         DB::commit();
 
         return $creditRequest;
@@ -147,7 +152,7 @@ final class CreditRequestService extends BaseService
             throw new GeneralException(__('There was a problem updating this credit request. Please try again.'));
         }
 
-        // event(new CreditRequestUpdated($creditRequest));
+        event(new CreditRequestUpdated($creditRequest));
         DB::commit();
 
         return $creditRequest;
@@ -156,7 +161,7 @@ final class CreditRequestService extends BaseService
     public function delete(CreditRequest $creditRequest): CreditRequest
     {
         if ($this->deleteById($creditRequest->id)) {
-            // event(new CreditRequestDeleted($creditRequest));
+            event(new CreditRequestDeleted($creditRequest));
 
             return $creditRequest;
         }
@@ -167,7 +172,7 @@ final class CreditRequestService extends BaseService
     public function restore(CreditRequest $creditRequest): CreditRequest
     {
         if ($creditRequest->restore()) {
-            // event(new CreditRequestRestored($creditRequest));
+            event(new CreditRequestRestored($creditRequest));
 
             return $creditRequest;
         }
@@ -180,7 +185,7 @@ final class CreditRequestService extends BaseService
         if ($creditRequest->forceDelete()) {
 
             $this->deleteImage($creditRequest);
-            // event(new CreditRequestDestroyed($creditRequest));
+            event(new CreditRequestDestroyed($creditRequest));
 
             return true;
         }

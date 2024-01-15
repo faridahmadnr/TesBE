@@ -10,13 +10,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
 use Rennokki\QueryCache\Traits\QueryCacheable;
 use RichanFongdasen\EloquentBlameable\BlameableTrait;
+use Spatie\Activitylog\Traits\CausesActivity;
 
 // use Spatie\Activitylog\LogOptions;
 // use Spatie\Activitylog\Traits\LogsActivity;
 
 abstract class BaseModel extends Model
 {
-    use BlameableTrait, HasFactory, HasHashId, HasHashIdRouting, QueryCacheable, Searchable, SoftDeletes;
+    use BlameableTrait, CausesActivity, HasFactory, HasHashId, HasHashIdRouting, QueryCacheable, Searchable, SoftDeletes;
 
     public $cacheFor = 600;
 

@@ -122,4 +122,11 @@ class CreditRequestController extends BaseController
 
         return $this->okResponse(new CreditRequestResource($creditRequest));
     }
+
+    public function history(CreditRequest $creditRequest): JsonResponse
+    {
+        $creditRequest->loadMissing(['user', 'user.member']);
+
+        return $this->okResponse(new CreditRequestResource($creditRequest));
+    }
 }
