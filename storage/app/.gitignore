@@ -3,3 +3,5 @@
 !.gitignore
 !data/
 !data/wilayah.json
+!data/backup
+!data/backup/*
