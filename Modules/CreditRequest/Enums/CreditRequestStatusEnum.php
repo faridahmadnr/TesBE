@@ -38,8 +38,20 @@ enum CreditRequestStatusEnum: int
                 return self::REJECTED;
             case 'processed':
                 return self::REJECTED;
-            default:
+            case 'diajukan':
+                return self::DRAFT;
+            case 'diproses':
+                return self::PROCESSED;
+            case 'ditolak':
+                return self::REJECTED;
+            case 'dipending':
                 return self::PENDING;
+            case 'disetujui':
+                return self::APPROVED;
+            case 'dikonfirmasi':
+                return self::CONFIRMED;
+            default:
+                return self::DRAFT;
         }
     }
 }
