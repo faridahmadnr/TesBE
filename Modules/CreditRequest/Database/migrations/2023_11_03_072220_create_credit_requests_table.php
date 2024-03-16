@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->char('registration_number', 12);
             $table->foreignId('user_id')
+                ->nullable()
                 ->index()
                 ->constrained('users')
                 ->nullOnDelete()

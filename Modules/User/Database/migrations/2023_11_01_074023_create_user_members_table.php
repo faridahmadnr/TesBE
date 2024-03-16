@@ -20,9 +20,9 @@ return new class extends Migration
                 ->constrained('users')
                 ->cascadeOnDelete();
             $table->text('identity_number');
-            $table->string('phone', 20)->nullable();
-            $table->string('second_phone', 20)->nullable();
-            $table->string('address')->nullable();
+            $table->text('phone')->nullable();
+            $table->text('second_phone')->nullable();
+            $table->text('address')->nullable();
             $table->string('gender', 6);
             $table->date('dob');
             $table->string('photo')->nullable();
