@@ -11,9 +11,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $id
  * @property int $user_id
  * @property mixed $identity_number
- * @property string|null $phone
- * @property string|null $second_phone
- * @property string|null $address
+ * @property mixed $phone
+ * @property mixed $second_phone
+ * @property mixed $address
  * @property string $gender
  * @property \Illuminate\Support\Carbon $dob
  * @property string|null $photo
@@ -69,6 +69,9 @@ class Member extends BaseModel
 
     protected $casts = [
         'identity_number' => 'encrypted',
+        'phone' => 'encrypted',
+        'address' => 'encrypted',
+        'second_phone' => 'encrypted',
         'dob' => 'date',
     ];
 
