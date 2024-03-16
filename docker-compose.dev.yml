@@ -133,6 +133,13 @@ services:
         - "http://localhost:9000/minio/health/live"
       retries: 3
       timeout: 5s
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "${ADMINER_PORT:-4001}:8080"
+    networks:
+      - sail
   # selenium:
   #   image: seleniarm/standalone-chromium
   #   extra_hosts:
