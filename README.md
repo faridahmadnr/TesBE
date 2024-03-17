@@ -26,16 +26,24 @@ You can also use the `-d` option, to start the server in
 the background if you do not care about the logs or still want to use your
 terminal for other things.
 
-### Build frontend assets
-
-```shell
-./vendor/bin/sail npm watch
-```
-
 ### Run Tests
 
 ```shell
 ./vendor/bin/sail test
+```
+
+### Run migration and seeder
+
+```shell
+./vendor/bin/sail php artisan module:migrate-fresh --seed
+```
+
+### Run data import from the old database
+
+#### IMPORTANT WARNING: Before running this command make sure you have run migration and seeder first.
+
+```shell
+./vendor/bin/sail php artisan app:migrate-data
 ```
 
 ### Blameable
