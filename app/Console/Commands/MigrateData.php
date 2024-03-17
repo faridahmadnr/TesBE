@@ -280,7 +280,7 @@ class MigrateData extends Command
                     'bank_id' => $bankId,
                     'amount' => $creditrequest[13] ?? null,
                     'status' => $creditRequestStatus->value,
-                    'created_by' => null,
+                    'created_by' => $userId,
                     'updated_by' => null,
                     'deleted_by' => null,
                     'created_at' => Carbon::parse($creditrequest[17]),
