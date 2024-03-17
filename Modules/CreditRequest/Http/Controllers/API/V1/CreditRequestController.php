@@ -37,8 +37,6 @@ class CreditRequestController extends BaseController
 
     public function show(CreditRequest $creditRequest): JsonResponse
     {
-        $creditRequest->loadMissing(['user', 'user.member']);
-
         return $this->okResponse(new CreditRequestResource($creditRequest));
     }
 

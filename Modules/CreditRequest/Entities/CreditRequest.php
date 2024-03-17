@@ -6,6 +6,7 @@ use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Modules\Bank\Entities\Bank;
 use Modules\BusinessPermit\Entities\BusinessPermit;
@@ -90,6 +91,8 @@ use Modules\User\Entities\User;
  */
 final class CreditRequest extends BaseModel
 {
+    protected $with = ['user', 'user.member', 'histories'];
+
     public function resolveRouteBinding($value, $field = null): ?Model
     {
         if ($field !== null) {
@@ -217,5 +220,15 @@ final class CreditRequest extends BaseModel
     public function bank(): BelongsTo
     {
         return $this->belongsTo(Bank::class);
+    }
+
+    /**
+     * Retrieves the related CreditRequestHistory model.
+     *
+     * @return HasMany<CreditRequestHistory> The related history model.
+     */
+    public function histories(): HasMany
+    {
+        return $this->hasMany(CreditRequestHistory::class)->orderBy('created_at', 'desc');
     }
 }

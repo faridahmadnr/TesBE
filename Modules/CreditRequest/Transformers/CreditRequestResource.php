@@ -60,6 +60,13 @@ class CreditRequestResource extends JsonResource
                 'dob' => $this->user->member->dob ?? '-',
             ]),
             'status' => strtolower(CreditRequestStatusEnum::from($this->status)->name),
+            'history' => $this->whenLoaded('histories', $this->histories->map(function ($history) {
+                return [
+                    'id' => $history->hashId,
+                    'message' => $history->description,
+                    'createdAt' => $history->created_at,
+                ];
+            })),
         ];
     }
 }
