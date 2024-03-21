@@ -23,11 +23,13 @@ return new class extends Migration
                 ->nullOnDelete()
                 ->cascadeOnUpdate();
             $table->foreignId('business_type_id')
+                ->nullable()
                 ->index()
                 ->constrained('business_types')
                 ->nullOnDelete()
                 ->cascadeOnUpdate();
             $table->foreignId('business_permit_id')
+                ->nullable()
                 ->index()
                 ->constrained('business_permits')
                 ->nullOnDelete()
@@ -39,11 +41,13 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->string('business_address');
             $table->foreignId('business_regency_id')
+                ->nullable()
                 ->index()
                 ->constrained('regencies')
                 ->nullOnDelete()
                 ->cascadeOnUpdate();
             $table->foreignId('business_district_id')
+                ->nullable()
                 ->index()
                 ->constrained('districts')
                 ->nullOnDelete()
@@ -52,18 +56,21 @@ return new class extends Migration
             $table->string('postal_code');
 
             $table->foreignId('credit_request_type_id')
+                ->nullable()
                 ->index()
                 ->constrained('credit_request_types')
                 ->nullOnDelete()
                 ->cascadeOnUpdate();
 
             $table->foreignId('termin_id')
+                ->nullable()
                 ->index()
                 ->constrained('termins')
                 ->nullOnDelete()
                 ->cascadeOnUpdate();
 
             $table->foreignId('bank_id')
+                ->nullable()
                 ->index()
                 ->constrained('banks')
                 ->nullOnDelete()
