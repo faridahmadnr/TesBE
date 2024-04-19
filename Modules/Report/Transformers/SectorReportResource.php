@@ -19,7 +19,7 @@ class SectorReportResource extends JsonResource
             'target' => $this->target,
             'realization' => $this->realization,
             'createdAt' => $this->created_at,
-            'updatedAt'=>$this->updated_at,
+            'updatedAt' => $this->updated_at,
         ];
     }
 }

@@ -73,7 +73,8 @@ final class SectorReportService extends BaseService
         return $sectorReports;
     }
 
-    public function show(SectorReport $sectorReport){
+    public function show(SectorReport $sectorReport)
+    {
         $sectorReport->year = date('Y', strtotime($sectorReport->date));
         $sectorReport->month = date('n', strtotime($sectorReport->date));
 
@@ -132,7 +133,7 @@ final class SectorReportService extends BaseService
         if ($this->deleteById($sectorReport->id)) {
 
             $sectorReport->year = date('Y', strtotime($sectorReport->date));
-            $sectorReport->month =date('n', strtotime($sectorReport->date));
+            $sectorReport->month = date('n', strtotime($sectorReport->date));
 
             return $sectorReport;
         }
@@ -145,7 +146,7 @@ final class SectorReportService extends BaseService
         if ($sectorReport->restore()) {
 
             $sectorReport->year = date('Y', strtotime($sectorReport->date));
-            $sectorReport->month =date('n', strtotime($sectorReport->date));
+            $sectorReport->month = date('n', strtotime($sectorReport->date));
 
             return $sectorReport;
         }
@@ -158,7 +159,7 @@ final class SectorReportService extends BaseService
         if ($sectorReport->forceDelete()) {
 
             $sectorReport->year = date('Y', strtotime($sectorReport->date));
-            $sectorReport->month =date('n', strtotime($sectorReport->date));
+            $sectorReport->month = date('n', strtotime($sectorReport->date));
 
             return true;
         }

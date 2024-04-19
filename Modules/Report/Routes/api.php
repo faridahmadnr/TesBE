@@ -20,7 +20,7 @@ Route::group(['prefix' => 'v1', 'as' => 'api.v1.'], function () {
         ->only(['index']);
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
-        Route::controller( V1\SectorReportController::class)->group(function () {
+        Route::controller(V1\SectorReportController::class)->group(function () {
             Route::post('sector-reports/{sectorReport}/restore', 'restore')
                 ->name('sector-reports.restore')
                 ->withTrashed();
@@ -28,7 +28,7 @@ Route::group(['prefix' => 'v1', 'as' => 'api.v1.'], function () {
                 ->name('sector-reports.delete')
                 ->withTrashed();
         });
-        Route::apiResource('sector-reports',  V1\SectorReportController::class)
+        Route::apiResource('sector-reports', V1\SectorReportController::class)
             ->except(['index']);
     });
 });
