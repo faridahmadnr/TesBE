@@ -29,6 +29,11 @@ class BankController extends BaseController
         return $this->okResponse(new BankCollection($banks));
     }
 
+    /**
+     * Stores a new bank
+     *
+     * @param  StoreBankRequest  $request  The request containing data for the bank entity.
+     */
     public function store(StoreBankRequest $request): JsonResponse
     {
         $bank = $this->bankService->store($request->validated());
@@ -41,6 +46,13 @@ class BankController extends BaseController
         return $this->okResponse(new BankResource($bank));
     }
 
+    /**
+     * Updates a bank
+     *
+     * @param  UpdateBankRequest  $request  The request object containing the validated data.
+     * @param  Bank  $bank  The bank record to be updated.
+     * @return JsonResponse The JSON response containing the updated bank resource.
+     */
     public function update(UpdateBankRequest $request, Bank $bank): JsonResponse
     {
         $bank = $this->bankService->update($bank, $request->validated());

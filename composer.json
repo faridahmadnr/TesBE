@@ -9,11 +9,11 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "dedoc/scramble": "^0.8.4",
+        "dedoc/scramble": "^0.8.6",
         "deligoez/laravel-model-hashid": "^2.4",
         "deployer/deployer": "^7.3",
         "divineomega/laravel-password-exposed-validation-rule": "dev-l10-compatibility",
-        "doctrine/dbal": "^3.7",
+        "doctrine/dbal": "^3.8",
         "elegantweb/sanitizer": "^2.1",
         "guzzlehttp/guzzle": "^7.2",
         "http-interop/http-factory-guzzle": "^1.2",
