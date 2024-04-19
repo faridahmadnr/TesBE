@@ -7,6 +7,14 @@ enum PermissionsEnum: string
     case SHOW_DASHBOARD = 'show-dashboard';
 
     /**
+     * Report Permissions, for both report by sector and region ?
+     */
+    case CREATE_REPORT = 'create-report';
+    case READ_REPORT = 'read-report';
+    case UPDATE_REPORT = 'update-report';
+    case DELETE_REPORT = 'delete-report';
+
+    /**
      * Bank Permissions
      */
     case CREATE_BANK = 'create-bank';
@@ -124,6 +132,13 @@ enum PermissionsEnum: string
     {
         return match ($this) {
             self::SHOW_DASHBOARD => 'Dashboard',
+
+            self::CREATE_REPORT => 'Create Report',
+            self::READ_REPORT => 'Read Report',
+            self::UPDATE_REPORT => 'Update Report',
+            self::DELETE_REPORT => 'Delete Report',
+
+
             self::CREATE_BANK => 'Create Bank',
             self::READ_BANK => 'Read Bank',
             self::UPDATE_BANK => 'Update Bank',
