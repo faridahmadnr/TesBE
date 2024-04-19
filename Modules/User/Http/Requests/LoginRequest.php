@@ -32,7 +32,7 @@ class LoginRequest extends FormRequest
             'password' => ['required', 'string'],
             'remember' => 'nullable|boolean',
             'member' => 'nullable|boolean',
-            'g-recaptcha-response' => ['required', new Captcha],
+            // 'g-recaptcha-response' => ['required', new Captcha],
         ];
     }
 

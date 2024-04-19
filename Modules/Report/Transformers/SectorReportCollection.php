@@ -1,0 +1,28 @@
+<?php
+
+namespace Modules\Report\Transformers;
+
+use App\Transformer\BaseTransformerCollection;
+
+class SectorReportCollection extends BaseTransformerCollection
+{
+    protected function map($item)
+    {
+
+        $item->load('businessType');
+
+        return [
+            'id' => $item->hashId,
+            'businessType' => $item->whenLoaded('businessType', $item->businessType->name),
+            'month' => $item->month,
+            'year' => $item->year,
+            'debtorValue' => $item->debtor_value,
+            'contractValue' => $item->contract_value,
+            'outstandingValue' => $item->outstanding_value,
+            'target' => $item->target,
+            'realization' => $item->realization,
+            'createdAt' => $item->created_at,
+            'updatedAt' => $item->updated_at,
+        ];
+    }
+}

@@ -10,10 +10,7 @@ exclude_patterns = [
   "database/**",
   "stubs/**",
   "storage/**",
-  "public/**",
-  "_ide_helper.php",
-  ".phpstorm.meta.php",
-  "deploy.php"
+  "public/**"
 ]
 
 [[analyzers]]
@@ -21,3 +18,6 @@ name = "php"
 
   [analyzers.meta]
   bootstrap_files = ["vendor/autoload.php"]
+
+[[transformers]]
+name = "php-cs-fixer"

@@ -7,5 +7,7 @@
     "Termin": true,
     "Testimoni": true,
     "CreditRequest": true,
-    "News": true
+    "News": true,
+    "AppDataVisualization": true,
+    "Report": true
 }
