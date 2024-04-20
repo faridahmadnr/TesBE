@@ -25,7 +25,7 @@ return new class extends Migration
 
             $table->date('date');
 
-            $table->integer('debtor_value');
+            $table->integer('debtor');
             $table->integer('contract_value');
             $table->integer('outstanding_value');
             $table->integer('target');

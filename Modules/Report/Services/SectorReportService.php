@@ -29,7 +29,7 @@ final class SectorReportService extends BaseService
             'id',
             'business_type_id',
             'date',
-            'debtor_value',
+            'debtor',
             'contract_value',
             'outstanding_value',
             'target',
@@ -53,7 +53,7 @@ final class SectorReportService extends BaseService
         ])
         ->allowedSorts([
             'date',
-            AllowedSort::field('debtor_value', 'debtorValue'),
+            'debtor',
             AllowedSort::field('contract_value', 'contractValue'),
             AllowedSort::field('outstanding_value', 'outstandingValue'),
             'target',
@@ -172,7 +172,7 @@ final class SectorReportService extends BaseService
         return $this->model::create([
             'business_type_id' => BusinessType::keyFromHashId($data['business_type_id']),
             'date' => new DateTime($data['year'] . '-' . $data['month'] . '-01'),
-            'debtor_value' => $data['debtor_value'] ?? null,
+            'debtor' => $data['debtor'] ?? null,
             'contract_value' => $data['contract_value'] ?? null,
             'outstanding_value' => $data['outstanding_value'] ?? null,
             'target' => $data['target'] ?? null,

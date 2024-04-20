@@ -13,7 +13,7 @@ class SectorReportResource extends JsonResource
             'businessType' => $this->whenLoaded('businessType', $this->businessType->name),
             'month' => $this->month,
             'year' => $this->year,
-            'debtorValue' => $this->debtor_value,
+            'debtor' => $this->debtor,
             'contractValue' => $this->contract_value,
             'outstandingValue' => $this->outstanding_value,
             'target' => $this->target,

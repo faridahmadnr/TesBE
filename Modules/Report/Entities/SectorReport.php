@@ -22,7 +22,7 @@ class SectorReport extends BaseModel
     protected $fillable = [
         'date',
         'business_type_id',
-        'debtor_value',
+        'debtor',
         'contract_value',
         'outstanding_value',
         'target',

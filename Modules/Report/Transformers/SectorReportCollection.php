@@ -16,7 +16,7 @@ class SectorReportCollection extends BaseTransformerCollection
             'businessType' => $item->whenLoaded('businessType', $item->businessType->name),
             'month' => $item->month,
             'year' => $item->year,
-            'debtorValue' => $item->debtor_value,
+            'debtor' => $item->debtor,
             'contractValue' => $item->contract_value,
             'outstandingValue' => $item->outstanding_value,
             'target' => $item->target,
