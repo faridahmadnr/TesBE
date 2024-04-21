@@ -54,7 +54,7 @@ add('shared_dirs', []);
 
 host('staging')
     ->setSshArguments(['-o StrictHostKeyChecking=no'])
-    ->setHostname('kaha-solusi.com')
+    ->setHostname('103.147.154.189')
     ->setPort(64000)
     ->set('remote_user', 'kahasolu')
     ->set('branch', 'development')
