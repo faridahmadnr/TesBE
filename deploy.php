@@ -60,6 +60,20 @@ host('staging')
     ->set('branch', 'development')
     ->set('deploy_path', '/home/kahasolu/api.kurjogja.kahasolusi.com');
 
+// ->setHostname(getenv('STAGING_HOST'))
+// ->setPort(getenv('STAGING_PORT'))
+// ->set('remote_user', getenv('STAGING_USER'))
+// ->set('branch', 'development')
+// ->set('deploy_path', getenv('STAGING_DEPLOY_PATH'))
+
+host('production')
+    ->setSshArguments(['-o StrictHostKeyChecking=no'])
+    ->setHostname(getenv('PRODUCTION_HOST'))
+    ->setPort(getenv('PRODUCTION_PORT'))
+    ->set('remote_user', getenv('PRODUCTION_USER'))
+    ->set('branch', 'main')
+    ->set('deploy_path', getenv('PRODUCTION_DEPLOY_PATH'));
+
 after('deploy:failed', 'deploy:unlock');  // Unlock after failed deploy
 after('deploy:info', 'deploy:unlock');  // Unlock after failed deploy
 
@@ -69,7 +83,7 @@ after('deploy:info', 'deploy:unlock');  // Unlock after failed deploy
 
 desc('Start of Deploy the application');
 
-task('artisan:module:migrate', artisan('module:migrate', ['skipIfNoEnv']));
+task('artisan:module:migrate', artisan('module:migrate --force', ['skipIfNoEnv']));
 
 task('deploy', [
     'deploy:prepare',
