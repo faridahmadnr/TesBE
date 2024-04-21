@@ -3,20 +3,39 @@
 namespace Modules\Report\Entities;
 
 use App\Models\BaseModel;
-
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\Relation;
-use Modules\Bank\Entities\Bank;
-use Modules\BusinessPermit\Entities\BusinessPermit;
 use Modules\BusinessType\Entities\BusinessType;
-use Modules\Location\Entities\District;
-use Modules\Location\Entities\Regency;
-use Modules\Termin\Entities\Termin;
-use Modules\User\Entities\User;
 
+/**
+ * Modules\Report\Entities\SectorReport
+ *
+ * @property int $id
+ * @property string $date
+ * @property BusinessType|null $businessType
+ * @property string|null $debtor_value
+ * @property string|null $contract_value
+ * @property string|null $outstanding_value
+ * @property string|null $target
+ * @property string|null $realization
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $actions
+ * @property-read int|null $actions_count
+ * @property-read BusinessType|null $businessType
+ * @property-read \Modules\User\Entities\User|null $creator
+ * @property-read string|null $hash_id
+ * @property-read string $hash_id_raw
+ * @property-read \Modules\User\Entities\User|null $updater
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
+ * @method static \Illuminate\Database\Eloquent\Builder|SectorReport newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|SectorReport newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|SectorReport onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|SectorReport query()
+ * @method static \Illuminate\Database\Eloquent\Builder|BaseModel updatedBy($userId)
+ * @method static \Illuminate\Database\Eloquent\Builder|SectorReport withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|SectorReport withoutTrashed()
+ *
+ * @mixin \Eloquent
+ */
 class SectorReport extends BaseModel
 {
     protected $fillable = [
@@ -26,14 +45,21 @@ class SectorReport extends BaseModel
         'contract_value',
         'outstanding_value',
         'target',
-        'realization'
+        'realization',
     ];
-
 
     public function businessType(): BelongsTo
     {
         return $this->belongsTo(BusinessType::class);
     }
 
+    public function getYearAttribute()
+    {
+        return date('Y', strtotime($this->date));
+    }
 
+    public function getMonthAttribute()
+    {
+        return date('n', strtotime($this->date));
+    }
 }

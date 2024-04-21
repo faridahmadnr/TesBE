@@ -4,17 +4,13 @@ namespace Modules\Report\Services;
 
 use App\Exceptions\GeneralException;
 use App\Services\BaseService;
+use DateTime;
 use Illuminate\Support\Facades\DB;
+use Modules\BusinessType\Entities\BusinessType;
+use Modules\Report\Entities\SectorReport;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
-use Illuminate\Support\Facades\Log;
-
-use DateTime;
-
-
-use Modules\Report\Entities\SectorReport;
-use Modules\BusinessType\Entities\BusinessType;
 
 final class SectorReportService extends BaseService
 {
@@ -35,7 +31,7 @@ final class SectorReportService extends BaseService
             'target',
             'realization',
             'created_at',
-            'updated_at'
+            'updated_at',
         ]);
 
         if ($hashedBusinessTypeId = request()->input('businessTypeId')) {
@@ -47,28 +43,28 @@ final class SectorReportService extends BaseService
         }
 
         $sectorReports = QueryBuilder::for($query)
-        ->defaultSort('-created_at')
-        ->allowedFilters([
-            AllowedFilter::trashed(),
-        ])
-        ->allowedSorts([
-            'date',
-            AllowedSort::field('debtor_value', 'debtorValue'),
-            AllowedSort::field('contract_value', 'contractValue'),
-            AllowedSort::field('outstanding_value', 'outstandingValue'),
-            'target',
-            'realization',
-            AllowedSort::field('created_at', 'createdAt'),
-        ])
-        ->paginate(request()->query('pageSize') ?? 10)
-        ->appends(request()->query());
+            ->defaultSort('-created_at')
+            ->allowedFilters([
+                AllowedFilter::trashed(),
+            ])
+            ->allowedSorts([
+                'date',
+                AllowedSort::field('debtor_value', 'debtorValue'),
+                AllowedSort::field('contract_value', 'contractValue'),
+                AllowedSort::field('outstanding_value', 'outstandingValue'),
+                'target',
+                'realization',
+                AllowedSort::field('created_at', 'createdAt'),
+            ])
+            ->paginate(request()->query('pageSize') ?? 10)
+            ->appends(request()->query());
 
+        // $sectorReports->getCollection()->transform(function ($item) {
+        //     $item['year'] = date('Y', strtotime($item->date));
+        //     $item['month'] = date('n', strtotime($item->date));
 
-        $sectorReports->getCollection()->transform(function ($item) {
-            $item['year'] = date('Y', strtotime($item->date));
-            $item['month'] = date('n', strtotime($item->date));
-            return $item;
-        });
+        //     return $item;
+        // });
 
         return $sectorReports;
     }
@@ -107,7 +103,7 @@ final class SectorReportService extends BaseService
         DB::beginTransaction();
 
         try {
-            $data['date'] = new DateTime($data['year'] . '-' . $data['month'] . '-01');
+            $data['date'] = new DateTime($data['year'].'-'.$data['month'].'-01');
             $data['business_type_id'] = BusinessType::keyFromHashId($data['business_type_id']);
 
             $sectorReport->fill($data);
@@ -167,12 +163,11 @@ final class SectorReportService extends BaseService
         throw new GeneralException(__('There was a problem permanently deleting this termin. Please try again.'));
     }
 
-
     protected function createSectorReport(array $data = []): SectorReport
     {
         return $this->model::create([
             'business_type_id' => BusinessType::keyFromHashId($data['business_type_id']),
-            'date' => new DateTime($data['year'] . '-' . $data['month'] . '-01'),
+            'date' => new DateTime($data['year'].'-'.$data['month'].'-01'),
             'debtor_value' => $data['debtor_value'] ?? null,
             'contract_value' => $data['contract_value'] ?? null,
             'outstanding_value' => $data['outstanding_value'] ?? null,
@@ -180,5 +175,4 @@ final class SectorReportService extends BaseService
             'realization' => $data['realization'] ?? null,
         ]);
     }
-
 }
