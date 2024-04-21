@@ -71,9 +71,6 @@ final class SectorReportService extends BaseService
 
     public function show(SectorReport $sectorReport)
     {
-        $sectorReport->year = date('Y', strtotime($sectorReport->date));
-        $sectorReport->month = date('n', strtotime($sectorReport->date));
-
         return $sectorReport;
     }
 
@@ -83,8 +80,6 @@ final class SectorReportService extends BaseService
 
         try {
             $user = $this->createSectorReport($data);
-            $user->year = $user['date']->format('Y');
-            $user->month = $user['date']->format('n');
 
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -109,9 +104,6 @@ final class SectorReportService extends BaseService
             $sectorReport->fill($data);
             $sectorReport->save();
 
-            $sectorReport->year = $sectorReport['date']->format('Y');
-            $sectorReport->month = $sectorReport['date']->format('n');
-
         } catch (\Throwable $th) {
             report($th);
             DB::rollBack();
@@ -128,9 +120,6 @@ final class SectorReportService extends BaseService
     {
         if ($this->deleteById($sectorReport->id)) {
 
-            $sectorReport->year = date('Y', strtotime($sectorReport->date));
-            $sectorReport->month = date('n', strtotime($sectorReport->date));
-
             return $sectorReport;
         }
 
@@ -141,9 +130,6 @@ final class SectorReportService extends BaseService
     {
         if ($sectorReport->restore()) {
 
-            $sectorReport->year = date('Y', strtotime($sectorReport->date));
-            $sectorReport->month = date('n', strtotime($sectorReport->date));
-
             return $sectorReport;
         }
 
@@ -153,9 +139,6 @@ final class SectorReportService extends BaseService
     public function destroy(SectorReport $sectorReport): bool
     {
         if ($sectorReport->forceDelete()) {
-
-            $sectorReport->year = date('Y', strtotime($sectorReport->date));
-            $sectorReport->month = date('n', strtotime($sectorReport->date));
 
             return true;
         }
