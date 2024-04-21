@@ -43,7 +43,7 @@
         "barryvdh/laravel-ide-helper": "^2.13",
         "fakerphp/faker": "^1.9.1",
         "jedymatt/laravel-sail-env": "^1.1",
-        "larastan/larastan": "^2.0",
+        "larastan/larastan": "^2.9.5",
         "laravel/envoy": "^2.8",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
@@ -114,6 +114,11 @@
     "extra": {
         "laravel": {
             "dont-discover": []
+        },
+        "patches": {
+            "deligoez/laravel-model-hashid": {
+                "Change return to throw": "./patches"
+            }
         }
     },
     "config": {
