@@ -2,6 +2,7 @@ includes:
     - ./vendor/larastan/larastan/extension.neon
 
 parameters:
+    inferPrivatePropertyTypeFromConstructor: true
 
     paths:
         - app/
@@ -15,9 +16,6 @@ parameters:
     universalObjectCratesClasses:
         - Illuminate\Http\Resources\Json\JsonResource
         - Illuminate\Http\Resources\Json\ResourceCollection
-
-#    scanFiles:
-#        - _ide_helper_models.php
 
 #    ignoreErrors:
 #        - '#PHPDoc tag @var#'
