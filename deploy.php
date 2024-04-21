@@ -54,19 +54,19 @@ add('shared_dirs', []);
 
 host('staging')
     ->setSshArguments(['-o StrictHostKeyChecking=no'])
-    ->setHostname(getenv('STAGING_HOST'))
-    ->setPort(getenv('STAGING_PORT'))
-    ->set('remote_user', getenv('STAGING_USER'))
-    ->set('branch', getenv('STAGING_BRANCH'))
-    ->set('deploy_path', getenv('STAGING_DEPLOY_PATH'));
+    ->setHostname(getenv('secrets.STAGING_HOST'))
+    ->setPort(getenv('secrets.STAGING_PORT'))
+    ->set('remote_user', getenv('secrets.STAGING_USER'))
+    ->set('branch', getenv('secrets.STAGING_BRANCH'))
+    ->set('deploy_path', getenv('secrets.STAGING_DEPLOY_PATH'));
 
 host('production')
     ->setSshArguments(['-o StrictHostKeyChecking=no'])
-    ->setHostname(getenv('PRODUCTION_HOST'))
-    ->setPort(getenv('PRODUCTION_PORT'))
-    ->set('remote_user', getenv('PRODUCTION_USER'))
+    ->setHostname(getenv('secrets.PRODUCTION_HOST'))
+    ->setPort(getenv('secrets.PRODUCTION_PORT'))
+    ->set('remote_user', getenv('secrets.PRODUCTION_USER'))
     ->set('branch', 'main')
-    ->set('deploy_path', getenv('PRODUCTION_DEPLOY_PATH'));
+    ->set('deploy_path', getenv('secrets.PRODUCTION_DEPLOY_PATH'));
 
 after('deploy:failed', 'deploy:unlock');  // Unlock after failed deploy
 after('deploy:info', 'deploy:unlock');  // Unlock after failed deploy
