@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "479f83ba5e5429d2bf5cef3ee3c40445",
+    "content-hash": "8e235fd749c28d771794ee93558382db",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -422,17 +422,11 @@
         },
         {
             "name": "deligoez/laravel-model-hashid",
-            "version": "2.4.1",
+            "version": "dev-main",
             "source": {
                 "type": "git",
-                "url": "https://github.com/deligoez/laravel-model-hashid.git",
-                "reference": "f964f258735c901fb8e7971136214f157036fec7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/deligoez/laravel-model-hashid/zipball/f964f258735c901fb8e7971136214f157036fec7",
-                "reference": "f964f258735c901fb8e7971136214f157036fec7",
-                "shasum": ""
+                "url": "https://github.com/agungkes/laravel-model-hashid.git",
+                "reference": "c8b7300182aaec8b6188b309277516405bfe815e"
             },
             "require": {
                 "ext-mbstring": "*",
@@ -450,6 +444,7 @@
                 "phpstan/phpstan-phpunit": "^1.3.3",
                 "phpunit/phpunit": "^9.6.1"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -463,7 +458,35 @@
                     "Deligoez\\LaravelModelHashId\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "Deligoez\\LaravelModelHashId\\Tests\\": "tests/",
+                    "Deligoez\\LaravelModelHashId\\Tests\\Database\\Factories\\": "tests/database/factories/"
+                }
+            },
+            "scripts": {
+                "post-autoload-dump": [
+                    "@php ./vendor/bin/testbench package:discover --ansi"
+                ],
+                "phpstan": [
+                    "vendor/bin/phpstan analyse --configuration=phpstan.neon.dist"
+                ],
+                "pint": [
+                    "vendor/bin/pint"
+                ],
+                "lint": [
+                    "@pint"
+                ],
+                "lintc": [
+                    "vendor/bin/pint && (git diff-index --quiet HEAD || (git add . && git commit -m 'chore: Fix styling'))"
+                ],
+                "test": [
+                    "./vendor/bin/testbench package:test --no-coverage"
+                ],
+                "test-coverage": [
+                    "vendor/bin/phpunit --coverage-text"
+                ]
+            },
             "license": [
                 "MIT"
             ],
@@ -488,7 +511,7 @@
                 "issues": "https://github.com/deligoez/laravel-model-hashid/issues",
                 "source": "https://github.com/deligoez/laravel-model-hashid"
             },
-            "time": "2023-08-04T10:02:59+00:00"
+            "time": "2024-04-21T14:48:43+00:00"
         },
         {
             "name": "deployer/deployer",
@@ -13225,6 +13248,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "deligoez/laravel-model-hashid": 20,
         "divineomega/laravel-password-exposed-validation-rule": 20,
         "langleyfoxall/laravel-nist-password-rules": 20
     },

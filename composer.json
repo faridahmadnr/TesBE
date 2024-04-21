@@ -10,7 +10,7 @@
     "require": {
         "php": "^8.2",
         "dedoc/scramble": "^0.8.6",
-        "deligoez/laravel-model-hashid": "^2.4",
+        "deligoez/laravel-model-hashid": "dev-main",
         "deployer/deployer": "^7.3",
         "divineomega/laravel-password-exposed-validation-rule": "dev-l10-compatibility",
         "doctrine/dbal": "^3.8",
@@ -140,6 +140,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/agungkes/laravel-nist-password-rules.git"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/agungkes/laravel-model-hashid.git"
         }
     ]
 }
