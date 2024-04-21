@@ -188,4 +188,7 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    'captcha' => [
+        'key' => env('CAPTCHA_KEY'),
+    ],
 ];
