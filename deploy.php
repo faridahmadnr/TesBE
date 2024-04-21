@@ -54,17 +54,11 @@ add('shared_dirs', []);
 
 host('staging')
     ->setSshArguments(['-o StrictHostKeyChecking=no'])
-    ->setHostname('103.147.154.189')
-    ->setPort(64000)
-    ->set('remote_user', 'kahasolu')
-    ->set('branch', 'development')
-    ->set('deploy_path', '/home/kahasolu/api.kurjogja.kahasolusi.com');
-
-// ->setHostname(getenv('STAGING_HOST'))
-// ->setPort(getenv('STAGING_PORT'))
-// ->set('remote_user', getenv('STAGING_USER'))
-// ->set('branch', 'development')
-// ->set('deploy_path', getenv('STAGING_DEPLOY_PATH'))
+    ->setHostname(getenv('STAGING_HOST'))
+    ->setPort(getenv('STAGING_PORT'))
+    ->set('remote_user', getenv('STAGING_USER'))
+    ->set('branch', getenv('STAGING_BRANCH'))
+    ->set('deploy_path', getenv('STAGING_DEPLOY_PATH'));
 
 host('production')
     ->setSshArguments(['-o StrictHostKeyChecking=no'])
