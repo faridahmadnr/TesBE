@@ -69,6 +69,8 @@ after('deploy:info', 'deploy:unlock');  // Unlock after failed deploy
 
 desc('Start of Deploy the application');
 
+task('artisan:module:migrate', artisan('module:migrate', ['skipIfNoEnv']));
+
 task('deploy', [
     'deploy:prepare',
     'rsync',                // Deploy code & built assets
@@ -78,7 +80,7 @@ task('deploy', [
     'artisan:storage:link', //
     'artisan:view:cache',   //
     'artisan:config:cache', // Laravel specific steps
-    'artisan:migrate',      //
+    'artisan:module:migrate',      //
     'artisan:queue:restart', //
     'deploy:publish',       //
 ]);
