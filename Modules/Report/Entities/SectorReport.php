@@ -6,36 +6,6 @@ use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\BusinessType\Entities\BusinessType;
 
-/**
- * Modules\Report\Entities\SectorReport
- *
- * @property int $id
- * @property string $date
- * @property BusinessType|null $businessType
- * @property string|null $debtor_value
- * @property string|null $contract_value
- * @property string|null $outstanding_value
- * @property string|null $target
- * @property string|null $realization
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $actions
- * @property-read int|null $actions_count
- * @property-read BusinessType|null $businessType
- * @property-read \Modules\User\Entities\User|null $creator
- * @property-read string|null $hash_id
- * @property-read string $hash_id_raw
- * @property-read \Modules\User\Entities\User|null $updater
- *
- * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
- * @method static \Illuminate\Database\Eloquent\Builder|SectorReport newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|SectorReport newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|SectorReport onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|SectorReport query()
- * @method static \Illuminate\Database\Eloquent\Builder|BaseModel updatedBy($userId)
- * @method static \Illuminate\Database\Eloquent\Builder|SectorReport withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|SectorReport withoutTrashed()
- *
- * @mixin \Eloquent
- */
 class SectorReport extends BaseModel
 {
     protected $fillable = [
