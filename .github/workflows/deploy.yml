@@ -88,7 +88,13 @@ jobs:
           if_key_exists: replace
 
       - name: Deploy to Staging
-        run: php vendor/bin/dep deploy staging --branch="dev" -vv
+        run: |
+          STAGING_HOST=${{ secrets.PRIVATE_KEY }} \
+          STAGING_PORT=${{ secrets.STAGING_PORT }} \
+          STAGING_USER=${{ secrets.STAGING_USER }} \
+          STAGING_BRANCH=${{ secrets.STAGING_BRANCH }} \
+          STAGING_DEPLOY_PATH=${{ secrets.STAGING_DEPLOY_PATH }} \
+          php vendor/bin/dep deploy staging --branch="${{ secrets.STAGING_BRANCH }}" -vv
 
   deploy-production:
     name: Deploy Project to Production Server
