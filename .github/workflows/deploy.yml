@@ -89,7 +89,7 @@ jobs:
 
       - name: Deploy to Staging
         run: |
-          STAGING_HOST=${{ secrets.PRIVATE_KEY }} \
+          STAGING_HOST=${{ secrets.STAGING_HOST }} \
           STAGING_PORT=${{ secrets.STAGING_PORT }} \
           STAGING_USER=${{ secrets.STAGING_USER }} \
           STAGING_BRANCH=${{ secrets.STAGING_BRANCH }} \
