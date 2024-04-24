@@ -1,6 +1,7 @@
 <?php
 
 use Modules\Bank\Entities\Bank;
+use Modules\CreditRequest\Entities\CreditRequest;
 use Modules\Location\Entities\District;
 use Modules\Location\Entities\Province;
 use Modules\Location\Entities\Regency;
@@ -159,6 +160,41 @@ return [
                 'filterableAttributes' => ['name', 'email'],
                 'sortableAttributes' => ['name', 'email'],
             ],
+            CreditRequest::class => [
+                'filterableAttributes' => [
+                    'registration_number',
+                    'user_id',
+                    'process_by',
+                    'bank_id',
+                    'termin_id',
+                    'business_type_id',
+                    'business_permit_id',
+                    'business_regency_id',
+                    'business_district_id',
+                    'credit_request_type_id',
+                    'process_by',
+                ],
+                'sortableAttributes' => [
+                    'registration_number',
+                    'user_id',
+                    'created_at',
+                    'updated_at',
+                    'business_type_id',
+                    'business_permit_id',
+                    'business_tin',
+                    'business_address',
+                    'business_regency_id',
+                    'business_district_id',
+                    'village',
+                    'postal_code',
+                    'credit_request_type_id',
+                    'amount',
+                    'termin_id',
+                    'bank_id',
+                    'status',
+                    'remark',
+                ],
+            ]
             // 'users' => [
             //     'filterableAttributes'=> ['id', 'name', 'email'],
             // ],
