@@ -106,7 +106,7 @@ final class CreditRequest extends BaseModel
         return $this->whereRegistrationNumber($value)->firstOrFail();
     }
 
-    public function resolveRouteBindingQuery($query, $value, $field = null): Builder|Relation
+    public function resolveRouteBindingQuery($query, $value, $field = null): Builder
     {
         return $query->whereRegistrationNumber($field ?? $this->getRouteKeyName(), $value);
     }
