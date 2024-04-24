@@ -33,7 +33,7 @@ class MigrateData extends Command
         $this->info('Start Migrate Data');
 
         $this->migrateUser();
-        // $this->migrateCreditRequest();
+        $this->migrateCreditRequest();
 
         $this->info('Finish Migrate Data');
     }

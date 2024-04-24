@@ -13,6 +13,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Modules\User\Notifications\VerifyEmailNotification;
 use Spatie\Permission\Traits\HasRoles;
+use Laravel\Scout\Searchable;
 
 /**
  * Modules\User\Entities\User
@@ -73,7 +74,7 @@ use Spatie\Permission\Traits\HasRoles;
  */
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, HasHashId, HasHashIdRouting, HasRoles, Notifiable, SoftDeletes;
+    use HasApiTokens, HasFactory, HasHashId, HasHashIdRouting, HasRoles, Notifiable, Searchable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
