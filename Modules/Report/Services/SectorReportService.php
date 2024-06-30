@@ -54,8 +54,8 @@ final class SectorReportService extends BaseService
         ->allowedSorts([
             'date',
             'debtor',
-            AllowedSort::field('contract_value', 'contractValue'),
-            AllowedSort::field('outstanding_value', 'outstandingValue'),
+            AllowedSort::field('contractValue', 'contract_value'),
+            AllowedSort::field('outstandingValue', 'outstanding_value'),
             'target',
             'realization',
             AllowedSort::field('created_at', 'createdAt'),
