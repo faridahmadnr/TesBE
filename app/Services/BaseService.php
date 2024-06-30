@@ -5,6 +5,7 @@ namespace App\Services;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
+use Modules\CreditRequest\Entities\CreditRequest;
 
 /**
  * Class BaseRepository.
@@ -710,4 +711,169 @@ abstract class BaseService
 
         return $this;
     }
+
+    protected function creditRequestGetQuery($year, $quarter, $startMonth, $endMonth, $creditStatus, $creditRequestTypeId, $regencyId , $bankId)
+    {
+        $query = CreditRequest::query();
+        if($year){
+            $query->whereYear('updated_at', $year);
+        }
+        $query->when($quarter, function ($query) use ($startMonth, $endMonth) {
+            $query->whereMonth('updated_at', '>=', $startMonth)
+                ->whereMonth('updated_at', '<=', $endMonth);
+        });
+
+        if ($creditStatus) {
+            $query->where('status', $creditStatus);
+        }
+        if ($creditRequestTypeId) {
+            $query->where('credit_request_type_id', $creditRequestTypeId);
+        }
+
+        if ($regencyId) {
+            $query->where('business_regency_id', $regencyId);
+        }
+
+        if ($bankId) {
+            $query->where('bank_id', $bankId);
+        }
+        return $query->select('amount', 'remark', 'user_id')->get();
+    }
+
+    protected function creditRequestCountDistinctQuery($year, $quarter, $startMonth, $endMonth, $creditStatus, $creditRequestTypeId, $regencyId , $bankId)
+    {
+        $query = CreditRequest::query();
+        if($year){
+            $query->whereYear('updated_at', $year);
+        }
+        $query->when($quarter, function ($query) use ($startMonth, $endMonth) {
+            $query->whereMonth('updated_at', '>=', $startMonth)
+                ->whereMonth('updated_at', '<=', $endMonth);
+        });
+
+        if ($creditStatus) {
+            if (is_array($creditStatus)) {
+                $query->whereIn('status', $creditStatus);
+            } else {
+                $query->where('status', $creditStatus);
+            }
+        }
+
+        if ($creditRequestTypeId) {
+            $query->where('credit_request_type_id', $creditRequestTypeId);
+        }
+
+        if ($regencyId) {
+            $query->where('business_regency_id', $regencyId);
+        }
+
+        if ($bankId) {
+            $query->where('bank_id', $bankId);
+        }
+
+        $query->select('user_id')->distinct();
+        return $query->get()->count();
+    }
+
+    protected function creditRequestCountQuery($year, $quarter, $startMonth, $endMonth, $creditStatus, $creditRequestTypeId, $regencyId , $bankId)
+    {
+        $query = CreditRequest::query();
+        if($year){
+            $query->whereYear('updated_at', $year);
+        }
+        $query->when($quarter, function ($query) use ($startMonth, $endMonth) {
+            $query->whereMonth('updated_at', '>=', $startMonth)
+                ->whereMonth('updated_at', '<=', $endMonth);
+        });
+
+        if ($creditStatus) {
+            if (is_array($creditStatus)) {
+                $query->whereIn('status', $creditStatus);
+            } else {
+                $query->where('status', $creditStatus);
+            }
+        }
+
+        if ($creditRequestTypeId) {
+            $query->where('credit_request_type_id', $creditRequestTypeId);
+        }
+
+        if ($regencyId) {
+            $query->where('business_regency_id', $regencyId);
+        }
+
+        if ($bankId) {
+            $query->where('bank_id', $bankId);
+        }
+        return $query->get()->count();
+    }
+
+    protected function credReqCalculateSubmissionMark($year, $quarter, $startMonth, $endMonth, $creditStatus, $creditRequestTypeId, $regencyId , $bankId, $businessTypeId)
+    {
+        $query = CreditRequest::query();
+        if($year){
+            $query->whereYear('updated_at', $year);
+        }
+        $query->when($quarter, function ($query) use ($startMonth, $endMonth) {
+            $query->whereMonth('updated_at', '>=', $startMonth)
+                ->whereMonth('updated_at', '<=', $endMonth);
+        });
+
+        if ($creditStatus) {
+            $query->where('status', $creditStatus);
+        }
+        if ($creditRequestTypeId) {
+            $query->where('credit_request_type_id', $creditRequestTypeId);
+        }
+
+        if ($regencyId) {
+            $query->where('business_regency_id', $regencyId);
+        }
+
+        if ($bankId) {
+            $query->where('bank_id', $bankId);
+        }
+
+        if($businessTypeId){
+            $query->where('business_type_id', $businessTypeId);
+        }
+
+        return (int) $query->sum('amount');
+    }
+
+
+    protected function CredReqCalculateRealizationMark($year, $quarter, $startMonth, $endMonth, $creditStatus, $creditRequestTypeId, $regencyId , $bankId, $businessTypeId)
+    {
+        $query = CreditRequest::query();
+
+        if($year){
+            $query->whereYear('updated_at', $year);
+        }
+        $query->when($quarter, function ($query) use ($startMonth, $endMonth) {
+            $query->whereMonth('updated_at', '>=', $startMonth)
+                ->whereMonth('updated_at', '<=', $endMonth);
+        });
+
+        if ($creditStatus) {
+            $query->where('status', $creditStatus);
+        }
+        if ($creditRequestTypeId) {
+            $query->where('credit_request_type_id', $creditRequestTypeId);
+        }
+
+        if ($regencyId) {
+            $query->where('business_regency_id', $regencyId);
+        }
+
+        if ($bankId) {
+            $query->where('bank_id', $bankId);
+        }
+
+        if($businessTypeId){
+            $query->where('business_type_id', $businessTypeId);
+        }
+
+        return $query->sum('remark');
+    }
+
 }
