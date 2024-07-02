@@ -1,20 +1,17 @@
 <?php
 
 namespace Modules\Location\Enums;
-use Illuminate\Support\Arr;
-use Spatie\Enum\Laravel\Enum;
 
-
-
-enum RegencyEnum : int
+enum RegencyEnum: int
 {
     case KULONPROGO = 3401;
     case BANTUL = 3402;
-    CASE GUNUNGKIDUL = 3403;
+    case GUNUNGKIDUL = 3403;
     case SLEMAN = 3404;
     case YOGYAKARTA = 3471;
 
-    public static function validRegencies(){
+    public static function validRegencies()
+    {
         return [
             'KABUPATEN KULON PROGO',
             'KABUPATEN BANTUL',
@@ -24,10 +21,9 @@ enum RegencyEnum : int
         ];
     }
 
-    public static function getIndexMapGeojson($value): string
+    public static function getIndexMapGeojson($value): mixed
     {
         switch ($value) {
-            
             case 'KABUPATEN GUNUNG KIDUL':
                 return '0';
             case 'KABUPATEN SLEMAN':
@@ -39,14 +35,14 @@ enum RegencyEnum : int
             case 'KOTA YOGYAKARTA':
                 return '4';
 
-            default :
+            default:
                 return null;
         }
     }
 
     public static function filterParameter($value): self
     {
-        return match ($value){
+        return match ($value) {
             'Kab-Kulon-Progo' => self::KULONPROGO,
             'Kab-Bantul' => self::BANTUL,
             'Kab-Gunung-Kidul' => self::GUNUNGKIDUL,
@@ -66,7 +62,7 @@ enum RegencyEnum : int
         };
     }
 
-    public static function fromValue($value): self
+    public static function fromValue($value): mixed
     {
         switch ($value) {
             case 'KABUPATEN KULON PROGO':
@@ -79,10 +75,8 @@ enum RegencyEnum : int
                 return self::SLEMAN;
             case 'KOTA YOGYAKARTA':
                 return self::YOGYAKARTA;
-            default :
+            default:
                 return null;
         }
     }
-
 }
-
