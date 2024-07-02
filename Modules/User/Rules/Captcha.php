@@ -29,7 +29,7 @@ class Captcha implements Rule
             'timeout' => 60,
         ]))->post('https://www.google.com/recaptcha/api/siteverify', [
             'form_params' => [
-                'secret' => '6LdmXRApAAAAAHtkhods8RoWYsGcBq-XsYlvi1CO',
+                'secret' => config('app.captcha.key'),
                 'remoteip' => request()->getClientIp(),
                 'response' => $value,
             ],

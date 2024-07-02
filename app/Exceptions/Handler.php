@@ -41,7 +41,7 @@ class Handler extends ExceptionHandler
                     'type' => 'NotFoundException',
                     'code' => 404,
                     'error' => [
-                        'code' => 404,
+                        'code' => 'HTTP_404_NOT_FOUND',
                         'message' => 'Not Found',
                     ],
                 ], 404);

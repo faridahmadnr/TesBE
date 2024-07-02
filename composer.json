@@ -9,11 +9,11 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "dedoc/scramble": "^0.8.4",
-        "deligoez/laravel-model-hashid": "^2.4",
+        "dedoc/scramble": "^0.8.6",
+        "deligoez/laravel-model-hashid": "dev-main",
         "deployer/deployer": "^7.3",
         "divineomega/laravel-password-exposed-validation-rule": "dev-l10-compatibility",
-        "doctrine/dbal": "^3.7",
+        "doctrine/dbal": "^3.8",
         "elegantweb/sanitizer": "^2.1",
         "guzzlehttp/guzzle": "^7.2",
         "http-interop/http-factory-guzzle": "^1.2",
@@ -43,7 +43,7 @@
         "barryvdh/laravel-ide-helper": "^2.13",
         "fakerphp/faker": "^1.9.1",
         "jedymatt/laravel-sail-env": "^1.1",
-        "larastan/larastan": "^2.0",
+        "larastan/larastan": "^2.9.5",
         "laravel/envoy": "^2.8",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
@@ -114,6 +114,11 @@
     "extra": {
         "laravel": {
             "dont-discover": []
+        },
+        "patches": {
+            "deligoez/laravel-model-hashid": {
+                "Change return to throw": "./patches"
+            }
         }
     },
     "config": {
@@ -135,6 +140,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/agungkes/laravel-nist-password-rules.git"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/agungkes/laravel-model-hashid.git"
         }
     ]
 }

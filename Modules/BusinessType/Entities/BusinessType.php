@@ -16,14 +16,14 @@ use Modules\BusinessType\Database\factories\BusinessTypeFactory;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
- * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $actions
+ * @property-read int|null $actions_count
  * @property-read \Modules\User\Entities\User|null $creator
  * @property-read string|null $hash_id
- * @property-read string $hash_id_raw
+ * @property-read string|null $hash_id_raw
  * @property-read \Modules\User\Entities\User|null $updater
- *
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
+ * @method static \Modules\BusinessType\Database\factories\BusinessTypeFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|BusinessType newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|BusinessType newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|BusinessType onlyTrashed()
@@ -39,7 +39,6 @@ use Modules\BusinessType\Database\factories\BusinessTypeFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|BusinessType whereUpdatedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|BusinessType withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|BusinessType withoutTrashed()
- *
  * @mixin \Eloquent
  */
 class BusinessType extends BaseModel

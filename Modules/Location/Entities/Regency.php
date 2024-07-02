@@ -18,16 +18,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
- * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $actions
+ * @property-read int|null $actions_count
  * @property-read \Modules\User\Entities\User|null $creator
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Modules\Location\Entities\District> $districts
  * @property-read int|null $districts_count
  * @property-read string|null $hash_id
- * @property-read string $hash_id_raw
+ * @property-read string|null $hash_id_raw
  * @property-read \Modules\Location\Entities\Province $province
  * @property-read \Modules\User\Entities\User|null $updater
- *
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|Regency newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Regency newQuery()
@@ -45,7 +44,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Regency whereUpdatedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Regency withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Regency withoutTrashed()
- *
  * @mixin \Eloquent
  */
 class Regency extends BaseModel

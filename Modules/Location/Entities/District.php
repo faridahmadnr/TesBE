@@ -17,14 +17,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
- * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $actions
+ * @property-read int|null $actions_count
  * @property-read \Modules\User\Entities\User|null $creator
  * @property-read string|null $hash_id
- * @property-read string $hash_id_raw
+ * @property-read string|null $hash_id_raw
  * @property-read \Modules\Location\Entities\Regency $regency
  * @property-read \Modules\User\Entities\User|null $updater
- *
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|District newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|District newQuery()
@@ -42,7 +41,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|District whereUpdatedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|District withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|District withoutTrashed()
- *
  * @mixin \Eloquent
  */
 class District extends BaseModel

@@ -24,7 +24,7 @@ set('rsync_src', function () {
 });
 
 set('bin/php', function () {
-    return '/opt/alt/php82/usr/bin/php'; // only needed if using cpanel and the other
+    return '/opt/alt/php83/usr/bin/php'; // only needed if using cpanel and the other
 });
 
 add('rsync', [
@@ -54,11 +54,19 @@ add('shared_dirs', []);
 
 host('staging')
     ->setSshArguments(['-o StrictHostKeyChecking=no'])
-    ->setHostname('kaha-solusi.com')
-    ->setPort(64000)
-    ->set('remote_user', 'kahasolu')
-    ->set('branch', 'development')
-    ->set('deploy_path', '/home/kahasolu/api.kurjogja.kahasolusi.com');
+    ->setHostname(getenv('STAGING_HOST'))
+    ->setPort(getenv('STAGING_PORT'))
+    ->set('remote_user', getenv('STAGING_USER'))
+    ->set('branch', getenv('STAGING_BRANCH'))
+    ->set('deploy_path', getenv('STAGING_DEPLOY_PATH'));
+
+host('production')
+    ->setSshArguments(['-o StrictHostKeyChecking=no'])
+    ->setHostname(getenv('PRODUCTION_HOST'))
+    ->setPort(getenv('PRODUCTION_PORT'))
+    ->set('remote_user', getenv('PRODUCTION_USER'))
+    ->set('branch', 'main')
+    ->set('deploy_path', getenv('PRODUCTION_DEPLOY_PATH'));
 
 after('deploy:failed', 'deploy:unlock');  // Unlock after failed deploy
 after('deploy:info', 'deploy:unlock');  // Unlock after failed deploy
@@ -69,6 +77,8 @@ after('deploy:info', 'deploy:unlock');  // Unlock after failed deploy
 
 desc('Start of Deploy the application');
 
+task('artisan:module:migrate', artisan('module:migrate --force', ['skipIfNoEnv']));
+
 task('deploy', [
     'deploy:prepare',
     'rsync',                // Deploy code & built assets
@@ -78,7 +88,7 @@ task('deploy', [
     'artisan:storage:link', //
     'artisan:view:cache',   //
     'artisan:config:cache', // Laravel specific steps
-    'artisan:migrate',      //
+    'artisan:module:migrate',      //
     'artisan:queue:restart', //
     'deploy:publish',       //
 ]);

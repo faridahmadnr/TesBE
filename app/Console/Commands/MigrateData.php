@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Carbon\Carbon;
+use Database\Seeders\Traits\DisableForeignKeys;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
@@ -10,6 +11,8 @@ use Modules\CreditRequest\Enums\CreditRequestStatusEnum;
 
 class MigrateData extends Command
 {
+    use DisableForeignKeys;
+
     /**
      * The name and signature of the console command.
      *
@@ -32,8 +35,9 @@ class MigrateData extends Command
         // $this->confirm('Are you sure you want to migrate data?');
         $this->info('Start Migrate Data');
 
+        $this->disableForeignKeys();
         $this->migrateUser();
-        // $this->migrateCreditRequest();
+        $this->enableForeignKeys();
 
         $this->info('Finish Migrate Data');
     }

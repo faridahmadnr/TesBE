@@ -16,15 +16,14 @@ use App\Models\BaseModel;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
- * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $actions
+ * @property-read int|null $actions_count
  * @property-read \Modules\User\Entities\User|null $creator
  * @property-read string|null $hash_id
- * @property-read string $hash_id_raw
+ * @property-read string|null $hash_id_raw
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Modules\News\Entities\News> $news
  * @property-read int|null $news_count
  * @property-read \Modules\User\Entities\User|null $updater
- *
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|NewsCategory newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|NewsCategory newQuery()
@@ -42,7 +41,6 @@ use App\Models\BaseModel;
  * @method static \Illuminate\Database\Eloquent\Builder|NewsCategory whereUpdatedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|NewsCategory withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|NewsCategory withoutTrashed()
- *
  * @mixin \Eloquent
  */
 class NewsCategory extends BaseModel

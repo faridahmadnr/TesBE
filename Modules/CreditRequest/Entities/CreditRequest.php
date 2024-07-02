@@ -21,40 +21,44 @@ use Modules\User\Entities\User;
  *
  * @property int $id
  * @property string $registration_number
- * @property int $user_id
- * @property int $business_type_id
- * @property int $business_permit_id
+ * @property int|null $user_id
+ * @property int|null $business_type_id
+ * @property int|null $business_permit_id
  * @property string|null $business_tin NPWP (Taxpayer Identification Number)
  * @property string|null $image
  * @property string $business_address
- * @property int $business_regency_id
- * @property int $business_district_id
+ * @property int|null $business_regency_id
+ * @property int|null $business_district_id
  * @property string $village
  * @property string $postal_code
- * @property int $credit_request_type_id
- * @property int $termin_id
- * @property int $bank_id
+ * @property int|null $credit_request_type_id
+ * @property int|null $termin_id
+ * @property int|null $bank_id
  * @property int $amount
  * @property int $status
- * @property string $remark
  * @property int|null $created_by
  * @property int|null $updated_by
  * @property int|null $deleted_by
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read Bank $bank
- * @property-read BusinessPermit $businessPermit
- * @property-read BusinessType $businessType
+ * @property string|null $remark
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $actions
+ * @property-read int|null $actions_count
+ * @property-read Bank|null $bank
+ * @property-read BusinessPermit|null $businessPermit
+ * @property-read BusinessType|null $businessType
  * @property-read User|null $creator
- * @property-read \Modules\CreditRequest\Entities\CreditRequestType $creditRequestType
- * @property-read District $district
+ * @property-read \Modules\CreditRequest\Entities\CreditRequestType|null $creditRequestType
+ * @property-read District|null $district
  * @property-read string|null $hash_id
- * @property-read Regency $regency
- * @property-read Termin $termin
+ * @property-read string|null $hash_id_raw
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Modules\CreditRequest\Entities\CreditRequestHistory> $histories
+ * @property-read int|null $histories_count
+ * @property-read Regency|null $regency
+ * @property-read Termin|null $termin
  * @property-read User|null $updater
- * @property-read User $user
- *
+ * @property-read User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static Builder|CreditRequest newModelQuery()
  * @method static Builder|CreditRequest newQuery()
@@ -78,6 +82,7 @@ use Modules\User\Entities\User;
  * @method static Builder|CreditRequest whereImage($value)
  * @method static Builder|CreditRequest wherePostalCode($value)
  * @method static Builder|CreditRequest whereRegistrationNumber($value)
+ * @method static Builder|CreditRequest whereRemark($value)
  * @method static Builder|CreditRequest whereStatus($value)
  * @method static Builder|CreditRequest whereTerminId($value)
  * @method static Builder|CreditRequest whereUpdatedAt($value)
@@ -86,7 +91,6 @@ use Modules\User\Entities\User;
  * @method static Builder|CreditRequest whereVillage($value)
  * @method static Builder|CreditRequest withTrashed()
  * @method static Builder|CreditRequest withoutTrashed()
- *
  * @mixin \Eloquent
  */
 final class CreditRequest extends BaseModel
@@ -102,7 +106,7 @@ final class CreditRequest extends BaseModel
         return $this->whereRegistrationNumber($value)->firstOrFail();
     }
 
-    public function resolveRouteBindingQuery($query, $value, $field = null): Builder|Relation
+    public function resolveRouteBindingQuery($query, $value, $field = null): Builder
     {
         return $query->whereRegistrationNumber($field ?? $this->getRouteKeyName(), $value);
     }

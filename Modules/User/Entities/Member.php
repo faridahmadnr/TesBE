@@ -11,9 +11,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $id
  * @property int $user_id
  * @property mixed $identity_number
- * @property mixed $phone
- * @property mixed $second_phone
- * @property mixed $address
+ * @property mixed|null $phone
+ * @property mixed|null $second_phone
+ * @property mixed|null $address
  * @property string $gender
  * @property \Illuminate\Support\Carbon $dob
  * @property string|null $photo
@@ -23,12 +23,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $actions
+ * @property-read int|null $actions_count
  * @property-read \Modules\User\Entities\User|null $creator
  * @property-read string|null $hash_id
- * @property-read string $hash_id_raw
+ * @property-read string|null $hash_id_raw
  * @property-read \Modules\User\Entities\User|null $updater
  * @property-read \Modules\User\Entities\User $user
- *
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|Member newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Member newQuery()
@@ -52,7 +53,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Member whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Member withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Member withoutTrashed()
- *
  * @mixin \Eloquent
  */
 class Member extends BaseModel

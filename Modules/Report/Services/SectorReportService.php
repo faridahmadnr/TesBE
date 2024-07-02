@@ -4,17 +4,13 @@ namespace Modules\Report\Services;
 
 use App\Exceptions\GeneralException;
 use App\Services\BaseService;
+use DateTime;
 use Illuminate\Support\Facades\DB;
+use Modules\BusinessType\Entities\BusinessType;
+use Modules\Report\Entities\SectorReport;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
-use Illuminate\Support\Facades\Log;
-
-use DateTime;
-
-
-use Modules\Report\Entities\SectorReport;
-use Modules\BusinessType\Entities\BusinessType;
 
 final class SectorReportService extends BaseService
 {
@@ -35,7 +31,7 @@ final class SectorReportService extends BaseService
             'target',
             'realization',
             'created_at',
-            'updated_at'
+            'updated_at',
         ]);
 
         if ($hashedBusinessTypeId = request()->input('businessTypeId')) {
@@ -47,21 +43,21 @@ final class SectorReportService extends BaseService
         }
 
         $sectorReports = QueryBuilder::for($query)
-        ->defaultSort('-created_at')
-        ->allowedFilters([
-            AllowedFilter::trashed(),
-        ])
-        ->allowedSorts([
-            'date',
-            'debtor',
-            AllowedSort::field('contractValue', 'contract_value'),
-            AllowedSort::field('outstandingValue', 'outstanding_value'),
-            'target',
-            'realization',
-            AllowedSort::field('created_at', 'createdAt'),
-        ])
-        ->paginate(request()->query('pageSize') ?? 10)
-        ->appends(request()->query());
+          ->defaultSort('-created_at')
+          ->allowedFilters([
+              AllowedFilter::trashed(),
+          ])
+          ->allowedSorts([
+              'date',
+              'debtor',
+              AllowedSort::field('contractValue', 'contract_value'),
+              AllowedSort::field('outstandingValue', 'outstanding_value'),
+              'target',
+              'realization',
+              AllowedSort::field('created_at', 'createdAt'),
+          ])
+          ->paginate(request()->query('pageSize') ?? 10)
+          ->appends(request()->query());
 
 
         $sectorReports->getCollection()->transform(function ($item) {
@@ -73,10 +69,8 @@ final class SectorReportService extends BaseService
         return $sectorReports;
     }
 
-    public function show(SectorReport $sectorReport){
-        $sectorReport->year = date('Y', strtotime($sectorReport->date));
-        $sectorReport->month = date('n', strtotime($sectorReport->date));
-
+    public function show(SectorReport $sectorReport)
+    {
         return $sectorReport;
     }
 
@@ -86,8 +80,6 @@ final class SectorReportService extends BaseService
 
         try {
             $user = $this->createSectorReport($data);
-            $user->year = $user['date']->format('Y');
-            $user->month = $user['date']->format('n');
 
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -106,14 +98,11 @@ final class SectorReportService extends BaseService
         DB::beginTransaction();
 
         try {
-            $data['date'] = new DateTime($data['year'] . '-' . $data['month'] . '-01');
+            $data['date'] = new DateTime($data['year'].'-'.$data['month'].'-01');
             $data['business_type_id'] = BusinessType::keyFromHashId($data['business_type_id']);
 
             $sectorReport->fill($data);
             $sectorReport->save();
-
-            $sectorReport->year = $sectorReport['date']->format('Y');
-            $sectorReport->month = $sectorReport['date']->format('n');
 
         } catch (\Throwable $th) {
             report($th);
@@ -131,9 +120,6 @@ final class SectorReportService extends BaseService
     {
         if ($this->deleteById($sectorReport->id)) {
 
-            $sectorReport->year = date('Y', strtotime($sectorReport->date));
-            $sectorReport->month =date('n', strtotime($sectorReport->date));
-
             return $sectorReport;
         }
 
@@ -143,9 +129,6 @@ final class SectorReportService extends BaseService
     public function restore(SectorReport $sectorReport): SectorReport
     {
         if ($sectorReport->restore()) {
-
-            $sectorReport->year = date('Y', strtotime($sectorReport->date));
-            $sectorReport->month =date('n', strtotime($sectorReport->date));
 
             return $sectorReport;
         }
@@ -157,15 +140,11 @@ final class SectorReportService extends BaseService
     {
         if ($sectorReport->forceDelete()) {
 
-            $sectorReport->year = date('Y', strtotime($sectorReport->date));
-            $sectorReport->month =date('n', strtotime($sectorReport->date));
-
             return true;
         }
 
         throw new GeneralException(__('There was a problem permanently deleting this termin. Please try again.'));
     }
-
 
     protected function createSectorReport(array $data = []): SectorReport
     {
@@ -179,5 +158,4 @@ final class SectorReportService extends BaseService
             'realization' => $data['realization'] ?? null,
         ]);
     }
-
 }

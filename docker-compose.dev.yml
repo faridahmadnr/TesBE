@@ -135,7 +135,6 @@ services:
       timeout: 5s
   adminer:
     image: adminer
-    restart: always
     ports:
       - "${ADMINER_PORT:-4001}:8080"
     networks:

@@ -1,9 +1,6 @@
 name: Deployment
 
 on:
-  push:
-    branches:
-      - dev
   pull_request:
     types: [closed]
     branches:
@@ -11,7 +8,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -20,7 +17,7 @@ jobs:
     steps:
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.2"
+          php-version: "8.3"
           extensions: csv, mbstring, bcmath, xdebug
           coverage: xdebug
       - uses: actions/checkout@v3
@@ -64,7 +61,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@master
         with:
-          php-version: "8.2"
+          php-version: "8.3"
           extensions: csv, mbstring, bcmath
 
       - name: Get Composer Cache Directory
@@ -91,7 +88,13 @@ jobs:
           if_key_exists: replace
 
       - name: Deploy to Staging
-        run: php vendor/bin/dep deploy staging --branch="dev" -vv
+        run: |
+          STAGING_HOST=${{ secrets.STAGING_HOST }} \
+          STAGING_PORT=${{ secrets.STAGING_PORT }} \
+          STAGING_USER=${{ secrets.STAGING_USER }} \
+          STAGING_BRANCH=${{ secrets.STAGING_BRANCH }} \
+          STAGING_DEPLOY_PATH=${{ secrets.STAGING_DEPLOY_PATH }} \
+          php vendor/bin/dep deploy staging --branch="${{ secrets.STAGING_BRANCH }}" -vv
 
   deploy-production:
     name: Deploy Project to Production Server
@@ -104,7 +107,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@master
         with:
-          php-version: "8.2"
+          php-version: "8.3"
           extensions: csv, mbstring, bcmath
 
       - name: Composer install
