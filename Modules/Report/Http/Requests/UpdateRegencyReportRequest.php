@@ -2,12 +2,13 @@
 
 namespace Modules\Report\Http\Requests;
 
-use App\Rules\HashIdExists;
+
 use Illuminate\Foundation\Http\FormRequest;
 use Modules\User\Enums\PermissionsEnum;
-use Modules\BusinessType\Entities\BusinessType;
+use Modules\Location\Enums\RegencyEnum;
+use Illuminate\Validation\Rule;
 
-class UpdateSectorReportRequest extends FormRequest
+class UpdateRegencyReportRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -16,13 +17,12 @@ class UpdateSectorReportRequest extends FormRequest
      */
     public function rules()
     {
+        $validRegencies = RegencyEnum::validRegencies();
+
         return [
-            'month' => ['required', 'numeric', 'integer', 'between:1,12'],
-            'year' => 'required',
-            'business_type_id' => [
-                'sometimes',
-                new HashIdExists(BusinessType::class)
-            ],
+            'month' => 'required|string|between:1,12',
+            'year' => 'required|string',
+            'regency' => ['required', Rule::in($validRegencies)],
             'debtor' => 'required|numeric',
             'contract_value' => 'required|numeric',
             'outstanding_value' => 'required|numeric',

@@ -8,6 +8,6 @@
     "Testimoni": true,
     "CreditRequest": true,
     "News": true,
-    "AppDataVisualization": true,
-    "Report": true
+    "Report": true,
+    "DataVisualization": true
 }

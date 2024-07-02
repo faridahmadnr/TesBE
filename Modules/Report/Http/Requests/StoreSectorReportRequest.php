@@ -23,7 +23,7 @@ class StoreSectorReportRequest extends FormRequest
                 'sometimes',
                 new HashIdExists(BusinessType::class)
             ],
-            'debtor_value' => 'required|numeric',
+            'debtor' => 'required|numeric',
             'contract_value' => 'required|numeric',
             'outstanding_value' => 'required|numeric',
             'target' => 'required|numeric',

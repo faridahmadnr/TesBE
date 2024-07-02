@@ -4,16 +4,16 @@ namespace Modules\Report\Transformers;
 
 use App\Transformer\BaseTransformerCollection;
 
-class SectorReportCollection extends BaseTransformerCollection
+class RegencyReportCollection extends BaseTransformerCollection
 {
     protected function map($item)
     {
 
-        $item->load('businessType');
+        $item->load('regency');
 
         return [
             'id' => $item->hashId,
-            'businessType' => $item->whenLoaded('businessType', $item->businessType->name),
+            'regency' => $item->whenLoaded('regency', $item->regency->name),
             'month' => $item->month,
             'year' => $item->year,
             'debtor' => $item->debtor,

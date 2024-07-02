@@ -34,3 +34,21 @@ Route::group(['prefix' => 'v1', 'as' => 'api.v1.'], function () {
 });
 
 // REGION REPORTS
+Route::group(['prefix' => 'v1', 'as' => 'api.v1.'], function () {
+    Route::apiResource('regency-reports', V1\RegencyReportController::class)
+        ->only(['index']);
+
+    Route::group(['middleware' => 'auth:sanctum'], function () {
+        Route::controller( V1\RegencyReportController::class)->group(function () {
+            Route::post('regency-reports/{regencyReport}/restore', 'restore')
+                ->name('regency-reports.restore')
+                ->withTrashed();
+            Route::delete('regency-reports/{regencyReport}/delete', 'forceDelete')
+                ->name('regency-reports.delete')
+                ->withTrashed();
+        });
+        Route::apiResource('regency-reports',  V1\RegencyReportController::class)
+            ->except(['index']);
+    });
+});
+

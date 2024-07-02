@@ -25,7 +25,7 @@ final class SectorReportService extends BaseService
             'id',
             'business_type_id',
             'date',
-            'debtor_value',
+            'debtor',
             'contract_value',
             'outstanding_value',
             'target',
@@ -43,28 +43,28 @@ final class SectorReportService extends BaseService
         }
 
         $sectorReports = QueryBuilder::for($query)
-            ->defaultSort('-created_at')
-            ->allowedFilters([
-                AllowedFilter::trashed(),
-            ])
-            ->allowedSorts([
-                'date',
-                AllowedSort::field('debtor_value', 'debtorValue'),
-                AllowedSort::field('contract_value', 'contractValue'),
-                AllowedSort::field('outstanding_value', 'outstandingValue'),
-                'target',
-                'realization',
-                AllowedSort::field('created_at', 'createdAt'),
-            ])
-            ->paginate(request()->query('pageSize') ?? 10)
-            ->appends(request()->query());
+          ->defaultSort('-created_at')
+          ->allowedFilters([
+              AllowedFilter::trashed(),
+          ])
+          ->allowedSorts([
+              'date',
+              'debtor',
+              AllowedSort::field('contractValue', 'contract_value'),
+              AllowedSort::field('outstandingValue', 'outstanding_value'),
+              'target',
+              'realization',
+              AllowedSort::field('created_at', 'createdAt'),
+          ])
+          ->paginate(request()->query('pageSize') ?? 10)
+          ->appends(request()->query());
 
-        // $sectorReports->getCollection()->transform(function ($item) {
-        //     $item['year'] = date('Y', strtotime($item->date));
-        //     $item['month'] = date('n', strtotime($item->date));
 
-        //     return $item;
-        // });
+        $sectorReports->getCollection()->transform(function ($item) {
+            $item['year'] = date('Y', strtotime($item->date));
+            $item['month'] = date('n', strtotime($item->date));
+            return $item;
+        });
 
         return $sectorReports;
     }
@@ -150,8 +150,8 @@ final class SectorReportService extends BaseService
     {
         return $this->model::create([
             'business_type_id' => BusinessType::keyFromHashId($data['business_type_id']),
-            'date' => new DateTime($data['year'].'-'.$data['month'].'-01'),
-            'debtor_value' => $data['debtor_value'] ?? null,
+            'date' => new DateTime($data['year'] . '-' . $data['month'] . '-01'),
+            'debtor' => $data['debtor'] ?? null,
             'contract_value' => $data['contract_value'] ?? null,
             'outstanding_value' => $data['outstanding_value'] ?? null,
             'target' => $data['target'] ?? null,

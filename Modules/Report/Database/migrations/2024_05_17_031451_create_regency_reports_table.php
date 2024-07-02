@@ -13,13 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('sector_reports', function (Blueprint $table) {
+        Schema::create('regency_reports', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('business_type_id')
+
+            $table->foreignId('regency_id')
             ->nullable()
             ->index()
-            ->constrained('business_types')
+            ->constrained('regencies')
             ->nullOnDelete()
             ->cascadeOnUpdate();
 
@@ -30,6 +31,7 @@ return new class extends Migration
             $table->integer('outstanding_value');
             $table->integer('target');
             $table->integer('realization');
+
 
 
             $table->foreignId('created_by')
@@ -57,6 +59,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sector_reports');
+        Schema::dropIfExists('regency_reports');
     }
 };
