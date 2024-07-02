@@ -24,7 +24,7 @@ set('rsync_src', function () {
 });
 
 set('bin/php', function () {
-    return '/opt/alt/php82/usr/bin/php'; // only needed if using cpanel and the other
+    return '/opt/alt/php83/usr/bin/php'; // only needed if using cpanel and the other
 });
 
 add('rsync', [
