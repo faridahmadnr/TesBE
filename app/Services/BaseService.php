@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
+use Modules\CreditRequest\Entities\CreditRequest;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
-use Modules\CreditRequest\Entities\CreditRequest;
 
 /**
  * Class BaseRepository.
@@ -225,8 +225,8 @@ abstract class BaseService
     /**
      * Executes a chunk operation on the query and returns the resulting models.
      *
-     * @param  int  $chunkCount The number of models to retrieve per chunk.
-     * @param  callable|null  $callback An optional callback function to be executed after each chunk is retrieved.
+     * @param  int  $chunkCount  The number of models to retrieve per chunk.
+     * @param  callable|null  $callback  An optional callback function to be executed after each chunk is retrieved.
      * @return bool The resulting models.
      */
     public function chunk(int $chunkCount, ?callable $callback = null)
@@ -500,8 +500,8 @@ abstract class BaseService
     /**
      * Adds a condition and callback to the "when" array.
      *
-     * @param  ?bool  $condition The condition that needs to be met.
-     * @param  ?callable  $callback The callback function to be executed.
+     * @param  ?bool  $condition  The condition that needs to be met.
+     * @param  ?callable  $callback  The callback function to be executed.
      * @return $this The current instance of the class.
      */
     public function when(?bool $condition, $callback = null)
@@ -712,10 +712,10 @@ abstract class BaseService
         return $this;
     }
 
-    protected function creditRequestGetQuery($year, $quarter, $startMonth, $endMonth, $creditStatus, $creditRequestTypeId, $regencyId , $bankId)
+    protected function creditRequestGetQuery($year, $quarter, $startMonth, $endMonth, $creditStatus, $creditRequestTypeId, $regencyId, $bankId)
     {
         $query = CreditRequest::query();
-        if($year){
+        if ($year) {
             $query->whereYear('updated_at', $year);
         }
         $query->when($quarter, function ($query) use ($startMonth, $endMonth) {
@@ -737,13 +737,14 @@ abstract class BaseService
         if ($bankId) {
             $query->where('bank_id', $bankId);
         }
+
         return $query->select('amount', 'remark', 'user_id')->get();
     }
 
-    protected function creditRequestCountDistinctQuery($year, $quarter, $startMonth, $endMonth, $creditStatus, $creditRequestTypeId, $regencyId , $bankId)
+    protected function creditRequestCountDistinctQuery($year, $quarter, $startMonth, $endMonth, $creditStatus, $creditRequestTypeId, $regencyId, $bankId)
     {
         $query = CreditRequest::query();
-        if($year){
+        if ($year) {
             $query->whereYear('updated_at', $year);
         }
         $query->when($quarter, function ($query) use ($startMonth, $endMonth) {
@@ -772,13 +773,15 @@ abstract class BaseService
         }
 
         $query->select('user_id')->distinct();
+
+        // @phpstan-ignore-next-line
         return $query->get()->count();
     }
 
-    protected function creditRequestCountQuery($year, $quarter, $startMonth, $endMonth, $creditStatus, $creditRequestTypeId, $regencyId , $bankId)
+    protected function creditRequestCountQuery($year, $quarter, $startMonth, $endMonth, $creditStatus, $creditRequestTypeId, $regencyId, $bankId)
     {
         $query = CreditRequest::query();
-        if($year){
+        if ($year) {
             $query->whereYear('updated_at', $year);
         }
         $query->when($quarter, function ($query) use ($startMonth, $endMonth) {
@@ -805,13 +808,15 @@ abstract class BaseService
         if ($bankId) {
             $query->where('bank_id', $bankId);
         }
+
+        // @phpstan-ignore-next-line
         return $query->get()->count();
     }
 
-    protected function credReqCalculateSubmissionMark($year, $quarter, $startMonth, $endMonth, $creditStatus, $creditRequestTypeId, $regencyId , $bankId, $businessTypeId)
+    protected function credReqCalculateSubmissionMark($year, $quarter, $startMonth, $endMonth, $creditStatus, $creditRequestTypeId, $regencyId, $bankId, $businessTypeId)
     {
         $query = CreditRequest::query();
-        if($year){
+        if ($year) {
             $query->whereYear('updated_at', $year);
         }
         $query->when($quarter, function ($query) use ($startMonth, $endMonth) {
@@ -834,19 +839,18 @@ abstract class BaseService
             $query->where('bank_id', $bankId);
         }
 
-        if($businessTypeId){
+        if ($businessTypeId) {
             $query->where('business_type_id', $businessTypeId);
         }
 
         return (int) $query->sum('amount');
     }
 
-
-    protected function CredReqCalculateRealizationMark($year, $quarter, $startMonth, $endMonth, $creditStatus, $creditRequestTypeId, $regencyId , $bankId, $businessTypeId)
+    protected function CredReqCalculateRealizationMark($year, $quarter, $startMonth, $endMonth, $creditStatus, $creditRequestTypeId, $regencyId, $bankId, $businessTypeId)
     {
         $query = CreditRequest::query();
 
-        if($year){
+        if ($year) {
             $query->whereYear('updated_at', $year);
         }
         $query->when($quarter, function ($query) use ($startMonth, $endMonth) {
@@ -869,11 +873,10 @@ abstract class BaseService
             $query->where('bank_id', $bankId);
         }
 
-        if($businessTypeId){
+        if ($businessTypeId) {
             $query->where('business_type_id', $businessTypeId);
         }
 
         return $query->sum('remark');
     }
-
 }

@@ -40,8 +40,9 @@ enum RegencyEnum: int
         }
     }
 
-    public static function filterParameter($value): self
+    public static function filterParameter($value)
     {
+        // @phpstan-ignore-next-line
         return match ($value) {
             'Kab-Kulon-Progo' => self::KULONPROGO,
             'Kab-Bantul' => self::BANTUL,

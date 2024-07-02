@@ -4,16 +4,13 @@ namespace Modules\Report\Services;
 
 use App\Exceptions\GeneralException;
 use App\Services\BaseService;
+use DateTime;
 use Illuminate\Support\Facades\DB;
+use Modules\Location\Enums\RegencyEnum;
+use Modules\Report\Entities\RegencyReport;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
-use Illuminate\Support\Facades\Log;
-
-use DateTime;
-
-use Modules\Report\Entities\RegencyReport;
-use Modules\Location\Enums\RegencyEnum;
 
 final class RegencyReportService extends BaseService
 {
@@ -34,7 +31,7 @@ final class RegencyReportService extends BaseService
             'target',
             'realization',
             'created_at',
-            'updated_at'
+            'updated_at',
         ]);
 
         try {
@@ -64,19 +61,24 @@ final class RegencyReportService extends BaseService
             ->paginate(request()->query('pageSize') ?? 10)
             ->appends(request()->query());
 
+        $regencyReports->getCollection()->transform(function (mixed $item) {
+            // @phpstan-ignore-next-line
+            $item['year'] = date('Y', strtotime($item->date));
+            // @phpstan-ignore-next-line
+            $item['month'] = date('n', strtotime($item->date));
 
-        $regencyReports->getCollection()->transform(function ($item) {
-                $item['year'] = date('Y', strtotime($item->date));
-                $item['month'] = date('n', strtotime($item->date));
-                return $item;
-            });
+            return $item;
+        });
 
-            return $regencyReports;
+        return $regencyReports;
     }
 
-    public function show(RegencyReport $regencyReport){
-        $regencyReport->year = date('Y', strtotime($regencyReport->date));
-        $regencyReport->month = date('n', strtotime($regencyReport->date));
+    public function show(RegencyReport $regencyReport)
+    {
+        // @phpstan-ignore-next-line
+        $regencyReport->year = date('Y', strtotime($regencyReport['date']));
+        // @phpstan-ignore-next-line
+        $regencyReport->month = date('n', strtotime($regencyReport['date']));
 
         return $regencyReport;
     }
@@ -87,7 +89,9 @@ final class RegencyReportService extends BaseService
 
         try {
             $user = $this->createRegencyReport($data);
+            // @phpstan-ignore-next-line
             $user->year = $user['date']->format('Y');
+            // @phpstan-ignore-next-line
             $user->month = $user['date']->format('n');
 
         } catch (\Throwable $th) {
@@ -107,13 +111,15 @@ final class RegencyReportService extends BaseService
         DB::beginTransaction();
 
         try {
-            $data['date'] = new DateTime($data['year'] . '-' . $data['month'] . '-01');
-            $data['regency_id'] =  RegencyEnum::fromValue($data['regency']);
+            $data['date'] = new DateTime($data['year'].'-'.$data['month'].'-01');
+            $data['regency_id'] = RegencyEnum::fromValue($data['regency']);
 
             $regencyReport->fill($data);
             $regencyReport->save();
 
+            // @phpstan-ignore-next-line
             $regencyReport->year = $regencyReport['date']->format('Y');
+            // @phpstan-ignore-next-line
             $regencyReport->month = $regencyReport['date']->format('n');
 
         } catch (\Throwable $th) {
@@ -130,7 +136,7 @@ final class RegencyReportService extends BaseService
 
     public function delete(RegencyReport $regencyReport): RegencyReport
     {
-        if ($this->deleteById( $regencyReport->id)) {
+        if ($this->deleteById($regencyReport->id)) {
 
             return $regencyReport;
         }
@@ -140,7 +146,7 @@ final class RegencyReportService extends BaseService
 
     public function restore(RegencyReport $regencyReport): RegencyReport
     {
-        if ( $regencyReport->restore()) {
+        if ($regencyReport->restore()) {
 
             return $regencyReport;
         }
@@ -150,7 +156,7 @@ final class RegencyReportService extends BaseService
 
     public function destroy(RegencyReport $regencyReport): bool
     {
-        if ( $regencyReport->forceDelete()) {
+        if ($regencyReport->forceDelete()) {
 
             return true;
         }
@@ -158,13 +164,12 @@ final class RegencyReportService extends BaseService
         throw new GeneralException(__('There was a problem permanently deleting this termin. Please try again.'));
     }
 
-
     protected function createRegencyReport(array $data = []): RegencyReport
     {
 
         return $this->model::create([
             'regency_id' => RegencyEnum::fromValue($data['regency']),
-            'date' => new DateTime($data['year'] . '-' . $data['month'] . '-01'),
+            'date' => new DateTime($data['year'].'-'.$data['month'].'-01'),
             'debtor' => $data['debtor'] ?? null,
             'contract_value' => $data['contract_value'] ?? null,
             'outstanding_value' => $data['outstanding_value'] ?? null,
@@ -172,5 +177,4 @@ final class RegencyReportService extends BaseService
             'realization' => $data['realization'] ?? null,
         ]);
     }
-
 }

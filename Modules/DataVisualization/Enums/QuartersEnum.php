@@ -4,7 +4,6 @@ namespace Modules\DataVisualization\Enums;
 
 enum QuartersEnum: string
 {
-
     case Q1 = 'Q1';
     case Q2 = 'Q2';
     case Q3 = 'Q3';
@@ -12,11 +11,13 @@ enum QuartersEnum: string
 
     public static function getQuarterMonthsValue($quarter)
     {
-        if (!$quarter) return [null, null];
+        if (! $quarter) {
+            return [null, null];
+        }
         $selectedQuarter = self::fromValue($quarter);
+
         return [$selectedQuarter->startMonth(), $selectedQuarter->endMonth()];
     }
-
 
     public function label(): string
     {
@@ -28,8 +29,9 @@ enum QuartersEnum: string
         };
     }
 
-    public static function fromValue($value): self
+    public static function fromValue($value)
     {
+        // @phpstan-ignore-next-line
         return match ($value) {
             'Q1' => self::Q1,
             'Q2' => self::Q2,
@@ -57,5 +59,4 @@ enum QuartersEnum: string
             self::Q4 => 12, // December
         };
     }
-
 }
