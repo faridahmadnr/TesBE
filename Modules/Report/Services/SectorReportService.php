@@ -43,26 +43,28 @@ final class SectorReportService extends BaseService
         }
 
         $sectorReports = QueryBuilder::for($query)
-          ->defaultSort('-created_at')
-          ->allowedFilters([
-              AllowedFilter::trashed(),
-          ])
-          ->allowedSorts([
-              'date',
-              'debtor',
-              AllowedSort::field('contractValue', 'contract_value'),
-              AllowedSort::field('outstandingValue', 'outstanding_value'),
-              'target',
-              'realization',
-              AllowedSort::field('created_at', 'createdAt'),
-          ])
-          ->paginate(request()->query('pageSize') ?? 10)
-          ->appends(request()->query());
-
+            ->defaultSort('-created_at')
+            ->allowedFilters([
+                AllowedFilter::trashed(),
+            ])
+            ->allowedSorts([
+                'date',
+                'debtor',
+                AllowedSort::field('contractValue', 'contract_value'),
+                AllowedSort::field('outstandingValue', 'outstanding_value'),
+                'target',
+                'realization',
+                AllowedSort::field('created_at', 'createdAt'),
+            ])
+            ->paginate(request()->query('pageSize') ?? 10)
+            ->appends(request()->query());
 
         $sectorReports->getCollection()->transform(function ($item) {
+            // @phpstan-ignore-next-line
             $item['year'] = date('Y', strtotime($item->date));
+            // @phpstan-ignore-next-line
             $item['month'] = date('n', strtotime($item->date));
+
             return $item;
         });
 
@@ -150,7 +152,7 @@ final class SectorReportService extends BaseService
     {
         return $this->model::create([
             'business_type_id' => BusinessType::keyFromHashId($data['business_type_id']),
-            'date' => new DateTime($data['year'] . '-' . $data['month'] . '-01'),
+            'date' => new DateTime($data['year'].'-'.$data['month'].'-01'),
             'debtor' => $data['debtor'] ?? null,
             'contract_value' => $data['contract_value'] ?? null,
             'outstanding_value' => $data['outstanding_value'] ?? null,
