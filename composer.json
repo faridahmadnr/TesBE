@@ -35,6 +35,7 @@
         "propaganistas/laravel-phone": "^5.0",
         "rennokki/laravel-eloquent-query-cache": "^3.4",
         "richan-fongdasen/eloquent-blameable": "^1.9",
+        "sentry/sentry-laravel": "^4.6",
         "spatie/laravel-activitylog": "^4.7",
         "spatie/laravel-permission": "^6.0",
         "spatie/laravel-query-builder": "^5.6"

@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Modules\DataVisualization\Http\Controllers\API\V1;
 
 /*
