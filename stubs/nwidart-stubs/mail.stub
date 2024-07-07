@@ -5,6 +5,8 @@ namespace $NAMESPACE$;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Content;
+use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 class $CLASS$ extends Mailable
@@ -21,13 +23,18 @@ class $CLASS$ extends Mailable
         //
     }
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
-    public function build()
+    public function envelope(): Envelope
     {
-        return $this->view('view.name');
+        return new Envelope();
+    }
+
+    /**
+     * Get the message content definition.
+     */
+    public function content(): Content
+    {
+        return new Content(
+            view: 'mail.orders.shipped',
+        );
     }
 }
