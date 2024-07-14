@@ -37,6 +37,7 @@
         "richan-fongdasen/eloquent-blameable": "^1.9",
         "sentry/sentry-laravel": "^4.6",
         "spatie/laravel-activitylog": "^4.7",
+        "spatie/laravel-backup": "^9.0",
         "spatie/laravel-permission": "^6.0",
         "spatie/laravel-query-builder": "^5.6"
     },
