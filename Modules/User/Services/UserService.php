@@ -69,6 +69,11 @@ final class UserService extends BaseService
     {
         $status = Password::sendResetLink($data);
 
+        activity('user')
+            ->performedOn($this->model)
+            ->withProperties($data)
+            ->log("Password reset requested for {$data['email']}");
+
         if ($status == Password::RESET_LINK_SENT) {
             return __($status);
         }
@@ -92,6 +97,10 @@ final class UserService extends BaseService
             }
         );
 
+        activity('user')
+            ->performedOn($this->model)
+            ->withProperties($data)
+            ->log("Password reset for {$data['email']}");
         // If the password was successfully reset, we will redirect the user back to
         // the application's home authenticated view. If there is an error we can
         // redirect them back to where they came from with their error message.
@@ -179,6 +188,11 @@ final class UserService extends BaseService
             throw new GeneralException(__('There was a problem registering this user. Please try again.'));
         }
 
+        activity('user')
+            ->performedOn($user)
+            ->withProperties($data)
+            ->log("Registered user {$data['email']}");
+
         DB::commit();
 
         if (isset($data['email_verified']) && ! $data['email_verified'] && $data['send_confirmation_email']) {
@@ -235,6 +249,11 @@ final class UserService extends BaseService
 
         DB::commit();
 
+        activity('user')
+            ->performedOn($user)
+            ->withProperties($data)
+            ->log("Updated user {$data['email']}");
+
         if (isset($data['email_verified']) && ! $data['email_verified'] && $data['send_confirmation_email'] && ! $user->email_verified_at) {
             $user->sendEmailVerificationNotification();
         }
@@ -250,6 +269,11 @@ final class UserService extends BaseService
 
         if ($this->deleteById($user->id)) {
             // event(new UserDeleted($user));
+
+            activity('user')
+                ->performedOn($user)
+                ->withProperties(['id' => $user->id])
+                ->log("Deleted user {$user->email}");
 
             return $user;
         }

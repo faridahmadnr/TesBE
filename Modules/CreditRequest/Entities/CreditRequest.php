@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Modules\Bank\Entities\Bank;
 use Modules\BusinessPermit\Entities\BusinessPermit;
 use Modules\BusinessType\Entities\BusinessType;
+use Modules\DataVisualization\Enums\QuartersEnum;
 use Modules\Location\Entities\District;
 use Modules\Location\Entities\Regency;
 use Modules\Termin\Entities\Termin;
@@ -59,6 +59,7 @@ use Modules\User\Entities\User;
  * @property-read Termin|null $termin
  * @property-read User|null $updater
  * @property-read User|null $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static Builder|CreditRequest newModelQuery()
  * @method static Builder|CreditRequest newQuery()
@@ -91,6 +92,7 @@ use Modules\User\Entities\User;
  * @method static Builder|CreditRequest whereVillage($value)
  * @method static Builder|CreditRequest withTrashed()
  * @method static Builder|CreditRequest withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 final class CreditRequest extends BaseModel
@@ -234,5 +236,17 @@ final class CreditRequest extends BaseModel
     public function histories(): HasMany
     {
         return $this->hasMany(CreditRequestHistory::class)->orderBy('created_at', 'desc');
+    }
+
+    public function scopeYear(Builder $query, $year = null)
+    {
+        $query->whereYear('credit_requests.created_at', $year ?? date('Y'));
+    }
+
+    public function scopeQuarter(Builder $query, $quarter = null)
+    {
+        [$startMonth, $endMonth] = QuartersEnum::getQuarterMonthsValue(strtoupper($quarter));
+        $query->whereMonth('credit_requests.created_at', '<=', $endMonth)
+            ->whereMonth('credit_requests.created_at', '>=', $startMonth);
     }
 }

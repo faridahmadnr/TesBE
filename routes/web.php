@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DownloadController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +15,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    // $user = User::first();
+
+    // return (new VerifyEmailNotification($user))->toMail($user);
+    // return new DailyBackupDatabaseMail();
     abort(403);
 });
+
+Route::get('/download/{code}', DownloadController::class)->name('download');

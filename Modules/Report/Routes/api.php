@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Modules\Report\Http\Controllers\API\V1;
 
 /*
@@ -14,12 +13,26 @@ use Modules\Report\Http\Controllers\API\V1;
 |
 */
 
-// SECTOR REPORTS
-Route::group(['prefix' => 'v1', 'as' => 'api.v1.'], function () {
-    Route::apiResource('sector-reports', V1\SectorReportController::class)
+Route::group(['prefix' => 'v1/reports', 'as' => 'api.v1.reports.'], function () {
+    // SECTOR REPORTS
+    Route::apiResource('regencies', V1\RegencyReportController::class)
+        ->only(['index']);
+    // REGION REPORTS
+    Route::apiResource('sectors', V1\SectorReportController::class)
         ->only(['index']);
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
+        Route::controller(V1\RegencyReportController::class)->group(function () {
+            Route::post('regencies/{regencyReport}/restore', 'restore')
+                ->name('regencies.restore')
+                ->withTrashed();
+            Route::delete('regencies/{regencyReport}/delete', 'forceDelete')
+                ->name('regencies.delete')
+                ->withTrashed();
+        });
+        Route::apiResource('regencies', V1\RegencyReportController::class)
+            ->except(['index']);
+
         Route::controller(V1\SectorReportController::class)->group(function () {
             Route::post('sector-reports/{sectorReport}/restore', 'restore')
                 ->name('sector-reports.restore')
@@ -30,25 +43,13 @@ Route::group(['prefix' => 'v1', 'as' => 'api.v1.'], function () {
         });
         Route::apiResource('sector-reports', V1\SectorReportController::class)
             ->except(['index']);
+
+        // Route::get('reports/bank-distribution/chart', [V1\BankDistributionController::class, 'chart']);
+        Route::get('bank-distribution', [V1\BankDistributionController::class, 'table']);
+        Route::get('bank-distribution/chart', [V1\BankDistributionController::class, 'chart']);
+        Route::get('sectors/distribution', V1\SectorLendingDistributionController::class);
+        Route::get('sectors/debitor', V1\DebtorSectorDistributionController::class);
+        Route::get('submission-status', V1\SubmissionStatusController::class);
+        Route::get('distribution', V1\RegencyDistributionController::class);
     });
 });
-
-// REGION REPORTS
-Route::group(['prefix' => 'v1', 'as' => 'api.v1.'], function () {
-    Route::apiResource('regency-reports', V1\RegencyReportController::class)
-        ->only(['index']);
-
-    Route::group(['middleware' => 'auth:sanctum'], function () {
-        Route::controller( V1\RegencyReportController::class)->group(function () {
-            Route::post('regency-reports/{regencyReport}/restore', 'restore')
-                ->name('regency-reports.restore')
-                ->withTrashed();
-            Route::delete('regency-reports/{regencyReport}/delete', 'forceDelete')
-                ->name('regency-reports.delete')
-                ->withTrashed();
-        });
-        Route::apiResource('regency-reports',  V1\RegencyReportController::class)
-            ->except(['index']);
-    });
-});
-

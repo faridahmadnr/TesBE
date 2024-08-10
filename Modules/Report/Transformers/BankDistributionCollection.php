@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\DataVisualization\Transformers;
+namespace Modules\Report\Transformers;
 
 use App\Transformer\BaseTransformerCollection;
 
@@ -11,12 +11,11 @@ class BankDistributionCollection extends BaseTransformerCollection
         return [
             'name' => $item['name'],
             'logo' => $item['logo'],
-            'potentialDebtor' => $item['potentialDebtor'],
+            'potentialDebtor' => $item['potential'],
             'debtor' => $item['debtor'],
             'transaction' => $item['transaction'],
-            'realizationMark' => $item['realizationMark'],
-            'realizationRate' => $item['realizationRate'],
+            'realizationMark' => formatCurrency(intval($item['realization'])),
+            'realizationRate' => floatval($item['rate']),
         ];
     }
 }
-

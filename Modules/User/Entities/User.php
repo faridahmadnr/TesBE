@@ -5,15 +5,17 @@ namespace Modules\User\Entities;
 use App\Enums\RolesEnum;
 use Deligoez\LaravelModelHashId\Traits\HasHashId;
 use Deligoez\LaravelModelHashId\Traits\HasHashIdRouting;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Log;
 use Laravel\Sanctum\HasApiTokens;
+use Laravel\Scout\Searchable;
 use Modules\User\Notifications\VerifyEmailNotification;
 use Spatie\Permission\Traits\HasRoles;
-use Laravel\Scout\Searchable;
 
 /**
  * Modules\User\Entities\User
@@ -72,7 +74,7 @@ use Laravel\Scout\Searchable;
  *
  * @mixin \Eloquent
  */
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, HasHashId, HasHashIdRouting, HasRoles, Notifiable, Searchable, SoftDeletes;
 
@@ -125,6 +127,7 @@ class User extends Authenticatable
 
     public function sendEmailVerificationNotification()
     {
+        Log::info('User sendEmailVerificationNotification');
         $this->notify(new VerifyEmailNotification);
     }
 

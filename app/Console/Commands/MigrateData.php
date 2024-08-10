@@ -290,7 +290,7 @@ class MigrateData extends Command
                     'created_at' => Carbon::parse($creditrequest[17]),
                     'updated_at' => Carbon::parse($creditrequest[18]),
                     'deleted_at' => null,
-                    'remark' => $creditrequest[1],
+                    'remark' => '',
                 ];
                 $lastCreditRequestId++;
                 $this->info('Credit request '.$creditrequest[1].' migrated');

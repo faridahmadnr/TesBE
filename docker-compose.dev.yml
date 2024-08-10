@@ -35,7 +35,7 @@ services:
       - meilisearch
       - mailpit
       - minio
-      - selenium
+      # - selenium
   pgsql:
     image: "postgres:15"
     # ports:

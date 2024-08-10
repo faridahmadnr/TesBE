@@ -15,6 +15,7 @@ use Spatie\Activitylog\Traits\CausesActivity;
 // use Spatie\Activitylog\LogOptions;
 // use Spatie\Activitylog\Traits\LogsActivity;
 
+#[\AllowDynamicProperties]
 abstract class BaseModel extends Model
 {
     use BlameableTrait, CausesActivity, HasFactory, HasHashId, HasHashIdRouting, QueryCacheable, Searchable, SoftDeletes;

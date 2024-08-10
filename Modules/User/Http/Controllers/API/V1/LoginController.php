@@ -16,6 +16,8 @@ class LoginController extends BaseController
 
         $user = $request->user('sanctum');
 
+        activity('login')->causedBy($user)->log("User {$user->email} logged in");
+
         $user->loadMissing(['roles', 'profile', 'permissions']);
 
         return $this->okResponse(new UserResource($user));

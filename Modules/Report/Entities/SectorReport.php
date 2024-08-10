@@ -12,7 +12,7 @@ use Modules\BusinessType\Entities\BusinessType;
  * @property int $id
  * @property int|null $business_type_id
  * @property string $date
- * @property int $debtor_value
+ * @property int $debtor
  * @property int $contract_value
  * @property int $outstanding_value
  * @property int $target
@@ -32,7 +32,6 @@ use Modules\BusinessType\Entities\BusinessType;
  * @property-read mixed $month
  * @property-read mixed $year
  * @property-read \Modules\User\Entities\User|null $updater
- *
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport newQuery()
@@ -44,7 +43,7 @@ use Modules\BusinessType\Entities\BusinessType;
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport whereCreatedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport whereDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SectorReport whereDebtorValue($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SectorReport whereDebtor($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport whereDeletedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport whereId($value)
@@ -55,7 +54,6 @@ use Modules\BusinessType\Entities\BusinessType;
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport whereUpdatedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport withoutTrashed()
- *
  * @mixin \Eloquent
  */
 class SectorReport extends BaseModel

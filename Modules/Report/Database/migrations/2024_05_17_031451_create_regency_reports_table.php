@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -15,14 +15,12 @@ return new class extends Migration
     {
         Schema::create('regency_reports', function (Blueprint $table) {
             $table->id();
-
-
             $table->foreignId('regency_id')
-            ->nullable()
-            ->index()
-            ->constrained('regencies')
-            ->nullOnDelete()
-            ->cascadeOnUpdate();
+                ->nullable()
+                ->index()
+                ->constrained('regencies')
+                ->nullOnDelete()
+                ->cascadeOnUpdate();
 
             $table->date('date');
 
@@ -31,8 +29,6 @@ return new class extends Migration
             $table->integer('outstanding_value');
             $table->integer('target');
             $table->integer('realization');
-
-
 
             $table->foreignId('created_by')
                 ->nullable()

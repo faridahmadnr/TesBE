@@ -846,37 +846,47 @@ abstract class BaseService
         return (int) $query->sum('amount');
     }
 
-    protected function CredReqCalculateRealizationMark($year, $quarter, $startMonth, $endMonth, $creditStatus, $creditRequestTypeId, $regencyId, $bankId, $businessTypeId)
-    {
+    protected function CredReqCalculateRealizationMark(
+        $year,
+        $quarter,
+        $startMonth,
+        $endMonth,
+        $creditStatus,
+        $creditRequestTypeId,
+        $regencyId,
+        $bankId,
+        $businessTypeId
+    ) {
         $query = CreditRequest::query();
 
-        if ($year) {
-            $query->whereYear('updated_at', $year);
-        }
-        $query->when($quarter, function ($query) use ($startMonth, $endMonth) {
-            $query->whereMonth('updated_at', '>=', $startMonth)
-                ->whereMonth('updated_at', '<=', $endMonth);
-        });
+        $query
+            ->when($year, function ($query) use ($year) {
+                $query->whereYear('updated_at', $year);
+            })
+            ->when($quarter, function ($query) use ($startMonth, $endMonth) {
+                $query->whereMonth('updated_at', '>=', $startMonth)
+                    ->whereMonth('updated_at', '<=', $endMonth);
+            })
+            ->when($creditStatus, function ($query) use ($creditStatus) {
+                $query->where('status', $creditStatus);
+            })
+            ->when($creditRequestTypeId, function ($query) use ($creditRequestTypeId) {
+                $query->where('credit_request_type_id', $creditRequestTypeId);
+            })
+            ->when($regencyId, function ($query) use ($regencyId) {
+                $query->where('business_regency_id', $regencyId);
+            })
+            ->when($bankId, function ($query) use ($bankId) {
+                $query->where('bank_id', $bankId);
+            })
+            ->when($businessTypeId, function ($query) use ($businessTypeId) {
+                $query->where('business_type_id', $businessTypeId);
+            })
+            ->selectRaw('sum(cast(remark as decimal)) as aggregate')
+            ->get();
 
-        if ($creditStatus) {
-            $query->where('status', $creditStatus);
-        }
-        if ($creditRequestTypeId) {
-            $query->where('credit_request_type_id', $creditRequestTypeId);
-        }
+        // dd($query->toSql());
 
-        if ($regencyId) {
-            $query->where('business_regency_id', $regencyId);
-        }
-
-        if ($bankId) {
-            $query->where('bank_id', $bankId);
-        }
-
-        if ($businessTypeId) {
-            $query->where('business_type_id', $businessTypeId);
-        }
-
-        return $query->sum('remark');
+        return $query;
     }
 }

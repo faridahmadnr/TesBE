@@ -3,6 +3,7 @@
 namespace Modules\User\Notifications;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Carbon;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\URL;
 use Modules\User\Entities\User;
 
-class VerifyEmailNotification extends Notification
+class VerifyEmailNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -57,11 +58,21 @@ class VerifyEmailNotification extends Notification
      */
     protected function buildMailMessage($url)
     {
+        $subject = Lang::get('Verify Email Address').' | '.Config::get('app.name');
+
         return (new MailMessage)
-            ->subject(Lang::get('Verify Email Address'))
-            ->line(Lang::get('Please click the button below to verify your email address.'))
-            ->action(Lang::get('Verify Email Address'), $url)
-            ->line(Lang::get('If you did not create an account, no further action is required.'));
+            ->subject($subject)
+            ->view('user::mail.verify-email', [
+                'bannerText' => Lang::get('Verify Email Address'),
+                'bannerImage' => asset('images/icons/lock.png'),
+                'contents' => [
+                    'Halo',
+                    'Silahkan klik tombol di bawah ini untuk melakukan verifikasi surel anda.',
+                ],
+                'buttonText' => Lang::get('Verify Email Address'),
+                'buttonUrl' => $url,
+                'footerText' => 'Silahkan abaikan surel ini jika anda tidak melakukan permintaan ini.',
+            ]);
     }
 
     /**
