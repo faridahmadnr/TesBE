@@ -20,38 +20,38 @@ class VerifySignature
         $sign = $request->header('X-Sign');
         $signTimestamp = $request->header('X-Sign-Timestamp');
 
-        // if (! $this->isValidTimestamp($signTimestamp)) {
-        //     if ($isDebug) {
-        //         return response()->json([
-        //             'message' => 'Invalid timestamp',
-        //             'code' => 400,
-        //         ], 400);
-        //     }
+        if (! $this->isValidTimestamp($signTimestamp)) {
+            if ($isDebug) {
+                return response()->json([
+                    'message' => 'Invalid timestamp',
+                    'code' => 400,
+                ], 400);
+            }
 
-        //     return response()->json([
-        //         'message' => 'Forbidden',
-        //         'code' => 403,
-        //     ], 403);
-        // }
+            return response()->json([
+                'message' => 'Forbidden',
+                'code' => 403,
+            ], 403);
+        }
 
-        // $backendSign = $this->generateBackendSignature(
-        //     $request,
-        //     $signTimestamp
-        // );
-        // // Log::info("Frontend: $sign From backend: $backendSign");
-        // if ($sign !== $backendSign) {
-        //     if ($isDebug) {
-        //         return response()->json([
-        //             'message' => 'Invalid signature',
-        //             'code' => 400,
-        //         ], 400);
-        //     }
+        $backendSign = $this->generateBackendSignature(
+            $request,
+            $signTimestamp
+        );
+        // Log::info("Frontend: $sign From backend: $backendSign");
+        if ($sign !== $backendSign) {
+            if ($isDebug) {
+                return response()->json([
+                    'message' => 'Invalid signature',
+                    'code' => 400,
+                ], 400);
+            }
 
-        //     return response()->json([
-        //         'message' => 'Forbidden',
-        //         'code' => 403,
-        //     ], 403);
-        // }
+            return response()->json([
+                'message' => 'Forbidden',
+                'code' => 403,
+            ], 403);
+        }
 
         return $next($request);
     }
