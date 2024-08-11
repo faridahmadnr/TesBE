@@ -92,8 +92,10 @@ final class SubmissionStatusService extends BaseService
             );
         }
 
-        $statuses = array_map(fn ($column) => strtolower($column->name), CreditRequestStatusEnum::cases());
+        $data = array_change_key_case($query->first()->toArray());
+        unset($data['user']);
+        unset($data['histories']);
 
-        return $query->first()->only($statuses);
+        return $data;
     }
 }
