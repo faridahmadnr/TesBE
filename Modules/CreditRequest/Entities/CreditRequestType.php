@@ -4,6 +4,7 @@ namespace Modules\CreditRequest\Entities;
 
 use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use Modules\CreditRequest\Enums\CreditRequestStatusEnum;
 use Modules\Report\Enums\QuartersEnum;
 
@@ -74,7 +75,7 @@ class CreditRequestType extends BaseModel
             })
             ->selectRaw('credit_request_types.name')
             ->selectRaw('SUM(COALESCE(CASE WHEN credit_requests.status = '.CreditRequestStatusEnum::DRAFT->value.' THEN 1 ELSE 0 END, 0)) AS potential')
-            ->selectRaw('SUM(COALESCE(CASE WHEN credit_requests.remark ~ \'^[0-9]+$\' THEN CAST(credit_requests.remark AS decimal) ELSE 0 END, 0)) AS realization')
+            ->selectRaw('SUM(COALESCE(CASE WHEN '.DB::regexp('credit_requests.remark', '^[0-9]+$').' THEN CAST(credit_requests.remark AS decimal) ELSE 0 END, 0)) AS realization')
             ->groupBy('credit_request_types.name');
 
         return $baseQuery;

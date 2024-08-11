@@ -3,6 +3,7 @@
 namespace Modules\Report\Services;
 
 use App\Services\BaseService;
+use Illuminate\Support\Facades\DB;
 use Modules\BusinessType\Entities\BusinessType;
 use Modules\CreditRequest\Enums\CreditRequestStatusEnum;
 use Modules\Report\Enums\QuartersEnum;
@@ -40,7 +41,11 @@ final class SectorLendingDistributionService extends BaseService
             ->selectRaw('SUM(COALESCE(sector_reports.realization, 0)) as realization')
             ->selectRaw('SUM(COALESCE(sector_reports.target, 0)) as target')
             ->selectRaw('SUM(CASE WHEN credit_requests.status = '.CreditRequestStatusEnum::DRAFT->value.' THEN 1 ELSE 0 END) AS submission_amount')
-            ->selectRaw('SUM(CASE WHEN credit_requests.status = '.CreditRequestStatusEnum::APPROVED->value.' AND credit_requests.remark ~ \'^[0-9]+$\' THEN CAST(credit_requests.remark AS decimal) ELSE 0 END) AS realization_amount')
+            ->selectRaw('SUM(CASE WHEN credit_requests.status = '
+                .CreditRequestStatusEnum::APPROVED->value
+                .' AND '
+                .DB::regexp('credit_requests.remark', '^[0-9]+$')
+                .' THEN CAST(credit_requests.remark AS decimal) ELSE 0 END) AS realization_amount')
             ->groupBy(
                 'business_types.name',
             );

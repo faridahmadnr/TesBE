@@ -6,6 +6,7 @@ use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\DB;
 use Modules\CreditRequest\Enums\CreditRequestStatusEnum;
 use Modules\Report\Enums\QuartersEnum;
 
@@ -101,7 +102,7 @@ class Regency extends BaseModel
             ->selectRaw('LOWER(regencies.name) as name')
             ->selectRaw('SUM(COALESCE(CASE WHEN credit_requests.status = '.CreditRequestStatusEnum::DRAFT->value.' THEN 1 ELSE 0 END, 0)) AS potential')
             ->selectRaw('SUM(COALESCE(CASE WHEN credit_requests.status = '.CreditRequestStatusEnum::DRAFT->value.' THEN credit_requests.amount ELSE 0 END, 0)) AS submission')
-            ->selectRaw('SUM(COALESCE(CASE WHEN credit_requests.remark ~ \'^[0-9]+$\' THEN CAST(credit_requests.remark AS decimal) ELSE 0 END, 0)) AS realization')
+            ->selectRaw('SUM(COALESCE(CASE WHEN '.DB::regexp('credit_requests.remark', '^[0-9]+$').' THEN CAST(credit_requests.remark AS decimal) ELSE 0 END, 0)) AS realization')
             ->groupBy('regencies.name');
 
         if ($creditRequestTypes) {

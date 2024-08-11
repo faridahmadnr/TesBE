@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Support\NikParser;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Sanctum\Sanctum;
@@ -35,6 +36,18 @@ class AppServiceProvider extends ServiceProvider
                 return $nikParser->isValid();
             } catch (\Throwable $th) {
                 return false;
+            }
+        });
+
+        DB::macro('regexp', function ($column, $pattern) {
+            $driver = config('database.default');
+
+            if ($driver === 'pgsql') {
+                // PostgreSQL uses ~ for regex
+                return "$column ~ '$pattern'";
+            } else {
+                // MySQL/MariaDB uses REGEXP for regex
+                return "$column REGEXP '$pattern'";
             }
         });
     }

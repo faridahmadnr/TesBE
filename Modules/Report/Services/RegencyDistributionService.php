@@ -3,6 +3,7 @@
 namespace Modules\Report\Services;
 
 use App\Services\BaseService;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Modules\CreditRequest\Entities\CreditRequest;
 use Modules\CreditRequest\Enums\CreditRequestStatusEnum;
@@ -58,7 +59,7 @@ final class RegencyDistributionService extends BaseService
             })
             ->selectRaw('count(id) as debitor')
             ->selectRaw('coalesce(sum(amount), 0) as amount')
-            ->selectRaw('SUM(CASE WHEN remark ~ \'^[0-9]+$\' THEN CAST(remark AS decimal) ELSE 0 END) as realization');
+            ->selectRaw('SUM(COALESCE(CASE WHEN '.DB::regexp('remark', '^[0-9]+$').' THEN CAST(remark AS decimal) ELSE 0 END, 0)) AS realization');
 
         return $totalDebitor->first();
     }
@@ -135,7 +136,11 @@ final class RegencyDistributionService extends BaseService
             ->selectRaw('LOWER(regencies.name) as name')
             ->selectRaw('SUM(COALESCE(CASE WHEN credit_requests.status = '.CreditRequestStatusEnum::APPROVED->value.' THEN 1 ELSE 0 END, 0)) AS debtor_value')
             ->selectRaw('SUM(COALESCE(CASE WHEN credit_requests.status = '.CreditRequestStatusEnum::DRAFT->value.' THEN amount ELSE 0 END, 0)) AS submission_amount')
-            ->selectRaw('SUM(COALESCE(CASE WHEN credit_requests.status = '.CreditRequestStatusEnum::APPROVED->value.' AND credit_requests.remark ~ \'^[0-9]+$\' THEN 1 ELSE 0 END, 0)) AS realization_amount')
+            ->selectRaw('SUM(COALESCE(CASE WHEN credit_requests.status = '
+                .CreditRequestStatusEnum::APPROVED->value
+                .' AND '
+                .DB::regexp('credit_requests.remark', '^[0-9]+$')
+                .' THEN 1 ELSE 0 END, 0)) AS realization_amount')
             ->groupBy('regencies.name')
             ->get()
             ->sortBy('total_realization')

@@ -48,8 +48,14 @@ final class BankDistributionService extends BaseService
         $year = request()->filter['year'] ?? null;
         $quarter = request()->filter['quarter'] ?? null;
 
-        $realizationQuery = 'SUM(CASE WHEN credit_requests.status = '.CreditRequestStatusEnum::APPROVED->value.' AND credit_requests.remark ~ \'^[0-9]+$\' THEN CAST(credit_requests.remark AS decimal) ELSE 0 END)';
-        $allRealizationQuery = 'SUM(CASE WHEN credit_requests.remark ~ \'^[0-9]+$\' THEN CAST(credit_requests.remark AS decimal) ELSE 0 END)';
+        $realizationQuery = 'SUM(CASE WHEN credit_requests.status = '
+            .CreditRequestStatusEnum::APPROVED->value
+            .' AND '
+            .DB::regexp('credit_requests.remark', '^[0-9]+$')
+            .' THEN CAST(credit_requests.remark AS decimal) ELSE 0 END)';
+        $allRealizationQuery = 'SUM(CASE WHEN '
+            .DB::regexp('credit_requests.remark', '^[0-9]+$')
+            .' THEN CAST(credit_requests.remark AS decimal) ELSE 0 END)';
         $creditRequestQuery = Bank::query()
             ->select([
                 'banks.name as name',
