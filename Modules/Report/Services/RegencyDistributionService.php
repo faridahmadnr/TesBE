@@ -16,8 +16,8 @@ final class RegencyDistributionService extends BaseService
 {
     public function getAll()
     {
-        $year = (request()->input('year')) ?? date('Y');
-        $quarter = request()->input('quarter');
+        $year = request()->input('year') ?? date('Y');
+        $quarter = request()->input('quarter') ?? null;
 
         $regencyReport = $this->getReportByRegency(year: $year, quarter: $quarter);
         $distribution = $this->getDistribution(year: $year, quarter: $quarter);
