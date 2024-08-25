@@ -59,7 +59,6 @@ use Modules\User\Entities\User;
  * @property-read Termin|null $termin
  * @property-read User|null $updater
  * @property-read User|null $user
- *
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static Builder|CreditRequest newModelQuery()
  * @method static Builder|CreditRequest newQuery()
@@ -94,7 +93,6 @@ use Modules\User\Entities\User;
  * @method static Builder|CreditRequest withTrashed()
  * @method static Builder|CreditRequest withoutTrashed()
  * @method static Builder|CreditRequest year($year = null)
- *
  * @mixin \Eloquent
  */
 final class CreditRequest extends BaseModel

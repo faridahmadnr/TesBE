@@ -9,5 +9,6 @@
     "CreditRequest": true,
     "News": true,
     "Report": true,
-    "DataVisualization": true
+    "DataVisualization": true,
+    "Faq": true
 }

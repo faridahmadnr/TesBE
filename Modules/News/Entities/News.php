@@ -31,29 +31,27 @@ use Mews\Purifier\Casts\CleanHtml;
  * @property-read string|null $hash_id
  * @property-read string|null $hash_id_raw
  * @property-read \Modules\User\Entities\User|null $updater
- *
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
- * @method static \Illuminate\Database\Eloquent\Builder|News newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|News newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|News onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|News query()
+ * @method static Builder|News newModelQuery()
+ * @method static Builder|News newQuery()
+ * @method static Builder|News onlyTrashed()
+ * @method static Builder|News query()
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel updatedBy($userId)
- * @method static \Illuminate\Database\Eloquent\Builder|News whereContent($value)
- * @method static \Illuminate\Database\Eloquent\Builder|News whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|News whereCreatedBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder|News whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|News whereDeletedBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder|News whereFeaturedImage($value)
- * @method static \Illuminate\Database\Eloquent\Builder|News whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|News whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|News whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|News whereSummary($value)
- * @method static \Illuminate\Database\Eloquent\Builder|News whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|News whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|News whereUpdatedBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder|News withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|News withoutTrashed()
- *
+ * @method static Builder|News whereContent($value)
+ * @method static Builder|News whereCreatedAt($value)
+ * @method static Builder|News whereCreatedBy($value)
+ * @method static Builder|News whereDeletedAt($value)
+ * @method static Builder|News whereDeletedBy($value)
+ * @method static Builder|News whereFeaturedImage($value)
+ * @method static Builder|News whereId($value)
+ * @method static Builder|News whereSlug($value)
+ * @method static Builder|News whereStatus($value)
+ * @method static Builder|News whereSummary($value)
+ * @method static Builder|News whereTitle($value)
+ * @method static Builder|News whereUpdatedAt($value)
+ * @method static Builder|News whereUpdatedBy($value)
+ * @method static Builder|News withTrashed()
+ * @method static Builder|News withoutTrashed()
  * @mixin \Eloquent
  */
 class News extends BaseModel
