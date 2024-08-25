@@ -14,14 +14,15 @@ class CreditRequestCollection extends BaseTransformerCollection
             'amount' => $item->amount,
             'business' => [
                 'address' => $item->business_address,
-                'district' => $item->whenLoaded('district', $item->district->name),
-                'type' => $item->whenLoaded('businessType', $item->businessType->name),
+                'district' => $item->whenLoaded('district', $item->district?->name),
+                'type' => $item->whenLoaded('businessType', $item->businessType?->name),
             ],
             'registrationNumber' => trim($item->registration_number),
             'phone' => $item->user->member->phone ?? '',
-            'creditRequestType' => $item->whenLoaded('creditRequestType', $item->creditRequestType->name),
+            'creditRequestType' => $item->whenLoaded('creditRequestType', $item->creditRequestType?->name),
             'createdAt' => $item->created_at,
-            'user' => $item->whenLoaded('user', $item->user->name),
+            'user' => $item->whenLoaded('user', $item->user->name ?? 'Deleted User'),
+            'userIsDeleted' => $item->user?->deleted_at || ! $item->user ? true : false,
             'status' => strtolower(CreditRequestStatusEnum::from($item->status)->name),
         ];
     }

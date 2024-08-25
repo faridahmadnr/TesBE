@@ -31,32 +31,24 @@ use Modules\Report\Enums\QuartersEnum;
  * @property-read string|null $hash_id_raw
  * @property-read \Modules\Location\Entities\Province $province
  * @property-read \Modules\User\Entities\User|null $updater
- * @property-read int $submission_amount
- * @property-read int $realization_amount
- * @property-read int $debtor_value
- * @property-read int $total_target
- * @property-read int $total_realization
- * @property-read int $total_debitor
- * @property-read int $total_target
- *
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
- * @method static \Illuminate\Database\Eloquent\Builder|Regency newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Regency newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Regency onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Regency query()
+ * @method static Builder|Regency newModelQuery()
+ * @method static Builder|Regency newQuery()
+ * @method static Builder|Regency onlyTrashed()
+ * @method static Builder|Regency query()
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel updatedBy($userId)
- * @method static \Illuminate\Database\Eloquent\Builder|Regency whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Regency whereCreatedBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Regency whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Regency whereDeletedBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Regency whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Regency whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Regency whereProvinceId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Regency whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Regency whereUpdatedBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Regency withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Regency withoutTrashed()
- *
+ * @method static Builder|Regency whereCreatedAt($value)
+ * @method static Builder|Regency whereCreatedBy($value)
+ * @method static Builder|Regency whereDeletedAt($value)
+ * @method static Builder|Regency whereDeletedBy($value)
+ * @method static Builder|Regency whereId($value)
+ * @method static Builder|Regency whereName($value)
+ * @method static Builder|Regency whereProvinceId($value)
+ * @method static Builder|Regency whereUpdatedAt($value)
+ * @method static Builder|Regency whereUpdatedBy($value)
+ * @method static Builder|Regency withSubmissionStatus($creditRequestTypes = null, $year = null, $quarter = null)
+ * @method static Builder|Regency withTrashed()
+ * @method static Builder|Regency withoutTrashed()
  * @mixin \Eloquent
  */
 class Regency extends BaseModel

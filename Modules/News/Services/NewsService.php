@@ -154,6 +154,7 @@ final class NewsService extends BaseService
         /** @var UploadedFile $image */
         $image = $data['featured_image'];
         $filename = $this->generateFilename($image);
+        $image->storeAs('news', $filename);
 
         $news = $this->model::create([
             'title' => $data['title'],

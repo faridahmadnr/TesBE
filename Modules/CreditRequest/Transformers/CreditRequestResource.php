@@ -12,10 +12,10 @@ class CreditRequestResource extends JsonResource
         return [
             'id' => $this->hashId,
             'amount' => intval($this->amount),
-            'bank' => $this->whenLoaded('bank', [
+            'bank' => $this->whenLoaded('bank', $this->bank ? [
                 'id' => $this->bank->hashId,
                 'name' => $this->bank->name,
-            ]),
+            ] : null),
             'business' => [
                 'address' => $this->business_address,
                 'district' => $this->whenLoaded('district', [
@@ -48,7 +48,7 @@ class CreditRequestResource extends JsonResource
                 'name' => $this->termin->name,
             ]),
             'village' => $this->village,
-            'user' => $this->whenLoaded('user', [
+            'user' => $this->whenLoaded('user', $this->user ? [
                 'id' => $this->user->hashId,
                 'name' => $this->user->name,
                 'email' => $this->user->email,
@@ -58,7 +58,8 @@ class CreditRequestResource extends JsonResource
                 'gender' => $this->user->member->gender ?? '-',
                 'address' => $this->user->member->address ?? '-',
                 'dob' => $this->user->member->dob ?? '-',
-            ]),
+                'isDeleted' => ! is_null($this->user->deleted_at),
+            ] : null),
             'status' => strtolower(CreditRequestStatusEnum::from($this->status)->name),
             'history' => $this->whenLoaded('histories', $this->histories->map(function ($history) {
                 return [

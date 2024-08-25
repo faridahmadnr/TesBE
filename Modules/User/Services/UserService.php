@@ -17,6 +17,7 @@ use Illuminate\Support\Str;
 use Modules\Bank\Entities\Bank;
 use Modules\User\Entities\Role;
 use Modules\User\Entities\User;
+use Modules\User\Events\UserDeleted;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -168,9 +169,7 @@ final class UserService extends BaseService
                 /** @var UploadedFile $photo */
                 $photo = $data['photo'];
                 $filename = 'avatar.'.$photo->getClientOriginalExtension();
-                $photo->storeAs($user->hashId, $filename, [
-                    'disk' => 's3',
-                ]);
+                $photo->storeAs($user->hashId, $filename);
             }
 
             $user->profile()->create([
@@ -227,9 +226,7 @@ final class UserService extends BaseService
                 /** @var UploadedFile $photo */
                 $photo = $data['photo'];
                 $filename = 'avatar.'.$photo->getClientOriginalExtension();
-                $photo->storeAs($user->hashId, $filename, [
-                    'disk' => 's3',
-                ]);
+                $photo->storeAs($user->hashId, $filename);
             }
 
             $user->profile()->update([
@@ -268,7 +265,7 @@ final class UserService extends BaseService
         }
 
         if ($this->deleteById($user->id)) {
-            // event(new UserDeleted($user));
+            event(new UserDeleted($user));
 
             activity('user')
                 ->performedOn($user)
@@ -299,7 +296,7 @@ final class UserService extends BaseService
             && $user->forceDelete()) {
 
             if (! is_null($user->profile) && $user->profile->photo) {
-                Storage::disk('s3')->delete($user->hashId.'/'.$user->profile->photo);
+                Storage::delete($user->hashId.'/'.$user->profile->photo);
             }
             // event(new UserDestroyed($user));
 

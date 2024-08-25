@@ -65,14 +65,23 @@ class UpdateUserRequest extends FormRequest
                 },
             ],
             'password' => [
-                'sometimes',
-                PasswordRules::changePassword($this->email),
+                Rule::requiredIf(request('password') !== null),
+                Rule::when(request('password') !== null, [
+                    PasswordRules::changePassword($this->email),
+                ]),
             ],
-            'permissions' => ['sometimes', 'array'],
+            'password_confirmed' => [
+                Rule::requiredIf(request('password') !== null),
+                Rule::when(request('password') !== null, [
+                    PasswordRules::changePassword($this->email),
+                    'same:password',
+                ]),
+            ],
+            'permissions' => ['nullable', 'array'],
             'permissions.*' => [Rule::exists('permissions', 'id')->where('type', $this->type)],
-            'email_verified' => ['sometimes', 'boolean'],
-            'send_confirmation_email' => ['sometimes', 'boolean'],
-            'photo' => 'sometimes|image|max:2048|mimes:jpg,png,jpeg',
+            'email_verified' => ['nullable', 'boolean'],
+            'send_confirmation_email' => ['nullable', 'boolean'],
+            'photo' => 'nullable|image|max:2048|mimes:jpg,png,jpeg',
         ];
     }
 

@@ -22,13 +22,14 @@ class StoreNewsRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'featured_image' => 'image|mimes:jpeg,png,jpg,webp|max:2048',
-            'categories' => 'sometimes|array',
+            'featured_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'youtube_url' => 'nullable|string|url',
+            'categories' => 'nullable|array',
             'categories.*' => [
-                'sometimes',
+                'nullable',
                 new HashIdExists(NewsCategory::class),
             ],
-            'status' => 'sometimes|in:0,1',
+            'status' => 'nullable|in:0,1',
         ];
     }
 

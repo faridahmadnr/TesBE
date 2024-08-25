@@ -6,6 +6,7 @@ use App\Exceptions\GeneralException;
 use App\Services\BaseService;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Modules\Bank\Entities\Bank;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -151,9 +152,9 @@ final class BankService extends BaseService
     protected function uploadLogo(Bank $bank, UploadedFile $file): string
     {
         $filename = \Str::slug($bank->name).'.'.$file->getClientOriginalExtension();
-        $file->storeAs('banks', $filename, [
-            'disk' => 's3',
-        ]);
+        $file->storeAs($bank->imagePath, $filename);
+
+        Log::info('File uploaded successfully: '.$bank->imagePath.$filename);
 
         return $filename;
     }
@@ -161,7 +162,7 @@ final class BankService extends BaseService
     protected function deleteLogo(Bank $bank): void
     {
         if ($bank->logo) {
-            Storage::disk('s3')->delete('banks/'.$bank->logo);
+            Storage::delete($bank->imagePath.$bank->logo);
         }
     }
 

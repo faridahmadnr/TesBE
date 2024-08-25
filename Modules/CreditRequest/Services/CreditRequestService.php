@@ -389,9 +389,7 @@ final class CreditRequestService extends BaseService
         // skipcq: PHP-A1004
         $filename = sha1($creditRequest->registration_number.$creditRequest->user_id)
             .'.'.$file->getClientOriginalExtension();
-        $file->storeAs('credit-requests', $filename, [
-            'disk' => 's3',
-        ]);
+        $file->storeAs($creditRequest->imagePath, $filename);
 
         return $filename;
     }
@@ -399,7 +397,7 @@ final class CreditRequestService extends BaseService
     protected function deleteImage(CreditRequest $creditRequest): void
     {
         if ($creditRequest->image) {
-            Storage::disk('s3')->delete('credit-requests/'.$creditRequest->image);
+            Storage::delete($creditRequest->imagePath.$creditRequest->image);
         }
     }
 

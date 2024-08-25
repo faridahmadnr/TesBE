@@ -20,6 +20,7 @@ class NewsResource extends JsonResource
             'isPublished' => $this->status,
             'created_at' => $this->created_at,
             'updatedAt' => $this->updated_at,
+            'youtubeUrl' => $this->youtube_url,
         ];
     }
 }

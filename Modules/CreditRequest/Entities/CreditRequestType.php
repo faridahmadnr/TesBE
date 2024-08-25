@@ -28,27 +28,26 @@ use Modules\Report\Enums\QuartersEnum;
  * @property-read string|null $hash_id
  * @property-read string|null $hash_id_raw
  * @property-read \Modules\User\Entities\User|null $updater
- *
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
- * @method static \Illuminate\Database\Eloquent\Builder|CreditRequestType newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|CreditRequestType newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|CreditRequestType onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|CreditRequestType query()
+ * @method static Builder|CreditRequestType newModelQuery()
+ * @method static Builder|CreditRequestType newQuery()
+ * @method static Builder|CreditRequestType onlyTrashed()
+ * @method static Builder|CreditRequestType query()
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel updatedBy($userId)
- * @method static \Illuminate\Database\Eloquent\Builder|CreditRequestType whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CreditRequestType whereCreatedBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CreditRequestType whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CreditRequestType whereDeletedBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CreditRequestType whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CreditRequestType whereInterest($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CreditRequestType whereMaxValue($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CreditRequestType whereMinValue($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CreditRequestType whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CreditRequestType whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CreditRequestType whereUpdatedBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CreditRequestType withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|CreditRequestType withoutTrashed()
- *
+ * @method static Builder|CreditRequestType whereCreatedAt($value)
+ * @method static Builder|CreditRequestType whereCreatedBy($value)
+ * @method static Builder|CreditRequestType whereDeletedAt($value)
+ * @method static Builder|CreditRequestType whereDeletedBy($value)
+ * @method static Builder|CreditRequestType whereId($value)
+ * @method static Builder|CreditRequestType whereInterest($value)
+ * @method static Builder|CreditRequestType whereMaxValue($value)
+ * @method static Builder|CreditRequestType whereMinValue($value)
+ * @method static Builder|CreditRequestType whereName($value)
+ * @method static Builder|CreditRequestType whereUpdatedAt($value)
+ * @method static Builder|CreditRequestType whereUpdatedBy($value)
+ * @method static Builder|CreditRequestType withSubmissionStatus($year = null, $quarter = null)
+ * @method static Builder|CreditRequestType withTrashed()
+ * @method static Builder|CreditRequestType withoutTrashed()
  * @mixin \Eloquent
  */
 class CreditRequestType extends BaseModel

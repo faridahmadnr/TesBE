@@ -3,8 +3,6 @@
 namespace Modules\Bank\Entities;
 
 use App\Models\BaseModel;
-use Illuminate\Filesystem\FilesystemManager;
-use Illuminate\Support\Str;
 
 /**
  * Modules\Bank\Entities\Bank
@@ -66,20 +64,10 @@ class Bank extends BaseModel
         'status' => 'boolean',
     ];
 
+    public $imagePath = 'uploads/banks/';
+
     public function getLogoAttribute(?string $value)
     {
-        if (isDevelopment() && $value) {
-            $manager = app()->make(FilesystemManager::class);
-            $adapter = $manager->createS3Driver([
-                ...config('filesystems.disks.s3'),
-                'endpoint' => Str::replaceLast(
-                    parse_url(config('filesystems.disks.s3.url'), PHP_URL_PATH),
-                    '',
-                    config('filesystems.disks.s3.url')
-                ),
-            ]);
-
-            return $adapter->temporaryUrl("banks/{$value}", now()->addMinutes(10)); //
-        }
+        return $this->getUploadPath($this->imagePath, $value);
     }
 }

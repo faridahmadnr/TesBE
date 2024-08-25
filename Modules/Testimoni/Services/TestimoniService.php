@@ -132,9 +132,7 @@ final class TestimoniService extends BaseService
     {
         // skipcq: PHP-A1004
         $filename = sha1($testimoni->id.$testimoni->name).'.'.$file->getClientOriginalExtension();
-        $file->storeAs('testimonials', $filename, [
-            'disk' => 's3',
-        ]);
+        $file->storeAs('testimonials', $filename);
 
         return $filename;
     }
@@ -142,7 +140,7 @@ final class TestimoniService extends BaseService
     protected function deleteImage(Testimoni $testimoni): void
     {
         if ($testimoni->image) {
-            Storage::disk('s3')->delete('testimonials/'.$testimoni->image);
+            Storage::delete('testimonials/'.$testimoni->image);
         }
     }
 

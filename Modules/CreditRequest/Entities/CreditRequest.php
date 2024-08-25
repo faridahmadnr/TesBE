@@ -64,6 +64,7 @@ use Modules\User\Entities\User;
  * @method static Builder|CreditRequest newModelQuery()
  * @method static Builder|CreditRequest newQuery()
  * @method static Builder|CreditRequest onlyTrashed()
+ * @method static Builder|CreditRequest quarter($quarter = null)
  * @method static Builder|CreditRequest query()
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel updatedBy($userId)
  * @method static Builder|CreditRequest whereAmount($value)
@@ -92,12 +93,15 @@ use Modules\User\Entities\User;
  * @method static Builder|CreditRequest whereVillage($value)
  * @method static Builder|CreditRequest withTrashed()
  * @method static Builder|CreditRequest withoutTrashed()
+ * @method static Builder|CreditRequest year($year = null)
  *
  * @mixin \Eloquent
  */
 final class CreditRequest extends BaseModel
 {
     protected $with = ['user', 'user.member', 'histories'];
+
+    public $imagePath = 'uploads/credit-requests/';
 
     public function resolveRouteBinding($value, $field = null): ?Model
     {
@@ -185,7 +189,7 @@ final class CreditRequest extends BaseModel
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->withTrashed();
     }
 
     /**

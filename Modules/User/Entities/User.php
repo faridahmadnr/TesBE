@@ -7,6 +7,7 @@ use Deligoez\LaravelModelHashId\Traits\HasHashId;
 use Deligoez\LaravelModelHashId\Traits\HasHashIdRouting;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -14,6 +15,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Log;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Scout\Searchable;
+use Modules\CreditRequest\Entities\CreditRequest;
 use Modules\User\Notifications\VerifyEmailNotification;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -34,6 +36,8 @@ use Spatie\Permission\Traits\HasRoles;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, CreditRequest> $creditRequest
+ * @property-read int|null $credit_request_count
  * @property-read string|null $hash_id
  * @property-read string|null $hash_id_raw
  * @property-read \Modules\User\Entities\Member|null $member
@@ -46,7 +50,6 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read int|null $roles_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
- *
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User onlyTrashed()
@@ -71,7 +74,6 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static \Illuminate\Database\Eloquent\Builder|User withoutPermission($permissions)
  * @method static \Illuminate\Database\Eloquent\Builder|User withoutRole($roles, $guard = null)
  * @method static \Illuminate\Database\Eloquent\Builder|User withoutTrashed()
- *
  * @mixin \Eloquent
  */
 class User extends Authenticatable implements MustVerifyEmail
@@ -191,5 +193,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function member(): HasOne
     {
         return $this->hasOne(Member::class);
+    }
+
+    public function creditRequest(): HasMany
+    {
+        return $this->hasMany(CreditRequest::class);
     }
 }
