@@ -147,13 +147,21 @@ final class RegencyDistributionService extends BaseService
             ->map(function ($item, $index) {
                 return [
                     'name' => ucwords($item->name),
+                    // @phpstan-ignore-next-line
                     'submissionAmount' => $item->submission_amount,
+                    // @phpstan-ignore-next-line
                     'submissionAmountText' => formatCurrency($item->submission_amount),
+                    // @phpstan-ignore-next-line
                     'realizationAmount' => $item->realization_amount,
+                    // @phpstan-ignore-next-line
                     'realizationAmountText' => formatCurrency($item->realization_amount),
+                    // @phpstan-ignore-next-line
                     'debtorValue' => $item->debtor_value,
+                    // @phpstan-ignore-next-line
                     'realizationPercentage' => $item->total_target > 0 ? ($item->total_realization / $item->total_target) * 100 : 0,
+                    // @phpstan-ignore-next-line
                     'realization' => $item->total_realization,
+                    // @phpstan-ignore-next-line
                     'debitor' => $item->total_debitor,
                     'target' => $item->total_target,
                     'opacity' => ($index + 1) * 0.195,
