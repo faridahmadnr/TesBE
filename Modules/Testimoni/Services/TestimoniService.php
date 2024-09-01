@@ -21,10 +21,10 @@ final class TestimoniService extends BaseService
 
     public function getAll()
     {
-        $query = $this->model::select(['id', 'name', 'email', 'is_anonymous', 'created_at']);
+        $query = $this->model::select(['id', 'name', 'message', 'email', 'is_anonymous', 'created_at']);
         $results = QueryBuilder::for($query)
             ->defaultSort('-created_at')
-            ->allowedFields(['name', 'email', 'is_anonymous'])
+            ->allowedFields(['id', 'name', 'email', 'is_anonymous'])
             ->allowedFilters(['name', 'email', 'is_anonymous', AllowedFilter::trashed()])
             ->allowedSorts([
                 'name',
@@ -44,15 +44,6 @@ final class TestimoniService extends BaseService
 
         try {
             $testimoni = $this->createTestimoni($data);
-
-            if (isset($data['image'])) {
-                /** @var UploadedFile $image */
-                $image = $data['image'];
-                $imagePath = $this->uploadImage($testimoni, $image);
-                $testimoni->update([
-                    'image' => $imagePath,
-                ]);
-            }
         } catch (\Throwable $th) {
             DB::rollBack();
 
@@ -75,8 +66,7 @@ final class TestimoniService extends BaseService
             if (isset($data['image'])) {
                 /** @var UploadedFile $image */
                 $image = $data['image'];
-                $imagePath = $this->uploadImage($testimoni, $image);
-                $this->uploadImage($testimoni, $image);
+                $imagePath = $this->uploadImage($image);
                 $testimoni->image = $imagePath;
                 $this->deleteImage($testimoni);
             }
@@ -120,6 +110,10 @@ final class TestimoniService extends BaseService
     public function destroy(Testimoni $testimoni): bool
     {
         if ($testimoni->forceDelete()) {
+
+            if ($testimoni->image) {
+                $this->deleteImage($testimoni);
+            }
             // event(new TestimoniDestroyed($testimoni));
 
             return true;
@@ -128,10 +122,10 @@ final class TestimoniService extends BaseService
         throw new GeneralException(__('There was a problem permanently deleting this testimoni. Please try again.'));
     }
 
-    protected function uploadImage(Testimoni $testimoni, UploadedFile $file): string
+    protected function uploadImage(UploadedFile $file): string
     {
         // skipcq: PHP-A1004
-        $filename = sha1($testimoni->id.$testimoni->name).'.'.$file->getClientOriginalExtension();
+        $filename = sha1(now()).'.'.$file->getClientOriginalExtension();
         $file->storeAs('testimonials', $filename);
 
         return $filename;
@@ -140,17 +134,25 @@ final class TestimoniService extends BaseService
     protected function deleteImage(Testimoni $testimoni): void
     {
         if ($testimoni->image) {
-            Storage::delete('testimonials/'.$testimoni->image);
+            Storage::delete($testimoni->imagePath.$testimoni->image);
         }
     }
 
     protected function createTestimoni(array $data = []): Testimoni
     {
+        $imagePath = '';
+        if (isset($data['image'])) {
+            /** @var UploadedFile $image */
+            $image = $data['image'];
+            $imagePath = $this->uploadImage($image);
+        }
+
         return $this->model::create([
             'name' => $data['name'] ?? null,
             'email' => $data['email'] ?? null,
             'is_anonymous' => $data['is_anonymous'] ?? false,
             'message' => $data['message'] ?? null,
+            'image' => $imagePath,
         ]);
     }
 }

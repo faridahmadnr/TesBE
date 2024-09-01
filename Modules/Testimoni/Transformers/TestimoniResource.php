@@ -8,7 +8,7 @@ class TestimoniResource extends JsonResource
 {
     public function toArray($request)
     {
-        return [
+        $items = [
             'id' => $this->hashId,
             'name' => $this->name,
             'email' => $this->email ?? '',
@@ -17,5 +17,7 @@ class TestimoniResource extends JsonResource
             'createdAt' => $this->created_at,
             'image' => $this->image ?? '',
         ];
+
+        return array_filter($items, fn ($value) => ! is_null($value) && $value !== '');
     }
 }

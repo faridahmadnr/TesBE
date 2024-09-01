@@ -4,12 +4,9 @@ namespace Modules\Report\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller as BaseController;
 use Illuminate\Http\JsonResponse;
-use Modules\Location\Entities\Regency;
 use Modules\Report\Entities\RegencyReport;
-
 use Modules\Report\Http\Requests\StoreRegencyReportRequest;
 use Modules\Report\Http\Requests\UpdateRegencyReportRequest;
-
 use Modules\Report\Services\RegencyReportService;
 use Modules\Report\Transformers\RegencyReportCollection;
 use Modules\Report\Transformers\RegencyReportResource;
@@ -27,7 +24,6 @@ class RegencyReportController extends BaseController
         $regencyReports = $this->regencyReportService->getAll();
 
         return $this->successResponse(new RegencyReportCollection($regencyReports));
-        // return $this->successResponse($regencyReports);
     }
 
     public function store(StoreRegencyReportRequest $request): JsonResponse
@@ -37,38 +33,38 @@ class RegencyReportController extends BaseController
         return $this->okResponse(new RegencyReportResource($regencyReport));
     }
 
-    public function show(RegencyReport $regencyReport): JsonResponse
+    public function show(RegencyReport $regency): JsonResponse
     {
-        $regencyReport = $this->regencyReportService->show($regencyReport);
+        $regencyReport = $this->regencyReportService->show($regency);
 
         return $this->okResponse(new RegencyReportResource($regencyReport));
     }
 
-    public function update(UpdateRegencyReportRequest $request, RegencyReport $regencyReport): JsonResponse
+    public function update(UpdateRegencyReportRequest $request, RegencyReport $regency): JsonResponse
     {
-        $regencyReport = $this->regencyReportService->update($regencyReport, $request->validated());
+        $regencyReport = $this->regencyReportService->update($regency, $request->validated());
 
         return $this->okResponse(new RegencyReportResource($regencyReport));
     }
 
-    public function destroy(RegencyReport $regencyReport): JsonResponse
+    public function destroy(RegencyReport $regency): JsonResponse
     {
-        $this->regencyReportService->delete($regencyReport);
+        $this->regencyReportService->delete($regency);
 
-        return $this->okResponse(new RegencyReportResource($regencyReport));
+        return $this->okResponse(new RegencyReportResource($regency));
     }
 
-    public function restore(RegencyReport $regencyReport): JsonResponse
+    public function restore(RegencyReport $regency): JsonResponse
     {
-        $this->regencyReportService->restore($regencyReport);
+        $this->regencyReportService->restore($regency);
 
-        return $this->okResponse(new RegencyReportResource($regencyReport));
+        return $this->okResponse(new RegencyReportResource($regency));
     }
 
-    public function forceDelete(RegencyReport $regencyReport): JsonResponse
+    public function forceDelete(RegencyReport $regency): JsonResponse
     {
-        $this->regencyReportService->destroy($regencyReport);
+        $this->regencyReportService->destroy($regency);
 
-        return $this->okResponse(new RegencyReportResource($regencyReport));
+        return $this->okResponse(new RegencyReportResource($regency));
     }
 }

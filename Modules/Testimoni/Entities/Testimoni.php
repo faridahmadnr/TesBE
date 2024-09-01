@@ -25,6 +25,7 @@ use App\Models\BaseModel;
  * @property-read string|null $hash_id
  * @property-read string|null $hash_id_raw
  * @property-read \Modules\User\Entities\User|null $updater
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|Testimoni newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Testimoni newQuery()
@@ -45,6 +46,7 @@ use App\Models\BaseModel;
  * @method static \Illuminate\Database\Eloquent\Builder|Testimoni whereUpdatedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Testimoni withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Testimoni withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class Testimoni extends BaseModel
@@ -54,9 +56,17 @@ class Testimoni extends BaseModel
         'email',
         'message',
         'is_anonymous',
+        'image',
     ];
 
     protected $casts = [
         'is_anonymous' => 'boolean',
     ];
+
+    public $imagePath = 'testimonials/';
+
+    public function getImageAttribute(?string $value)
+    {
+        return $this->getUploadPath($this->imagePath, $value);
+    }
 }

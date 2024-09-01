@@ -8,14 +8,13 @@ class SectorReportCollection extends BaseTransformerCollection
 {
     protected function map($item)
     {
-
         $item->load('businessType');
 
         return [
             'id' => $item->hashId,
-            'businessType' => $item->whenLoaded('businessType', $item->businessType->name),
-            'month' => $item->month,
-            'year' => $item->year,
+            'businessType' => $item->whenLoaded('businessType', $item->businessType->name ?? '-'),
+            'month' => date('n', strtotime($item->date)),
+            'year' => date('Y', strtotime($item->date)),
             'debtor' => $item->debtor,
             'contractValue' => $item->contract_value,
             'outstandingValue' => $item->outstanding_value,

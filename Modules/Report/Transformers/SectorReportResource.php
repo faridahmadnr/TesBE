@@ -2,6 +2,7 @@
 
 namespace Modules\Report\Transformers;
 
+use DateTime;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class SectorReportResource extends JsonResource
@@ -10,9 +11,12 @@ class SectorReportResource extends JsonResource
     {
         return [
             'id' => $this->hashId,
-            'businessType' => $this->whenLoaded('businessType', $this->businessType->name),
-            'month' => $this->month,
-            'year' => $this->year,
+            'businessType' => $this->whenLoaded('businessType', [
+                'id' => $this->businessType->hashId,
+                'name' => $this->businessType->name,
+            ]),
+            'month' => $this->date instanceof DateTime ? $this->date->format('n') : date('n', strtotime($this->date)),
+            'year' => $this->date instanceof DateTime ? $this->date->format('Y') : date('Y', strtotime($this->date)),
             'debtor' => $this->debtor,
             'contractValue' => $this->contract_value,
             'outstandingValue' => $this->outstanding_value,

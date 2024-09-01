@@ -32,15 +32,12 @@ final class SectorReportService extends BaseService
             'realization',
             'created_at',
             'updated_at',
-        ]);
-
-        if ($hashedBusinessTypeId = request()->input('businessTypeId')) {
-            if ($businessTypeId = BusinessType::keyFromHashId($hashedBusinessTypeId)) {
-                $query->where('business_type_id', $businessTypeId);
-            } else {
-                throw new GeneralException(__('There was a problem getting the sector reports. Please try again.'));
-            }
-        }
+        ])
+            ->when(request()->input('businessTypeId'), function ($query) {
+                if ($businessTypeId = BusinessType::keyFromHashId(request()->input('businessTypeId'))) {
+                    $query->where('business_type_id', $businessTypeId);
+                }
+            });
 
         $sectorReports = QueryBuilder::for($query)
             ->defaultSort('-created_at')
@@ -58,15 +55,6 @@ final class SectorReportService extends BaseService
             ])
             ->paginate(request()->query('pageSize') ?? 10)
             ->appends(request()->query());
-
-        $sectorReports->getCollection()->transform(function ($item) {
-            // @phpstan-ignore-next-line
-            $item['year'] = date('Y', strtotime($item->date));
-            // @phpstan-ignore-next-line
-            $item['month'] = date('n', strtotime($item->date));
-
-            return $item;
-        });
 
         return $sectorReports;
     }
@@ -152,7 +140,7 @@ final class SectorReportService extends BaseService
     {
         return $this->model::create([
             'business_type_id' => BusinessType::keyFromHashId($data['business_type_id']),
-            'date' => new DateTime($data['year'].'-'.$data['month'].'-01'),
+            'date' => $data['year'].'-'.$data['month'].'-01',
             'debtor' => $data['debtor'] ?? null,
             'contract_value' => $data['contract_value'] ?? null,
             'outstanding_value' => $data['outstanding_value'] ?? null,

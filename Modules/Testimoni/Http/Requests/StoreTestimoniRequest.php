@@ -29,7 +29,7 @@ class StoreTestimoniRequest extends FormRequest
             ],
             'message' => 'required|string',
             'is_anonymous' => 'nullable|boolean',
-            'image' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ];
     }
 

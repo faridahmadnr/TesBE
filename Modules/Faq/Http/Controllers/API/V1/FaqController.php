@@ -35,8 +35,6 @@ class FaqController extends BaseController
 
     public function show(Faq $faq): JsonResponse
     {
-        $faq->loadMissing(['user', 'user.member']);
-
         return $this->okResponse(new FaqResource($faq));
     }
 

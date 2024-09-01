@@ -8,6 +8,8 @@ class NewsCollection extends BaseTransformerCollection
 {
     protected function map($item)
     {
+        $item->loadMissing(['categories']);
+
         return [
             'id' => $item->hashId,
             'title' => $item->title,
@@ -18,6 +20,7 @@ class NewsCollection extends BaseTransformerCollection
             'isPublished' => $item->status,
             'createdAt' => $item->created_at,
             'updatedAt' => $item->updated_at,
+            'summary' => $item->summary,
         ];
     }
 }

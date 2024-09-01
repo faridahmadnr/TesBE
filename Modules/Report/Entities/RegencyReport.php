@@ -58,7 +58,6 @@ use Modules\Location\Entities\Regency;
  */
 class RegencyReport extends BaseModel
 {
-
     protected $fillable = [
         'date',
         'regency_id',

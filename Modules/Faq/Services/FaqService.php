@@ -95,7 +95,7 @@ final class FaqService extends BaseService
     {
         return $this->model::create([
             'question' => $data['question'] ?? null,
-            'answer' => $data['question'] ?? null,
+            'answer' => htmlspecialchars($data['answer']),
         ]);
     }
 }

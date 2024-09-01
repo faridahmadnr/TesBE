@@ -32,17 +32,12 @@ final class RegencyReportService extends BaseService
             'realization',
             'created_at',
             'updated_at',
-        ]);
-
-        try {
-            if ($regency = request()->input('regency')) {
-                if ($regencyEnum = RegencyEnum::filterParameter($regency)) {
+        ])
+            ->when(request()->input('regency'), function ($query) {
+                if ($regencyEnum = RegencyEnum::filterParameter(request()->input('regency'))) {
                     $query->where('regency_id', $regencyEnum);
                 }
-            }
-        } catch (\TypeError $e) {
-            throw new GeneralException(__('There was a problem getting the regency reports. Please try again.'));
-        }
+            });
 
         $regencyReports = QueryBuilder::for($query)
             ->defaultSort('-created_at')
@@ -50,7 +45,6 @@ final class RegencyReportService extends BaseService
                 AllowedFilter::trashed(),
             ])
             ->allowedSorts([
-                'date',
                 'debtor',
                 AllowedSort::field('contractValue', 'contract_value'),
                 AllowedSort::field('outstandingValue', 'outstanding_value'),
@@ -61,25 +55,11 @@ final class RegencyReportService extends BaseService
             ->paginate(request()->query('pageSize') ?? 10)
             ->appends(request()->query());
 
-        $regencyReports->getCollection()->transform(function (mixed $item) {
-            // @phpstan-ignore-next-line
-            $item['year'] = date('Y', strtotime($item->date));
-            // @phpstan-ignore-next-line
-            $item['month'] = date('n', strtotime($item->date));
-
-            return $item;
-        });
-
         return $regencyReports;
     }
 
     public function show(RegencyReport $regencyReport)
     {
-        // @phpstan-ignore-next-line
-        $regencyReport->year = date('Y', strtotime($regencyReport['date']));
-        // @phpstan-ignore-next-line
-        $regencyReport->month = date('n', strtotime($regencyReport['date']));
-
         return $regencyReport;
     }
 
@@ -89,12 +69,8 @@ final class RegencyReportService extends BaseService
 
         try {
             $user = $this->createRegencyReport($data);
-            // @phpstan-ignore-next-line
-            $user->year = $user['date']->format('Y');
-            // @phpstan-ignore-next-line
-            $user->month = $user['date']->format('n');
-
         } catch (\Throwable $th) {
+            report($th);
             DB::rollBack();
 
             throw new GeneralException(__('There was a problem registering this regency report. Please try again.'));
@@ -116,12 +92,6 @@ final class RegencyReportService extends BaseService
 
             $regencyReport->fill($data);
             $regencyReport->save();
-
-            // @phpstan-ignore-next-line
-            $regencyReport->year = $regencyReport['date']->format('Y');
-            // @phpstan-ignore-next-line
-            $regencyReport->month = $regencyReport['date']->format('n');
-
         } catch (\Throwable $th) {
             report($th);
             DB::rollBack();

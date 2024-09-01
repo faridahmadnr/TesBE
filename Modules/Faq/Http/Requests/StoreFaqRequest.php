@@ -26,7 +26,7 @@ class StoreFaqRequest extends FormRequest
     public function filters()
     {
         return [
-            'answer' => 'trim|escape',
+            'answer' => 'trim',
         ];
     }
 
