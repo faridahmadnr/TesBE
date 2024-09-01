@@ -20,10 +20,14 @@ class VerifySignature
         $sign = $request->header('X-Sign');
         $signTimestamp = $request->header('X-Sign-Timestamp');
 
-        if ($isDebug) {
-            return $next($request);
-        }
         if (! $this->isValidTimestamp($signTimestamp)) {
+            if ($isDebug) {
+                return response()->json([
+                    'message' => 'Invalid timestamp',
+                    'code' => 400,
+                ], 400);
+            }
+
             return response()->json([
                 'message' => 'Forbidden',
                 'code' => 403,
@@ -36,6 +40,13 @@ class VerifySignature
         );
         // Log::info("Frontend: $sign From backend: $backendSign");
         if ($sign !== $backendSign) {
+            if ($isDebug) {
+                return response()->json([
+                    'message' => 'Invalid signature',
+                    'code' => 400,
+                ], 400);
+            }
+
             return response()->json([
                 'message' => 'Forbidden',
                 'code' => 403,
