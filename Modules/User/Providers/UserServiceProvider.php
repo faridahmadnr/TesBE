@@ -40,7 +40,7 @@ class UserServiceProvider extends ServiceProvider
         $this->registerViews();
 
         ResetPassword::createUrlUsing(function (User $user, string $token) {
-            return config('app.frontend_url').'/auth/reset-password?token='.$token.'&email='.$user->email;
+            return config('app.frontend_url').'/member/reset-password?token='.$token.'&email='.$user->email;
         });
     }
 
