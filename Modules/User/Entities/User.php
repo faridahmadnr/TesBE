@@ -50,6 +50,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read int|null $roles_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User onlyTrashed()
@@ -74,6 +75,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static \Illuminate\Database\Eloquent\Builder|User withoutPermission($permissions)
  * @method static \Illuminate\Database\Eloquent\Builder|User withoutRole($roles, $guard = null)
  * @method static \Illuminate\Database\Eloquent\Builder|User withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class User extends Authenticatable implements MustVerifyEmail
@@ -170,9 +172,12 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     // public function sendPasswordResetNotification($token): void
     // {
+    //     // ResetPassword::createUrlUsing(function (User $user, string $token) {
+    //     //     return config('app.frontend_url').'/member/reset-password?token='.$token.'&email='.$user->email;
+    //     // });
     //     $url = 'https://example.com/reset-password?token='.$token;
 
-    //     $this->notify(new ResetPasswordNotification($url));
+    //     // $this->notify(new ResetPasswordNotification($url));
     // }
 
     /**
