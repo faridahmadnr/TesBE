@@ -20,9 +20,6 @@ class VerifySignature
         $sign = $request->header('X-Sign');
         $signTimestamp = $request->header('X-Sign-Timestamp');
 
-        if ($isDebug) {
-            return $next($request);
-        }
         if (! $this->isValidTimestamp($signTimestamp)) {
             if ($isDebug) {
                 return response()->json([
