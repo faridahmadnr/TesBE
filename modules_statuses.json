@@ -10,5 +10,6 @@
     "News": true,
     "Report": true,
     "DataVisualization": true,
-    "Faq": true
+    "Faq": true,
+    "Requirement": true
 }

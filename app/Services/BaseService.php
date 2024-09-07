@@ -570,6 +570,7 @@ abstract class BaseService
 
         $queryBuilder = QueryBuilder::for($this->query)
             ->defaultSort('-created_at')
+            ->allowedFields([...$this->allowedFields])
             ->allowedFilters([...$filters, AllowedFilter::trashed()])
             ->allowedSorts([
                 ...$sorts,

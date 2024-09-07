@@ -40,12 +40,12 @@ Route::group(['prefix' => 'v1/reports', 'as' => 'api.v1.reports.'], function () 
         Route::get('bank-distribution/chart', [V1\BankDistributionController::class, 'chart']);
         Route::get('sectors/distribution', V1\SectorLendingDistributionController::class);
         Route::get('sectors/debitor', V1\DebtorSectorDistributionController::class);
-        Route::get('submission-status', V1\SubmissionStatusController::class);
         Route::get('distribution', V1\RegencyDistributionController::class);
 
         Route::apiResource('sectors', V1\SectorReportController::class)
             ->except(['index']);
     });
+    Route::get('submission-status', V1\SubmissionStatusController::class);
 
     // SECTOR REPORTS
     Route::apiResource('regencies', V1\RegencyReportController::class)

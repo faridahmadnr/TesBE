@@ -16,7 +16,6 @@ use Modules\DataVisualization\Http\Controllers\API\V1;
 Route::group(['prefix' => 'v1', 'as' => 'api.v1.'], function () {
 
     // section 1
-    Route::get('submission-status', [V1\SubmissionStatusController::class, 'index']);
 
     // section 2
 

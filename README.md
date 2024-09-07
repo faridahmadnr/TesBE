@@ -118,12 +118,12 @@ sudo apt-get install libavif-bin # minimum 0.9.3
 ```
 
 sail artisan module:make Testimoni --api && \
-sail artisan module:make-request StoreNewsCategoryRequest News && \
-sail artisan module:make-request UpdateNewsCategoryRequest News && \
-sail artisan module:make-resource NewsCategoryCollection --collection News && \
-sail artisan module:make-resource NewsCategoryResource News && \
-sail artisan module:make-policy NewsCategoryPolicy News && \
-sail artisan module:make-model NewsCategory News -m
+sail artisan module:make-request StoreRequirementCategoryRequest Requirement && \
+sail artisan module:make-request UpdateRequirementCategoryRequest Requirement && \
+sail artisan module:make-resource RequirementCategoryCollection --collection Requirement && \
+sail artisan module:make-resource RequirementCategoryResource Requirement && \
+sail artisan module:make-policy RequirementCategoryPolicy Requirement && \
+sail artisan module:make-model RequirementCategory Requirement -m
 
 ### TODO
 

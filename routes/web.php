@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DownloadController;
+use App\Mail\DailyBackupDatabaseMail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,7 +19,7 @@ Route::get('/', function () {
     // $user = User::first();
 
     // return (new VerifyEmailNotification($user))->toMail($user);
-    // return new DailyBackupDatabaseMail();
+    return new DailyBackupDatabaseMail();
     abort(403);
 });
 

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "23cb2b5d3adb9f004b2bce9c4c61a36f",
+    "content-hash": "6b4e845be58747b16e2bdf19891ea8c2",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -6617,6 +6617,61 @@
             "time": "2024-06-18T15:06:09+00:00"
         },
         {
+            "name": "soundasleep/html2text",
+            "version": "2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/soundasleep/html2text.git",
+                "reference": "83502b6f8f1aaef8e2e238897199d64f284b4af3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/soundasleep/html2text/zipball/83502b6f8f1aaef8e2e238897199d64f284b4af3",
+                "reference": "83502b6f8f1aaef8e2e238897199d64f284b4af3",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "ext-libxml": "*",
+                "php": "^7.3|^8.0"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^1.9",
+                "phpunit/phpunit": "^7.0|^8.0|^9.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Soundasleep\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jevon Wright",
+                    "homepage": "https://jevon.org",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A PHP script to convert HTML into a plain text format",
+            "homepage": "https://github.com/soundasleep/html2text",
+            "keywords": [
+                "email",
+                "html",
+                "php",
+                "text"
+            ],
+            "support": {
+                "email": "support@jevon.org",
+                "issues": "https://github.com/soundasleep/html2text/issues",
+                "source": "https://github.com/soundasleep/html2text/tree/2.1.0"
+            },
+            "time": "2023-01-06T09:28:15+00:00"
+        },
+        {
             "name": "spatie/db-dumper",
             "version": "3.6.0",
             "source": {
@@ -7158,6 +7213,68 @@
                 }
             ],
             "time": "2023-01-14T21:10:59+00:00"
+        },
+        {
+            "name": "spatie/once",
+            "version": "3.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/once.git",
+                "reference": "25252b821765d72566be17c52ea05b35329f0f8f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/once/zipball/25252b821765d72566be17c52ea05b35329f0f8f",
+                "reference": "25252b821765d72566be17c52ea05b35329f0f8f",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "pestphp/pest": "^1.21",
+                "symfony/var-dumper": "^5.1"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/functions.php"
+                ],
+                "psr-4": {
+                    "Spatie\\Once\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A magic memoization function",
+            "homepage": "https://github.com/spatie/once",
+            "keywords": [
+                "cache",
+                "callable",
+                "memoization",
+                "once",
+                "spatie"
+            ],
+            "support": {
+                "source": "https://github.com/spatie/once/tree/3.1.1"
+            },
+            "funding": [
+                {
+                    "url": "https://spatie.be/open-source/support-us",
+                    "type": "custom"
+                }
+            ],
+            "time": "2024-05-27T09:17:58+00:00"
         },
         {
             "name": "spatie/temporary-directory",
@@ -9653,6 +9770,61 @@
                 "source": "https://github.com/tijsverkoyen/CssToInlineStyles/tree/v2.2.7"
             },
             "time": "2023-12-08T13:03:43+00:00"
+        },
+        {
+            "name": "vercoutere/laravel-mjml",
+            "version": "0.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Vercoutere/laravel-mjml.git",
+                "reference": "e99fe100ae0ad4f15cda519980ef55f6631aea5b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Vercoutere/laravel-mjml/zipball/e99fe100ae0ad4f15cda519980ef55f6631aea5b",
+                "reference": "e99fe100ae0ad4f15cda519980ef55f6631aea5b",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^7.7",
+                "laravel/framework": "^9.35|^10.0",
+                "php": "^8.1.0",
+                "soundasleep/html2text": "^2.1",
+                "spatie/once": "^3.1",
+                "symfony/process": "^6.3"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Vercoutere\\LaravelMjml\\MjmlServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Vercoutere\\LaravelMjml\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jonathan Vercoutere",
+                    "email": "jonathan.vercoutere@gmail.com"
+                }
+            ],
+            "description": "A package that allows you to use MJML templates within your Laravel mailables.",
+            "support": {
+                "issues": "https://github.com/Vercoutere/laravel-mjml/issues",
+                "source": "https://github.com/Vercoutere/laravel-mjml/tree/v0.2.0"
+            },
+            "time": "2023-06-19T15:58:14+00:00"
         },
         {
             "name": "vlucas/phpdotenv",

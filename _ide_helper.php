@@ -4913,6 +4913,17 @@ namespace Illuminate\Support\Facades {
                         return $instance->macroCall($method, $parameters);
         }
                     /**
+         * 
+         *
+         * @see \App\Providers\AppServiceProvider::boot()
+         * @param mixed $column
+         * @param mixed $pattern
+         * @static 
+         */        public static function regexp($column, $pattern)
+        {
+                        return \Illuminate\Database\DatabaseManager::regexp($column, $pattern);
+        }
+                    /**
          * Get a schema builder instance for the connection.
          *
          * @return \Illuminate\Database\Schema\PostgresBuilder 
@@ -18649,7 +18660,7 @@ namespace Illuminate\Support {
                     /**
          * 
          *
-         * @see \App\Models\BaseModel::getFlushQueryCacheObserver()
+         * @see \App\Models\BaseModel::getUploadPath()
          * @static 
          */        public static function unsearchable()
         {
@@ -18755,6 +18766,26 @@ namespace Illuminate\Console\Scheduling {
          */        public static function sentryMonitor($monitorSlug = null, $checkInMargin = null, $maxRuntime = null, $updateMonitorConfig = true, $failureIssueThreshold = null, $recoveryThreshold = null)
         {
                         return \Illuminate\Console\Scheduling\Event::sentryMonitor($monitorSlug, $checkInMargin, $maxRuntime, $updateMonitorConfig, $failureIssueThreshold, $recoveryThreshold);
+        }
+            }
+    }
+
+namespace Illuminate\Database {
+            /**
+     * 
+     *
+     * @mixin \Illuminate\Database\Connection
+     */        class DatabaseManager {
+                    /**
+         * 
+         *
+         * @see \App\Providers\AppServiceProvider::boot()
+         * @param mixed $column
+         * @param mixed $pattern
+         * @static 
+         */        public static function regexp($column, $pattern)
+        {
+                        return \Illuminate\Database\DatabaseManager::regexp($column, $pattern);
         }
             }
     }
