@@ -15,6 +15,7 @@
         "divineomega/laravel-password-exposed-validation-rule": "dev-l10-compatibility",
         "doctrine/dbal": "^3.8",
         "elegantweb/sanitizer": "^2.1",
+        "erlandmuchasaj/laravel-gzip": "^1.1",
         "guzzlehttp/guzzle": "^7.2",
         "http-interop/http-factory-guzzle": "^1.2",
         "langleyfoxall/laravel-nist-password-rules": "dev-l10-compatibility",
@@ -40,6 +41,7 @@
         "spatie/laravel-backup": "^9.0",
         "spatie/laravel-permission": "^6.0",
         "spatie/laravel-query-builder": "^5.6",
+        "spatie/simple-excel": "^3.6",
         "vercoutere/laravel-mjml": "^0.2.0"
     },
     "require-dev": {

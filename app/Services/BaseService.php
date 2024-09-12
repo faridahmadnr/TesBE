@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\CreditRequest\Entities\CreditRequest;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
@@ -561,7 +562,7 @@ abstract class BaseService
         return $this;
     }
 
-    public function toQueryBuilder()
+    public function toQueryBuilder(): LengthAwarePaginator
     {
         $this->newQuery()->eagerLoad()->setClauses()->setScopes();
 

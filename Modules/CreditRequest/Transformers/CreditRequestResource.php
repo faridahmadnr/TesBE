@@ -10,7 +10,7 @@ class CreditRequestResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->hashId,
+            'id' => $this->hashId ?? '-',
             'amount' => intval($this->amount),
             'bank' => $this->whenLoaded('bank', $this->bank ? [
                 'id' => $this->bank->hashId,
@@ -23,8 +23,11 @@ class CreditRequestResource extends JsonResource
                     'name' => $this->district->name,
                 ]),
                 'permit' => $this->whenLoaded('businessPermit', [
-                    'id' => $this->businessPermit->hashId,
-                    'name' => $this->businessPermit->name,
+                    'id' => $this->businessPermit->hashId ?? '-',
+                    'name' => $this->businessPermit->name ?? '-',
+                ], [
+                    'id' => '-',
+                    'name' => '-',
                 ]),
                 'regency' => $this->whenLoaded('regency', [
                     'id' => $this->regency->hashId,

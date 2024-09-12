@@ -41,6 +41,8 @@ Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'v1', 'as' => 'api.v1.
      * Credit Request
      */
     Route::controller(V1\CreditRequestController::class)->group(function () {
+        Route::get('credit-requests/export', 'export')
+            ->name('credit-request.export');
         Route::post('credit-requests/{creditRequest}/restore', 'restore')
             ->name('credit-request.restore')
             ->withTrashed();

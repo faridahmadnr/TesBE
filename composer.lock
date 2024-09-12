@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6b4e845be58747b16e2bdf19891ea8c2",
+    "content-hash": "d34620a5858fa7042b28ced7a149bfbe",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1612,6 +1612,96 @@
                 "source": "https://github.com/elegantweb/sanitizer/tree/v2.2.0"
             },
             "time": "2024-03-24T11:14:28+00:00"
+        },
+        {
+            "name": "erlandmuchasaj/laravel-gzip",
+            "version": "1.1.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/erlandmuchasaj/laravel-gzip.git",
+                "reference": "5758d9390fdb98bc2f0810876654ea86f38fe7a9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/erlandmuchasaj/laravel-gzip/zipball/5758d9390fdb98bc2f0810876654ea86f38fe7a9",
+                "reference": "5758d9390fdb98bc2f0810876654ea86f38fe7a9",
+                "shasum": ""
+            },
+            "require": {
+                "ext-exif": "*",
+                "ext-fileinfo": "*",
+                "ext-json": "*",
+                "illuminate/contracts": "^8|^9|^10|^11",
+                "illuminate/filesystem": "^8|^9|^10|^11",
+                "illuminate/http": "^8|^9|^10|^11",
+                "illuminate/support": "^8|^9|^10|^11",
+                "nesbot/carbon": "^2|^3",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "brianium/paratest": "^7.4",
+                "orchestra/testbench": "^9.0",
+                "phpunit/phpunit": "^11.0",
+                "rawr/phpunit-data-provider": "^3.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "ErlandMuchasaj\\LaravelGzip\\GzipServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ErlandMuchasaj\\LaravelGzip\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Erland Muchasaj",
+                    "email": "erland.muchasaj@gmail.com",
+                    "homepage": "https://erlandmuchasaj.tech/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Gzip your responses.",
+            "homepage": "https://github.com/erlandmuchasaj/laravel-gzip",
+            "keywords": [
+                "cms",
+                "emcms",
+                "gzip",
+                "laravel",
+                "library",
+                "optimize",
+                "package",
+                "response"
+            ],
+            "support": {
+                "email": "erland.muchasaj@gmail.com",
+                "irc": "irc://irc.freenode.org/composer",
+                "issues": "https://github.com/erlandmuchasaj/laravel-gzip/issues",
+                "source": "https://github.com/erlandmuchasaj/laravel-gzip"
+            },
+            "funding": [
+                {
+                    "url": "https://ko-fi.com/erlandmuchasaj",
+                    "type": "Ko-fi"
+                },
+                {
+                    "url": "https://paypal.me/emcms?country.x=AL&locale.x=en_US",
+                    "type": "PayPal"
+                },
+                {
+                    "url": "https://www.patreon.com/erlandmuchasaj",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2024-09-03T13:24:53+00:00"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -4663,6 +4753,99 @@
             "time": "2023-11-13T09:31:12+00:00"
         },
         {
+            "name": "openspout/openspout",
+            "version": "v4.24.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/openspout/openspout.git",
+                "reference": "393299ae21153f042f48b185f2adeb4b157d1d93"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/openspout/openspout/zipball/393299ae21153f042f48b185f2adeb4b157d1d93",
+                "reference": "393299ae21153f042f48b185f2adeb4b157d1d93",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "ext-fileinfo": "*",
+                "ext-filter": "*",
+                "ext-libxml": "*",
+                "ext-xmlreader": "*",
+                "ext-zip": "*",
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0"
+            },
+            "require-dev": {
+                "ext-zlib": "*",
+                "friendsofphp/php-cs-fixer": "^3.60.0",
+                "infection/infection": "^0.29.6",
+                "phpbench/phpbench": "^1.3.1",
+                "phpstan/phpstan": "^1.11.8",
+                "phpstan/phpstan-phpunit": "^1.4.0",
+                "phpstan/phpstan-strict-rules": "^1.6.0",
+                "phpunit/phpunit": "^10.5.20 || ^11.2.8"
+            },
+            "suggest": {
+                "ext-iconv": "To handle non UTF-8 CSV files (if \"php-mbstring\" is not already installed or is too limited)",
+                "ext-mbstring": "To handle non UTF-8 CSV files (if \"iconv\" is not already installed)"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "OpenSpout\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Adrien Loison",
+                    "email": "adrien@box.com"
+                }
+            ],
+            "description": "PHP Library to read and write spreadsheet files (CSV, XLSX and ODS), in a fast and scalable way",
+            "homepage": "https://github.com/openspout/openspout",
+            "keywords": [
+                "OOXML",
+                "csv",
+                "excel",
+                "memory",
+                "odf",
+                "ods",
+                "office",
+                "open",
+                "php",
+                "read",
+                "scale",
+                "spreadsheet",
+                "stream",
+                "write",
+                "xlsx"
+            ],
+            "support": {
+                "issues": "https://github.com/openspout/openspout/issues",
+                "source": "https://github.com/openspout/openspout/tree/v4.24.5"
+            },
+            "funding": [
+                {
+                    "url": "https://paypal.me/filippotessarotto",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/Slamdunk",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-07-26T05:48:04+00:00"
+        },
+        {
             "name": "paragonie/certainty",
             "version": "v2.8.3",
             "source": {
@@ -7275,6 +7458,67 @@
                 }
             ],
             "time": "2024-05-27T09:17:58+00:00"
+        },
+        {
+            "name": "spatie/simple-excel",
+            "version": "3.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/simple-excel.git",
+                "reference": "e2482b20b6d3cce1a3ded3e604c2a598c897f0a3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/simple-excel/zipball/e2482b20b6d3cce1a3ded3e604c2a598c897f0a3",
+                "reference": "e2482b20b6d3cce1a3ded3e604c2a598c897f0a3",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^9.0|^10.0|^11.0",
+                "openspout/openspout": "^4.19",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "pestphp/pest-plugin-laravel": "^1.3|^2.3",
+                "phpunit/phpunit": "^9.4|^10.5",
+                "spatie/pest-plugin-snapshots": "^1.1|^2.1",
+                "spatie/phpunit-snapshot-assertions": "^4.0|^5.1",
+                "spatie/temporary-directory": "^1.2|^2.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\SimpleExcel\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Read and write simple Excel and CSV files",
+            "homepage": "https://github.com/spatie/simple-excel",
+            "keywords": [
+                "simple-excel",
+                "spatie"
+            ],
+            "support": {
+                "source": "https://github.com/spatie/simple-excel/tree/3.6.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-04-24T13:41:23+00:00"
         },
         {
             "name": "spatie/temporary-directory",

@@ -29,6 +29,7 @@ use Modules\Termin\Entities\Termin;
 use Modules\User\Entities\User;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
+use Spatie\SimpleExcel\SimpleExcelWriter;
 
 final class CreditRequestService extends BaseService
 {
@@ -39,47 +40,7 @@ final class CreditRequestService extends BaseService
 
     public function getAll()
     {
-        /** @var User $user */
-        $user = auth()->user();
-
-        $results = $this->with([
-            'district',
-            'user',
-            'user.member',
-            'creditRequestType',
-            'businessType',
-        ])
-            ->when($user->isMember(), function ($query) use ($user) {
-                $query->createdBy($user->id);
-            })
-            ->when($user->isAdminBank(), function ($query) use ($user) {
-                $user->loadMissing(['profile']);
-                $query->where('bank_id', $user->profile->bank_id);
-            })
-            ->allowedSorts([
-                AllowedSort::field('user', 'user_name'),
-                AllowedSort::field('address', 'business_address'),
-                AllowedSort::field('amount', 'amount'),
-                AllowedSort::field('district', 'district_name'),
-                AllowedSort::field('type', 'business_type_name'),
-                AllowedSort::field('creditRequestType', 'credit_request_type_name'),
-                AllowedSort::callback('status', function ($query, $descending) {
-                    $direction = $descending ? 'DESC' : 'ASC';
-                    $query->orderBy('status', $direction);
-                }),
-                AllowedSort::field('createdAt', 'created_at'),
-            ])
-            ->allowedFilters([
-                AllowedFilter::callback('status', function ($query, $value) {
-                    $status = CreditRequestStatusEnum::fromValue($value);
-                    $query->where('status', $status->value);
-                }),
-            ])
-            ->withAggregate('user', 'name')
-            ->withAggregate('district', 'name')
-            ->withAggregate('businessType', 'name')
-            ->withAggregate('creditRequestType', 'name')
-            ->toQueryBuilder();
+        $results = $this->baseQuery()->toQueryBuilder();
 
         return $results;
     }
@@ -384,6 +345,58 @@ final class CreditRequestService extends BaseService
         return $creditRequest;
     }
 
+    public function export(): SimpleExcelWriter
+    {
+        $writer = SimpleExcelWriter::streamDownload('credit-request.xlsx');
+        $mapStatus = [
+            'pending' => 'DITUNDA',
+            'draft' => 'DIAJUKAN',
+            'rejected' => 'DITOLAK',
+            'confirmed' => 'DIKONFIRMASI',
+            'approved' => 'DISETUJUI',
+            'processed' => 'DIKONFIRMASI',
+        ];
+        $this->baseQuery()
+            ->with([
+                'district',
+                'user',
+                'user.member',
+                'creditRequestType',
+                'businessType',
+                'businessPermit',
+                'regency',
+                'bank',
+                'termin',
+            ])
+            ->orderBy('created_at', 'desc')
+            ->chunk(1000, function ($creditRequests) use ($writer, $mapStatus) {
+                foreach ($creditRequests as $creditRequest) {
+                    $status = strtolower(CreditRequestStatusEnum::from($creditRequest->status)->name);
+                    $writer->addRow([
+                        'Nomor Registrasi' => $creditRequest->registration_number,
+                        'Nama Pemohon' => $creditRequest->user->name ?? 'Pengguna Dihapus',
+                        'Nomor Telepon Pemohon' => $creditRequest->user->member->phone ?? 'Pengguna Dihapus',
+                        'Alamat Pemohon' => $creditRequest->user?->member?->address,
+                        'Jenis Usaha' => $creditRequest->businessType?->name,
+                        'Izin Usaha' => $creditRequest->businessPermit?->name,
+                        'NPWP' => $creditRequest->business_tin,
+                        'Kode POS' => $creditRequest->postal_code,
+                        'Kabupaten' => $creditRequest->regency?->name,
+                        'Kecamatan' => $creditRequest->district?->name,
+                        'Desa' => $creditRequest->village,
+                        'Jenis KUR' => $creditRequest->creditRequestType?->name,
+                        'Termin' => $creditRequest->termin?->name,
+                        'Bank Pengajuan' => $creditRequest->bank?->name,
+                        'Jumlah Pengajuan' => intval($creditRequest->amount),
+                        'Tanggal Pengajuan' => $creditRequest->created_at->format('d-m-Y H:i:s'),
+                        'Status' => $mapStatus[$status],
+                    ]);
+                }
+            });
+
+        return $writer;
+    }
+
     protected function uploadImage(CreditRequest $creditRequest, UploadedFile $file): string
     {
         // skipcq: PHP-A1004
@@ -431,5 +444,51 @@ final class CreditRequestService extends BaseService
             'termin_id' => Termin::keyFromHashId($data['termin_id']),
             'bank_id' => Bank::keyFromHashId($data['bank_id']),
         ]);
+    }
+
+    private function baseQuery()
+    {
+        /** @var User $user */
+        $user = auth()->user();
+
+        $query = $this->with([
+            'district',
+            'user',
+            'user.member',
+            'creditRequestType',
+            'businessType',
+        ])
+            ->when($user->isMember(), function ($query) use ($user) {
+                $query->createdBy($user->id);
+            })
+            ->when($user->isAdminBank(), function ($query) use ($user) {
+                $user->loadMissing(['profile']);
+                $query->where('bank_id', $user->profile->bank_id);
+            })
+            ->allowedSorts([
+                AllowedSort::field('user', 'user_name'),
+                AllowedSort::field('address', 'business_address'),
+                AllowedSort::field('amount', 'amount'),
+                AllowedSort::field('district', 'district_name'),
+                AllowedSort::field('type', 'business_type_name'),
+                AllowedSort::field('creditRequestType', 'credit_request_type_name'),
+                AllowedSort::callback('status', function ($query, $descending) {
+                    $direction = $descending ? 'DESC' : 'ASC';
+                    $query->orderBy('status', $direction);
+                }),
+                AllowedSort::field('createdAt', 'created_at'),
+            ])
+            ->allowedFilters([
+                AllowedFilter::callback('status', function ($query, $value) {
+                    $status = CreditRequestStatusEnum::fromValue($value);
+                    $query->where('status', $status->value);
+                }),
+            ])
+            ->withAggregate('user', 'name')
+            ->withAggregate('district', 'name')
+            ->withAggregate('businessType', 'name')
+            ->withAggregate('creditRequestType', 'name');
+
+        return $query;
     }
 }

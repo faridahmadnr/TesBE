@@ -129,4 +129,11 @@ class CreditRequestController extends BaseController
 
         return $this->okResponse(new CreditRequestResource($creditRequest));
     }
+
+    public function export(): JsonResponse
+    {
+        $file = $this->creditRequestService->export();
+
+        return $file->toBrowser();
+    }
 }
