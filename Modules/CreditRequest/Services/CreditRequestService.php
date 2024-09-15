@@ -483,7 +483,32 @@ final class CreditRequestService extends BaseService
                     $status = CreditRequestStatusEnum::fromValue($value);
                     $query->where('status', $status->value);
                 }),
+                AllowedFilter::callback('bank', function ($query, $value) {
+                    if (! is_array($value)) {
+                        $query->where('bank_id', Bank::keyFromHashId($value));
+
+                        return;
+                    }
+
+                    $values = array_map(fn ($val) => Bank::keyFromHashId($val), $value);
+                    $query->whereIn('bank_id', $values);
+                }),
+                AllowedFilter::callback('registrationNumber', function ($query, $value) {
+                    if (! is_array($value)) {
+                        $value = explode(',', $value);
+                    }
+                    $values = array_map(fn ($val) => $val, $value);
+                    $query->whereIn('registration_number', $values);
+                }),
+                AllowedFilter::callback('regency', function ($query, $value) {
+                    if (! is_array($value)) {
+                        $value = explode(',', $value);
+                    }
+                    $values = array_map(fn ($val) => $val, $value);
+                    $query->whereIn('business_regency_id', $values);
+                }),
             ])
+            ->allowedFields(['id', 'registration_number'])
             ->withAggregate('user', 'name')
             ->withAggregate('district', 'name')
             ->withAggregate('businessType', 'name')

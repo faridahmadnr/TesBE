@@ -10,7 +10,7 @@ class RegencyCollection extends BaseTransformerCollection
     {
         return [
             'id' => $item->hashId,
-            'name' => $item->name,
+            'name' => ucwords(strtolower($item->name)),
         ];
     }
 }

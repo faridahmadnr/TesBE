@@ -10,10 +10,10 @@ class DistrictResource extends JsonResource
     {
         return [
             'id' => $this->hashId,
-            'name' => $this->name,
+            'name' => ucwords(strtolower($this->name)),
             'regency' => $this->whenLoaded('regency', [
                 'id' => $this->regency->hashId,
-                'name' => $this->regency->name,
+                'name' => ucwords(strtolower($this->regency->name)),
             ]),
         ];
     }

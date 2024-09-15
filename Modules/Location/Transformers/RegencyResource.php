@@ -13,13 +13,13 @@ class RegencyResource extends JsonResource
             'name' => $this->name,
             'province' => [
                 'id' => $this->province->hashId,
-                'name' => $this->province->name,
+                'name' => ucwords(strtolower($this->province->name)),
             ],
             'districts' => $this->whenLoaded('districts', function () {
                 return $this->districts->map(function ($district) {
                     return [
                         'id' => $district->hashId,
-                        'name' => $district->name,
+                        'name' => ucwords(strtolower($district->name)),
                     ];
                 });
             }),
