@@ -11,7 +11,7 @@ final class DebtorSectorDistributionService extends BaseService
 {
     public function getAll()
     {
-        $year = request()->filter['year'] ?? null;
+        $year = request()->filter['year'] ?? now('Y');
         $quarter = request()->filter['quarter'] ?? null;
 
         $query = BusinessType::leftJoin('sector_reports', function ($join) use ($year, $quarter) {

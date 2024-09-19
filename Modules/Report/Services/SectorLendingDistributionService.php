@@ -40,7 +40,7 @@ final class SectorLendingDistributionService extends BaseService
             ->selectRaw('SUM(COALESCE(sector_reports.debtor, 0)) as debtor')
             ->selectRaw('SUM(COALESCE(sector_reports.realization, 0)) as realization')
             ->selectRaw('SUM(COALESCE(sector_reports.target, 0)) as target')
-            ->selectRaw('SUM(CASE WHEN credit_requests.status = '.CreditRequestStatusEnum::DRAFT->value.' THEN 1 ELSE 0 END) AS submission_amount')
+            ->selectRaw('SUM(CASE WHEN credit_requests.status = '.CreditRequestStatusEnum::DRAFT->value.' THEN credit_requests.amount ELSE 0 END) AS submission_amount')
             ->selectRaw('SUM(CASE WHEN credit_requests.status = '
                 .CreditRequestStatusEnum::APPROVED->value
                 .' AND '
