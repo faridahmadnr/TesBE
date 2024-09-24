@@ -18,6 +18,14 @@ Route::group(['prefix' => 'v1', 'as' => 'api.v1.'], function () {
         ->only(['index']);
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
+        Route::controller(V1\RequirementController::class)->group(function () {
+            Route::post('requirements/{requirement}/restore', 'restore')
+                ->name('requirements.restore')
+                ->withTrashed();
+            Route::delete('requirements/{requirement}/delete', 'forceDelete')
+                ->name('requirements.delete')
+                ->withTrashed();
+        });
         Route::apiResource('requirements', V1\RequirementController::class)
             ->except(['index']);
     });
