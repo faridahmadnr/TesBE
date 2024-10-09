@@ -7,7 +7,12 @@ use Database\Seeders\Traits\DisableForeignKeys;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Modules\Bank\Entities\Bank;
+use Modules\BusinessPermit\Entities\BusinessPermit;
+use Modules\BusinessType\Entities\BusinessType;
+use Modules\CreditRequest\Entities\CreditRequestType;
 use Modules\CreditRequest\Enums\CreditRequestStatusEnum;
+use Modules\Termin\Entities\Termin;
 
 class MigrateData extends Command
 {
@@ -211,6 +216,8 @@ class MigrateData extends Command
                 $businessTypeId = $businessTypes->firstWhere('name', $oldBusinessTypeId['name'])->id ?? false;
 
                 if (! $businessTypeId) {
+                    $this->error('Business type '.$oldBusinessTypeId['name'].' not found');
+
                     continue;
                 }
 
@@ -218,6 +225,8 @@ class MigrateData extends Command
                 $businessPermitId = $businessPermits->firstWhere('name', $oldBusinessPermitId['name'])->id ?? false;
 
                 if (! $businessPermitId) {
+                    $this->error('Business permit '.$oldBusinessPermitId['name'].' not found');
+
                     continue;
                 }
 
@@ -225,6 +234,8 @@ class MigrateData extends Command
                 $businessRegencyId = $businessRegencies->firstWhere('name', $oldBusinessRegencyId['name'])->id ?? false;
 
                 if (! $businessRegencyId) {
+                    $this->error('Business regency '.$oldBusinessRegencyId['name'].' not found');
+
                     continue;
                 }
 
@@ -232,6 +243,8 @@ class MigrateData extends Command
                 $districtId = $districts->firstWhere('name', $oldDistrictId['name'])->id ?? false;
 
                 if (! $districtId) {
+                    $this->error('District '.$oldDistrictId['name'].' not found');
+
                     continue;
                 }
 
@@ -239,6 +252,8 @@ class MigrateData extends Command
                 $creditRequestTypeId = $creditRequestTypes->firstWhere('name', $oldCreditRequestTypeId['name'])->id ?? false;
 
                 if (! $creditRequestTypeId) {
+                    $this->error('Credit request type '.$oldCreditRequestTypeId['name'].' not found');
+
                     continue;
                 }
 
@@ -246,6 +261,8 @@ class MigrateData extends Command
                 $terminId = $termins->firstWhere('name', $oldTerminId['name'])->id ?? false;
 
                 if (! $terminId) {
+                    $this->error('Termin '.$oldTerminId['name'].' not found');
+
                     continue;
                 }
 
@@ -253,6 +270,8 @@ class MigrateData extends Command
                 $bankId = $banks->firstWhere('name', $oldBankId['name'])->id ?? false;
 
                 if (! $bankId) {
+                    $this->error('Bank '.$oldBankId['name'].' not found');
+
                     continue;
                 }
 
@@ -260,6 +279,8 @@ class MigrateData extends Command
                 $userId = $newUsers->firstWhere('email', $oldUserId['email'])['id'] ?? false;
 
                 if (! $userId) {
+                    $this->error('User '.$oldUserId['email'].' not found');
+
                     continue;
                 }
 
@@ -268,7 +289,7 @@ class MigrateData extends Command
                 $creditrequestId = $lastCreditRequestId + 1;
                 $creditRequests[] = [
                     'id' => $creditrequestId,
-                    'registration_number' => $creditrequest[1] ?? null,
+                    'registration_number' => trim($creditrequest[1]) ?? null,
                     'user_id' => $userId,
                     'business_type_id' => $businessTypeId,
                     'business_permit_id' => $businessPermitId,
@@ -311,8 +332,12 @@ class MigrateData extends Command
 
     private function getOldBusinessTypes()
     {
+        DB::table('business_types')->truncate();
         $businessTypesPath = str_replace('\\', '/', storage_path('app/data/backup/business_types.csv'));
         $businessTypes = $this->getDataFromCsv($businessTypesPath);
+
+        $insertedData = array_map(fn ($businessType) => ['name' => $businessType[1]], $businessTypes);
+        BusinessType::insert($insertedData);
 
         return collect($businessTypes)->map(function ($businessType) {
             return [
@@ -324,8 +349,12 @@ class MigrateData extends Command
 
     private function getOldBusinessPermits()
     {
+        DB::table('business_permits')->truncate();
         $businessPermitsPath = str_replace('\\', '/', storage_path('app/data/backup/business_permits.csv'));
         $businessPermits = $this->getDataFromCsv($businessPermitsPath);
+
+        $insertedData = array_map(fn ($businessPermit) => ['name' => $businessPermit[1]], $businessPermits);
+        BusinessPermit::insert($insertedData);
 
         return collect($businessPermits)->map(function ($businessPermit) {
             return [
@@ -363,8 +392,12 @@ class MigrateData extends Command
 
     private function getOldCreditRequestType()
     {
+        DB::table('credit_request_types')->truncate();
         $path = str_replace('\\', '/', storage_path('app/data/backup/kur_types.csv'));
         $creditRequestTypes = $this->getDataFromCsv($path);
+
+        $insertedData = array_map(fn ($data) => ['name' => $data[1]], $creditRequestTypes);
+        CreditRequestType::insert($insertedData);
 
         return collect($creditRequestTypes)->map(function ($creditRequest) {
             return [
@@ -376,8 +409,12 @@ class MigrateData extends Command
 
     private function getOldTermins()
     {
+        DB::table('termins')->truncate();
         $path = str_replace('\\', '/', storage_path('app/data/backup/termins.csv'));
         $termins = $this->getDataFromCsv($path);
+
+        $insertedData = array_map(fn ($data) => ['name' => $data[1], 'value' => $data[2]], $termins);
+        Termin::insert($insertedData);
 
         return collect($termins)->map(function ($termin) {
             return [
@@ -389,8 +426,19 @@ class MigrateData extends Command
 
     private function getOldBanks()
     {
+        DB::table('banks')->truncate();
         $path = str_replace('\\', '/', storage_path('app/data/backup/banks.csv'));
         $banks = $this->getDataFromCsv($path);
+
+        $insertedData = array_map(fn ($data) => [
+            'name' => $data[1],
+            'link' => $data[2],
+            'code' => $data[3],
+            'status' => $data[4],
+            'reason_status' => $data[5],
+            'logo' => $data[6],
+        ], $banks);
+        Bank::insert($insertedData);
 
         return collect($banks)->map(function ($bank) {
             return [
