@@ -289,7 +289,7 @@ class MigrateData extends Command
                 $creditrequestId = $lastCreditRequestId + 1;
                 $creditRequests[] = [
                     'id' => $creditrequestId,
-                    'registration_number' => trim($creditrequest[1]) ?? null,
+                    'registration_number' => trim($creditrequest[1] ?? ''),
                     'user_id' => $userId,
                     'business_type_id' => $businessTypeId,
                     'business_permit_id' => $businessPermitId,
