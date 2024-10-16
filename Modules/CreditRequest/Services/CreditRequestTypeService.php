@@ -63,6 +63,9 @@ final class CreditRequestTypeService extends BaseService
         DB::beginTransaction();
 
         try {
+            if ($testimoni->name === 'Kur Kecil' || $testimoni->name === 'Kur Super Mikro' || $testimoni->name === 'Kur Mikro') {
+                throw new GeneralException(__('Unable to update default credit request type'));
+            }
             $testimoni->fill($data);
             $testimoni->save();
         } catch (\Throwable $th) {
