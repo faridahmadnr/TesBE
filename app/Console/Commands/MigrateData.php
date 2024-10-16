@@ -396,13 +396,30 @@ class MigrateData extends Command
         $path = str_replace('\\', '/', storage_path('app/data/backup/kur_types.csv'));
         $creditRequestTypes = $this->getDataFromCsv($path);
 
-        $insertedData = array_map(fn ($data) => ['name' => $data[1]], $creditRequestTypes);
+        $insertedData = array_map(function ($data) {
+            $name = $this->_removeUnusedChar($data[1]);
+            $interest = 6 / 100;
+            if ($name === 'Kur Super Mikro') {
+                $interest = 3 / 100;
+            }
+
+            return [
+                'name' => $name,
+                'min_value' => $this->_removeUnusedChar($data[2]),
+                'max_value' => $this->_removeUnusedChar($data[3]),
+                'interest' => $interest,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }, $creditRequestTypes);
         CreditRequestType::insert($insertedData);
 
         return collect($creditRequestTypes)->map(function ($creditRequest) {
             return [
                 'id' => $this->_removeUnusedChar($creditRequest[0]),
                 'name' => $this->_removeUnusedChar($creditRequest[1]),
+                'min_value' => $this->_removeUnusedChar($creditRequest[2]),
+                'max_value' => $this->_removeUnusedChar($creditRequest[3]),
             ];
         });
     }
