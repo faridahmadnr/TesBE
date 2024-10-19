@@ -18,7 +18,7 @@ class NewsResource extends JsonResource
                 'name' => $category->name,
             ]),
             'isPublished' => $this->status,
-            'created_at' => $this->created_at,
+            'createdAt' => $this->created_at,
             'updatedAt' => $this->updated_at,
             'youtubeUrl' => $this->youtube_url,
         ];

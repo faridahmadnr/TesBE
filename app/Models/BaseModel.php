@@ -68,7 +68,7 @@ abstract class BaseModel extends Model
                 return $adapter->url("$path/{$value}");
             }
 
-            return $adapter->temporaryUrl("$path/{$value}", now()->addMinutes(10)); //
+            return $adapter->temporaryUrl("$path{$value}", now()->addMinutes(10)); //
         }
 
         if (! $value) {
