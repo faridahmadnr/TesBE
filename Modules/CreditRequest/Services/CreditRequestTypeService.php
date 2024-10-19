@@ -19,21 +19,25 @@ final class CreditRequestTypeService extends BaseService
 
     public function getAll()
     {
-        $query = $this->model::select(['id', 'name', 'min_value', 'max_value', 'interest', 'created_at']);
+        $query = $this->model::select([
+            "id",
+            "name",
+            "min_value",
+            "max_value",
+            "interest",
+            "created_at",
+        ]);
         $results = QueryBuilder::for($query)
-            ->defaultSort('-created_at')
-            ->allowedFields(['name', 'min_value', 'max_value'])
-            ->allowedFilters([
-                'name',
-                AllowedFilter::trashed(),
-            ])
+            ->defaultSort("-created_at")
+            ->allowedFields(["name", "min_value", "max_value"])
+            ->allowedFilters(["name", AllowedFilter::trashed()])
             ->allowedSorts([
-                'name',
-                AllowedSort::field('min_value', 'min'),
-                AllowedSort::field('max_value', 'max'),
-                AllowedSort::field('created_at', 'createdAt'),
+                "name",
+                AllowedSort::field("min_value", "min"),
+                AllowedSort::field("max_value", "max"),
+                AllowedSort::field("created_at", "createdAt"),
             ])
-            ->paginate(request()->query('pageSize') ?? 10)
+            ->paginate(request()->query("pageSize") ?? 10)
             ->appends(request()->query());
 
         return $results;
@@ -49,7 +53,11 @@ final class CreditRequestTypeService extends BaseService
             report($th);
             DB::rollBack();
 
-            throw new GeneralException(__('There was a problem registering this testimoni. Please try again.'));
+            throw new GeneralException(
+                __(
+                    "There was a problem registering this testimoni. Please try again."
+                )
+            );
         }
 
         // event(new CreditRequestTypeCreated($testimoni));
@@ -58,13 +66,19 @@ final class CreditRequestTypeService extends BaseService
         return $testimoni;
     }
 
-    public function update(CreditRequestType $testimoni, array $data = []): CreditRequestType
-    {
+    public function update(
+        CreditRequestType $testimoni,
+        array $data = []
+    ): CreditRequestType {
         DB::beginTransaction();
 
         try {
-            if ($testimoni->name === 'Kur Kecil' || $testimoni->name === 'Kur Super Mikro' || $testimoni->name === 'Kur Mikro') {
-                throw new GeneralException(__('Unable to update default credit request type'));
+            if (
+                $testimoni->name === "Kur Kecil" ||
+                $testimoni->name === "Kur Super Mikro" ||
+                $testimoni->name === "Kur Mikro"
+            ) {
+                $data["name"] = $testimoni->name;
             }
             $testimoni->fill($data);
             $testimoni->save();
@@ -72,7 +86,11 @@ final class CreditRequestTypeService extends BaseService
             report($th);
             DB::rollBack();
 
-            throw new GeneralException(__('There was a problem updating this testimoni. Please try again.'));
+            throw new GeneralException(
+                __(
+                    "There was a problem updating this testimoni. Please try again."
+                )
+            );
         }
 
         // event(new CreditRequestTypeUpdated($testimoni));
@@ -89,7 +107,9 @@ final class CreditRequestTypeService extends BaseService
             return $testimoni;
         }
 
-        throw new GeneralException('There was a problem deleting this testimoni. Please try again.');
+        throw new GeneralException(
+            "There was a problem deleting this testimoni. Please try again."
+        );
     }
 
     public function restore(CreditRequestType $testimoni): CreditRequestType
@@ -100,7 +120,11 @@ final class CreditRequestTypeService extends BaseService
             return $testimoni;
         }
 
-        throw new GeneralException(__('There was a problem restoring this testimoni. Please try again.'));
+        throw new GeneralException(
+            __(
+                "There was a problem restoring this testimoni. Please try again."
+            )
+        );
     }
 
     public function destroy(CreditRequestType $testimoni): bool
@@ -111,16 +135,21 @@ final class CreditRequestTypeService extends BaseService
             return true;
         }
 
-        throw new GeneralException(__('There was a problem permanently deleting this testimoni. Please try again.'));
+        throw new GeneralException(
+            __(
+                "There was a problem permanently deleting this testimoni. Please try again."
+            )
+        );
     }
 
-    protected function createCreditRequestType(array $data = []): CreditRequestType
-    {
+    protected function createCreditRequestType(
+        array $data = []
+    ): CreditRequestType {
         return $this->model::create([
-            'name' => $data['name'] ?? null,
-            'min_value' => $data['min'] ?? 0,
-            'max_value' => $data['max'] ?? 0,
-            'interest' => $data['interest'] ?? 0,
+            "name" => $data["name"] ?? null,
+            "min_value" => $data["min"] ?? 0,
+            "max_value" => $data["max"] ?? 0,
+            "interest" => $data["interest"] ?? 0,
         ]);
     }
 }
