@@ -12,7 +12,9 @@ use Modules\BusinessPermit\Entities\BusinessPermit;
 use Modules\BusinessType\Entities\BusinessType;
 use Modules\CreditRequest\Entities\CreditRequestType;
 use Modules\CreditRequest\Enums\CreditRequestStatusEnum;
+use Modules\Faq\Entities\Faq;
 use Modules\News\Entities\News;
+use Modules\Requirement\Entities\Requirement;
 use Modules\Termin\Entities\Termin;
 use Storage;
 
@@ -45,6 +47,8 @@ class MigrateData extends Command
         $this->disableForeignKeys();
         $this->migrateUser();
         $this->getOldNews();
+        $this->getOldRequirement();
+        $this->getOldFaq();
         $this->enableForeignKeys();
 
         $this->info('Finish Migrate Data');
@@ -487,21 +491,64 @@ class MigrateData extends Command
             $insertedData[] = [
                 'title' => $item[1],
                 'slug' => $item[4],
-                'content' => $item[2],
-                'summary' => \Str::limit(strip_tags($item[2]), 200),
+                'content' => str_replace('&nbsp;', ' ', $item[2]),
+                'summary' => \Str::limit(strip_tags(str_replace('&nbsp;', ' ', $item[2])), 200),
                 'featured_image' => $item[0].'.jpg',
                 'status' => 1,
                 'created_at' => $item[6],
             ];
         }
         News::insert($insertedData);
+    }
 
-        return collect($news)->map(function ($bank) {
-            return [
-                'id' => $this->_removeUnusedChar($bank[0]),
-                'name' => $this->_removeUnusedChar($bank[1]),
+    private function getOldRequirement()
+    {
+        Requirement::truncate();
+        $path = str_replace('\\', '/', storage_path('app/data/backup/pages.csv'));
+        $news = $this->getDataFromCsv($path);
+
+        $insertedData = [];
+        foreach ($news as $item) {
+            if ($item[5] !== 'REQUIREMENT') {
+                continue;
+            }
+
+            $image = file_get_contents($item[3]);
+            $path = 'requirements/'.$item[0].'.jpg';
+
+            Storage::put($path, $image);
+            $insertedData[] = [
+                'name' => $item[1],
+                'summary' => $item[9],
+                'description' => str_replace('&nbsp;', ' ', $item[2]),
+                'image' => $item[0].'.jpg',
+                'status' => 1,
+                'created_at' => now(),
             ];
-        });
+        }
+        Requirement::insert($insertedData);
+    }
+
+    private function getOldFaq()
+    {
+        Faq::truncate();
+        $path = str_replace('\\', '/', storage_path('app/data/backup/pages.csv'));
+        $news = $this->getDataFromCsv($path);
+
+        $insertedData = [];
+        foreach ($news as $item) {
+            if ($item[5] !== 'FAQ') {
+                continue;
+            }
+
+            $insertedData[] = [
+                'question' => $item[1],
+                'answer' => str_replace('&nbsp;', ' ', $item[2]),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+        Faq::insert($insertedData);
     }
 
     private function _removeUnusedChar(string $text)
