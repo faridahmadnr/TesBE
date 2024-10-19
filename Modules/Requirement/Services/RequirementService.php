@@ -19,7 +19,7 @@ final class RequirementService extends BaseService
     {
         $query = $this->select()
             ->allowedSorts(['name'])
-            ->allowedFields(['id', 'name', 'summary', 'description'])
+            ->allowedFields(['id', 'name', 'summary', 'image', 'description'])
             ->toQueryBuilder();
 
         return $query;
