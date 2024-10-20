@@ -2,8 +2,8 @@
 
 namespace Modules\User\Rules;
 
-use GuzzleHttp\Client;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Facades\Http;
 
 /**
  * Class Captcha.
@@ -25,15 +25,11 @@ class Captcha implements Rule
             return false;
         }
 
-        $response = json_decode((new Client([
-            'timeout' => 60,
-        ]))->post('https://www.google.com/recaptcha/api/siteverify', [
-            'form_params' => [
-                'secret' => config('app.captcha.key'),
-                'remoteip' => request()->getClientIp(),
-                'response' => $value,
-            ],
-        ])->getBody(), true);
+        $response = Http::post('https://challenges.cloudflare.com/turnstile/v0/siteverify', [
+            'secret' => config('app.captcha.key'),
+            'remoteip' => request()->getClientIp(),
+            'response' => $value,
+        ])->json();
 
         return isset($response['success']) && $response['success'] === true;
     }

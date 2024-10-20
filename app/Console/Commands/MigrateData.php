@@ -454,14 +454,21 @@ class MigrateData extends Command
         $path = str_replace('\\', '/', storage_path('app/data/backup/banks.csv'));
         $banks = $this->getDataFromCsv($path);
 
-        $insertedData = array_map(fn ($data) => [
-            'name' => $data[1],
-            'link' => $data[2],
-            'code' => $data[3],
-            'status' => $data[4],
-            'reason_status' => $data[5],
-            'logo' => $data[6],
-        ], $banks);
+        $insertedData = [];
+        foreach ($banks as $data) {
+            // $image = file_get_contents($item[3]);
+            // $path = 'news/'.$item[0].'.jpg';
+
+            // Storage::put($path, $image);
+            $insertedData[] = [
+                'name' => $data[1],
+                'link' => $data[2],
+                'code' => $data[3],
+                'status' => $data[4],
+                'reason_status' => $data[5],
+                'logo' => $data[6],
+            ];
+        }
         Bank::insert($insertedData);
 
         return collect($banks)->map(function ($bank) {
