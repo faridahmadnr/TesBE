@@ -65,7 +65,7 @@ abstract class BaseModel extends Model
                  *
                  * https://developers.cloudflare.com/r2/api/s3/presigned-urls/#limitations
                  */
-                return $adapter->url("$path/{$value}");
+                return $adapter->url("$path$value");
             }
 
             return $adapter->temporaryUrl("$path$value", now()->addMinutes(10)); //
