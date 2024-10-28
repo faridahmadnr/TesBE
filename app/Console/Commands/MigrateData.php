@@ -45,10 +45,10 @@ class MigrateData extends Command
         $this->info('Start Migrate Data');
 
         $this->disableForeignKeys();
-        $this->migrateUser();
-        $this->getOldNews();
-        $this->getOldRequirement();
-        $this->getOldFaq();
+        // $this->migrateUser();
+        // $this->getOldNews();
+        // $this->getOldRequirement();
+        // $this->getOldFaq();
         $this->enableForeignKeys();
 
         $this->info('Finish Migrate Data');
@@ -456,10 +456,10 @@ class MigrateData extends Command
 
         $insertedData = [];
         foreach ($banks as $data) {
-            // $image = file_get_contents($item[3]);
-            // $path = 'news/'.$item[0].'.jpg';
+            $image = file_get_contents($data[6]);
+            $path = 'news/'.$data[0].'.jpg';
 
-            // Storage::put($path, $image);
+            Storage::put($path, $image);
             $insertedData[] = [
                 'name' => $data[1],
                 'link' => $data[2],
