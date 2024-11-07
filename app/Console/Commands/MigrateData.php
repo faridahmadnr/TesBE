@@ -45,10 +45,10 @@ class MigrateData extends Command
         $this->info('Start Migrate Data');
 
         $this->disableForeignKeys();
-        // $this->migrateUser();
-        // $this->getOldNews();
-        // $this->getOldRequirement();
-        // $this->getOldFaq();
+        $this->migrateUser();
+        $this->getOldNews();
+        $this->getOldRequirement();
+        $this->getOldFaq();
         $this->enableForeignKeys();
 
         $this->info('Finish Migrate Data');
