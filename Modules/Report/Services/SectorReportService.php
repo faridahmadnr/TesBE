@@ -168,9 +168,13 @@ final class SectorReportService extends BaseService
         return $query->get()->map(function ($item) {
             return [
                 'name' => $item->name,
+                // @phpstan-ignore-next-line
                 'realization' => $item->realization,
+                // @phpstan-ignore-next-line
                 'submission' => $item->submission,
+                // @phpstan-ignore-next-line
                 'realizationText' => formatCurrency($item->realization),
+                // @phpstan-ignore-next-line
                 'submissionText' => formatCurrency($item->submission),
             ];
         });
