@@ -23,6 +23,13 @@ class SubmissionStatusController extends BaseController
             return $this->successResponse($data);
         }
 
+        if ($type === 'gender') {
+            unset($data['user']);
+            unset($data['histories']);
+
+            return $this->successResponse($data);
+        }
+
         return $this->successResponse(new SubmissionStatusCollection($data));
     }
 }

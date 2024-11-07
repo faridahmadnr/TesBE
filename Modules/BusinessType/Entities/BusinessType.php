@@ -4,6 +4,7 @@ namespace Modules\BusinessType\Entities;
 
 use App\Models\BaseModel;
 use Modules\BusinessType\Database\factories\BusinessTypeFactory;
+use Modules\Report\Entities\SectorReport;
 
 /**
  * Modules\BusinessType\Entities\BusinessType
@@ -21,6 +22,8 @@ use Modules\BusinessType\Database\factories\BusinessTypeFactory;
  * @property-read \Modules\User\Entities\User|null $creator
  * @property-read string|null $hash_id
  * @property-read string|null $hash_id_raw
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, SectorReport> $sector
+ * @property-read int|null $sector_count
  * @property-read \Modules\User\Entities\User|null $updater
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static \Modules\BusinessType\Database\factories\BusinessTypeFactory factory($count = null, $state = [])
@@ -55,5 +58,10 @@ class BusinessType extends BaseModel
     protected static function newFactory()
     {
         return BusinessTypeFactory::new();
+    }
+
+    public function sector()
+    {
+        return $this->hasMany(SectorReport::class);
     }
 }

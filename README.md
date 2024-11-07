@@ -117,13 +117,13 @@ sudo apt-get install webp
 sudo apt-get install libavif-bin # minimum 0.9.3
 ```
 
-sail artisan module:make Testimoni --api && \
-sail artisan module:make-request StoreRequirementCategoryRequest Requirement && \
-sail artisan module:make-request UpdateRequirementCategoryRequest Requirement && \
-sail artisan module:make-resource RequirementCategoryCollection --collection Requirement && \
-sail artisan module:make-resource RequirementCategoryResource Requirement && \
-sail artisan module:make-policy RequirementCategoryPolicy Requirement && \
-sail artisan module:make-model RequirementCategory Requirement -m
+sail artisan module:make Import --api && \
+sail artisan module:make-request StoreImportCategoryRequest Import && \
+sail artisan module:make-request UpdateImportCategoryRequest Import && \
+sail artisan module:make-resource ImportCategoryCollection --collection Import && \
+sail artisan module:make-resource ImportCategoryResource Import && \
+sail artisan module:make-policy ImportCategoryPolicy Import && \
+sail artisan module:make-model ImportCategory Import -m
 
 ### TODO
 

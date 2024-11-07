@@ -11,5 +11,6 @@
     "Report": true,
     "DataVisualization": true,
     "Faq": true,
-    "Requirement": true
+    "Requirement": true,
+    "Import": true
 }

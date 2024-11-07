@@ -23,6 +23,10 @@ class SectorReportController extends BaseController
     {
         $sectorReports = $this->sectorReportService->getAll();
 
+        if (request()->query('type') === 'graph') {
+            return $this->successResponse($sectorReports);
+        }
+
         return $this->successResponse(new SectorReportCollection($sectorReports));
     }
 

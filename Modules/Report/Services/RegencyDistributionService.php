@@ -24,10 +24,11 @@ final class RegencyDistributionService extends BaseService
         $submissions = $this->getSubmissionByRegency(year: $year, quarter: $quarter);
 
         $path = 'data/map.geojson';
-        if (! Storage::exists($path)) {
+        if (! Storage::disk('local')->exists($path)) {
             return response()->json(['error' => 'File not found'], 404);
         }
-        $geojson = json_decode(Storage::get($path), true);
+
+        $geojson = json_decode(Storage::disk('local')->get($path), true);
 
         foreach ($geojson as $key => $geo) {
             $data = $submissions->where('id', str_replace('-', '', $geo['id']))->first();
@@ -120,47 +121,26 @@ final class RegencyDistributionService extends BaseService
                         $query->whereRaw('EXTRACT(QUARTER FROM regency_reports.date) = ?', [$quarter]);
                     });
             })
-            ->leftJoin('credit_requests', function ($join) use ($year, $quarter) {
-                $join->on('regencies.id', '=', 'credit_requests.business_regency_id')
-                    ->when($year, function ($query) use ($year) {
-                        $query->whereYear('credit_requests.created_at', $year);
-                    })
-                    ->when(! is_null($quarter) && $quarter !== 'all', function ($query) use ($quarter) {
-                        [$quarter] = QuartersEnum::getQuarterMonthsValue(strtoupper($quarter));
-                        $query->whereRaw('EXTRACT(QUARTER FROM credit_requests.created_at) = ?', [$quarter]);
-                    });
-            })
             ->selectRaw('SUM(COALESCE(regency_reports.debtor, 0)) as total_debitor')
             ->selectRaw('SUM(COALESCE(regency_reports.realization, 0)) as total_realization')
             ->selectRaw('SUM(COALESCE(regency_reports.target, 0)) as total_target')
             ->selectRaw('LOWER(regencies.name) as name')
-            ->selectRaw('SUM(COALESCE(CASE WHEN credit_requests.status = '.CreditRequestStatusEnum::APPROVED->value.' THEN 1 ELSE 0 END, 0)) AS debtor_value')
-            ->selectRaw('SUM(COALESCE(CASE WHEN credit_requests.status = '.CreditRequestStatusEnum::DRAFT->value.' THEN amount ELSE 0 END, 0)) AS submission_amount')
-            ->selectRaw('SUM(COALESCE(CASE WHEN credit_requests.status = '
-                .CreditRequestStatusEnum::APPROVED->value
-                .' AND '
-                .DB::regexp('credit_requests.remark', '^[0-9]+$')
-                .' THEN 1 ELSE 0 END, 0)) AS realization_amount')
+            ->orderBy('total_realization')
             ->groupBy('regencies.name')
             ->get()
-            ->sortBy('total_realization')
             ->map(function ($item, $index) {
                 return [
                     'name' => ucwords($item->name),
                     // @phpstan-ignore-next-line
-                    'submissionAmount' => $item->submission_amount,
+                    'submissionAmount' => $item->total_target,
                     // @phpstan-ignore-next-line
-                    'submissionAmountText' => formatCurrency($item->submission_amount),
+                    'submissionAmountText' => formatCurrency($item->total_target),
                     // @phpstan-ignore-next-line
-                    'realizationAmount' => $item->realization_amount,
+                    'realizationAmount' => $item->total_realization,
                     // @phpstan-ignore-next-line
-                    'realizationAmountText' => formatCurrency($item->realization_amount),
-                    // @phpstan-ignore-next-line
-                    'debtorValue' => $item->debtor_value,
+                    'realizationAmountText' => formatCurrency($item->total_realization),
                     // @phpstan-ignore-next-line
                     'realizationPercentage' => $item->total_target > 0 ? ($item->total_realization / $item->total_target) * 100 : 0,
-                    // @phpstan-ignore-next-line
-                    'realization' => $item->total_realization,
                     // @phpstan-ignore-next-line
                     'debitor' => $item->total_debitor,
                     'target' => $item->total_target,

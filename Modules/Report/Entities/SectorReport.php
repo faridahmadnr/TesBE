@@ -12,9 +12,6 @@ use Modules\BusinessType\Entities\BusinessType;
  * @property int $id
  * @property int|null $business_type_id
  * @property string $date
- * @property int $debtor
- * @property int $contract_value
- * @property int $outstanding_value
  * @property int $target
  * @property int $realization
  * @property int|null $created_by
@@ -39,15 +36,12 @@ use Modules\BusinessType\Entities\BusinessType;
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport query()
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel updatedBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport whereBusinessTypeId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SectorReport whereContractValue($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport whereCreatedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport whereDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SectorReport whereDebtor($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport whereDeletedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SectorReport whereOutstandingValue($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport whereRealization($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport whereTarget($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport whereUpdatedAt($value)

@@ -25,8 +25,7 @@ final class DebtorSectorDistributionService extends BaseService
                 });
         })
             ->select('business_types.name as name')
-            ->selectRaw('SUM(COALESCE(sector_reports.debtor, 0)) as debtor')
-            ->selectRaw('SUM(COALESCE(sector_reports.contract_value, 0)) as contract')
+            ->selectRaw('SUM(COALESCE(sector_reports.realization, 0)) as realization')
             ->selectRaw('SUM(COALESCE(sector_reports.target, 0)) as target')
             ->groupBy('business_types.name');
 

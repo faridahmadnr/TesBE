@@ -31,6 +31,10 @@ final class SubmissionStatusService extends BaseService
             return $this->getSubmissionStatusByStats(year: $year, quarter: $quarter);
         }
 
+        if ($type == 'gender') {
+            return $this->getSubmissionStatusByGender(year: $year, quarter: $quarter);
+        }
+
         throw new NotImplementedException('Not implemented yet');
     }
 
@@ -97,5 +101,24 @@ final class SubmissionStatusService extends BaseService
         unset($data['histories']);
 
         return $data;
+    }
+
+    private function getSubmissionStatusByGender($year = null, $quarter = null)
+    {
+        $query = CreditRequest::when($year, function ($query) use ($year) {
+            $query->whereYear('credit_requests.created_at', $year);
+        })
+            ->when(! is_null($quarter) && $quarter !== 'all', function ($query) use ($quarter) {
+                [$quarter] = QuartersEnum::getQuarterMonthsValue(strtoupper($quarter));
+                $query->whereRaw('EXTRACT(QUARTER FROM credit_requests.created_at) = ?', [$quarter]);
+            })
+            ->join('users', 'credit_requests.user_id', '=', 'users.id')
+            ->join('members', 'users.id', '=', 'members.user_id')
+            ->selectRaw('SUM(COALESCE(CASE WHEN members.gender = \'male\' THEN 1 ELSE 0 END, 0)) AS male')
+            ->selectRaw('SUM(COALESCE(CASE WHEN members.gender = \'female\' THEN 1 ELSE 0 END, 0)) AS female')
+            ->first();
+
+        return $query;
+
     }
 }

@@ -10,15 +10,10 @@ class DebtorSectorDistributionCollection extends BaseTransformerCollection
     {
         return [
             'name' => $item['name'],
-            // 'debtor' => $item['debtor'],
-            // 'contract' => $item['contract'],
-            // 'target' => $item['target'],
-
-            'debtor' => rand(0, 100),
-            'contract' => rand(0, 100),
-            'contractText' => formatCurrency(rand(0, 100)),
-            'target' => rand(0, 100),
-            'targetText' => formatCurrency(rand(0, 100)),
+            'target' => $item['target'],
+            'realization' => $item['realization'],
+            'targetText' => formatCurrency($item['target']),
+            'realizationText' => formatCurrency($item['realization']),
         ];
     }
 }

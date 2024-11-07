@@ -24,15 +24,15 @@ final class RegencyReportService extends BaseService
         $query = $this->model::select([
             'id',
             'regency_id',
+            'credit_request_type_id',
             'date',
             'debtor',
-            'contract_value',
-            'outstanding_value',
             'target',
             'realization',
             'created_at',
             'updated_at',
         ])
+            ->with('creditRequestType')
             ->when(request()->input('regency'), function ($query) {
                 if ($regencyEnum = RegencyEnum::filterParameter(request()->input('regency'))) {
                     $query->where('regency_id', $regencyEnum);
@@ -46,8 +46,6 @@ final class RegencyReportService extends BaseService
             ])
             ->allowedSorts([
                 'debtor',
-                AllowedSort::field('contractValue', 'contract_value'),
-                AllowedSort::field('outstandingValue', 'outstanding_value'),
                 'target',
                 'realization',
                 AllowedSort::field('created_at', 'createdAt'),

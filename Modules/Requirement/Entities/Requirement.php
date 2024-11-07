@@ -25,7 +25,6 @@ use App\Models\BaseModel;
  * @property-read string|null $hash_id
  * @property-read string|null $hash_id_raw
  * @property-read \Modules\User\Entities\User|null $updater
- *
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|Requirement newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Requirement newQuery()
@@ -46,7 +45,6 @@ use App\Models\BaseModel;
  * @method static \Illuminate\Database\Eloquent\Builder|Requirement whereUpdatedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Requirement withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Requirement withoutTrashed()
- *
  * @mixin \Eloquent
  */
 class Requirement extends BaseModel

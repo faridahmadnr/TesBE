@@ -3,6 +3,7 @@
 namespace Modules\Report\Transformers;
 
 use App\Transformer\BaseTransformerCollection;
+use Carbon\Carbon;
 
 class RegencyReportCollection extends BaseTransformerCollection
 {
@@ -13,13 +14,13 @@ class RegencyReportCollection extends BaseTransformerCollection
         return [
             'id' => $item->hashId,
             'regency' => $item->whenLoaded('regency', $item->regency->name),
-            'month' => date('n', strtotime($item->date)),
-            'year' => date('Y', strtotime($item->date)),
+            'kurType' => $item->whenLoaded('creditRequestType', $item->creditRequestType->name),
+            'quarter' => Carbon::parse($item->date)->quarter,
             'debtor' => $item->debtor,
-            'contractValue' => $item->contract_value,
-            'outstandingValue' => $item->outstanding_value,
-            'target' => $item->target,
+            'submission' => $item->target,
+            'submissionText' => formatCurrency($item->target),
             'realization' => $item->realization,
+            'realizationText' => formatCurrency($item->realization),
             'createdAt' => $item->created_at,
             'updatedAt' => $item->updated_at,
         ];

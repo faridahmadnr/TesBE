@@ -28,6 +28,7 @@ use Modules\Report\Enums\QuartersEnum;
  * @property-read string|null $hash_id
  * @property-read string|null $hash_id_raw
  * @property-read \Modules\User\Entities\User|null $updater
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static Builder|CreditRequestType newModelQuery()
  * @method static Builder|CreditRequestType newQuery()
@@ -48,6 +49,7 @@ use Modules\Report\Enums\QuartersEnum;
  * @method static Builder|CreditRequestType withSubmissionStatus($year = null, $quarter = null)
  * @method static Builder|CreditRequestType withTrashed()
  * @method static Builder|CreditRequestType withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class CreditRequestType extends BaseModel

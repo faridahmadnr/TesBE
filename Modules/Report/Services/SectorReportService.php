@@ -8,6 +8,7 @@ use DateTime;
 use Illuminate\Support\Facades\DB;
 use Modules\BusinessType\Entities\BusinessType;
 use Modules\Report\Entities\SectorReport;
+use Modules\Report\Enums\QuartersEnum;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -21,23 +22,19 @@ final class SectorReportService extends BaseService
 
     public function getAll()
     {
+        if (request()->query('type') === 'graph') {
+            return $this->getGraphData();
+        }
+
         $query = $this->model::select([
             'id',
             'business_type_id',
             'date',
-            'debtor',
-            'contract_value',
-            'outstanding_value',
             'target',
             'realization',
             'created_at',
             'updated_at',
-        ])
-            ->when(request()->input('businessTypeId'), function ($query) {
-                if ($businessTypeId = BusinessType::keyFromHashId(request()->input('businessTypeId'))) {
-                    $query->where('business_type_id', $businessTypeId);
-                }
-            });
+        ])->with('businessType');
 
         $sectorReports = QueryBuilder::for($query)
             ->defaultSort('-created_at')
@@ -46,12 +43,9 @@ final class SectorReportService extends BaseService
             ])
             ->allowedSorts([
                 'date',
-                'debtor',
-                AllowedSort::field('contractValue', 'contract_value'),
-                AllowedSort::field('outstandingValue', 'outstanding_value'),
-                'target',
                 'realization',
                 AllowedSort::field('created_at', 'createdAt'),
+                AllowedSort::field('submission', 'target'),
             ])
             ->paginate(request()->query('pageSize') ?? 10)
             ->appends(request()->query());
@@ -147,5 +141,38 @@ final class SectorReportService extends BaseService
             'target' => $data['target'] ?? null,
             'realization' => $data['realization'] ?? null,
         ]);
+    }
+
+    private function getGraphData()
+    {
+        $year = request()->query('year');
+        $quarter = request()->query('quarter');
+
+        $query = BusinessType::leftJoin('sector_reports', function ($join) use ($year, $quarter) {
+            $join->on('business_types.id', '=', 'sector_reports.business_type_id')
+                ->when($year, function ($query) use ($year) {
+                    $query->whereYear('sector_reports.date', $year);
+                })
+                ->when(! is_null($quarter) && $quarter !== 'all', function ($query) use ($quarter) {
+                    [$quarter] = QuartersEnum::getQuarterMonthsValue(strtoupper($quarter));
+                    $query->whereRaw('EXTRACT(QUARTER FROM sector_reports.date) = ?', [$quarter]);
+                })
+                ->where('sector_reports.deleted_at', null);
+        })
+            ->selectRaw('business_types.name as name')
+            ->selectRaw('SUM(COALESCE(sector_reports.realization, 0)) as realization')
+            ->selectRaw('SUM(COALESCE(sector_reports.target, 0)) as submission')
+            ->orderBy('business_types.id')
+            ->groupBy('business_types.id');
+
+        return $query->get()->map(function ($item) {
+            return [
+                'name' => $item->name,
+                'realization' => $item->realization,
+                'submission' => $item->submission,
+                'realizationText' => formatCurrency($item->realization),
+                'submissionText' => formatCurrency($item->submission),
+            ];
+        });
     }
 }
