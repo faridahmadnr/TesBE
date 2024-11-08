@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('regency_reports', function (Blueprint $table) {
-            $table->string('debtor')->nullable();
+            $table->integer('debtor')->nullable();
         });
     }
 
