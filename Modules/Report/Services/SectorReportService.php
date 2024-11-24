@@ -7,6 +7,7 @@ use App\Services\BaseService;
 use DateTime;
 use Illuminate\Support\Facades\DB;
 use Modules\BusinessType\Entities\BusinessType;
+use Modules\CreditRequest\Enums\CreditRequestStatusEnum;
 use Modules\Report\Entities\SectorReport;
 use Modules\Report\Enums\QuartersEnum;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -148,20 +149,19 @@ final class SectorReportService extends BaseService
         $year = request()->query('year');
         $quarter = request()->query('quarter');
 
-        $query = BusinessType::leftJoin('sector_reports', function ($join) use ($year, $quarter) {
-            $join->on('business_types.id', '=', 'sector_reports.business_type_id')
+        $query = BusinessType::leftJoin('credit_requests', function ($join) use ($year, $quarter) {
+            $join->on('business_types.id', '=', 'credit_requests.business_type_id')
                 ->when($year, function ($query) use ($year) {
-                    $query->whereYear('sector_reports.date', $year);
+                    $query->whereYear('credit_requests.created_at', $year);
                 })
                 ->when(! is_null($quarter) && $quarter !== 'all', function ($query) use ($quarter) {
                     [$quarter] = QuartersEnum::getQuarterMonthsValue(strtoupper($quarter));
-                    $query->whereRaw('EXTRACT(QUARTER FROM sector_reports.date) = ?', [$quarter]);
-                })
-                ->where('sector_reports.deleted_at', null);
+                    $query->whereRaw('EXTRACT(QUARTER FROM credit_requests.created_at) = ?', [$quarter]);
+                });
         })
             ->selectRaw('business_types.name as name')
-            ->selectRaw('SUM(COALESCE(sector_reports.realization, 0)) as realization')
-            ->selectRaw('SUM(COALESCE(sector_reports.target, 0)) as submission')
+            ->selectRaw('SUM(COALESCE(CASE WHEN credit_requests.status != '.CreditRequestStatusEnum::APPROVED->value.' THEN credit_requests.amount ELSE 0 END, 0)) AS submission')
+            ->selectRaw('SUM(COALESCE(CASE WHEN credit_requests.status = '.CreditRequestStatusEnum::APPROVED->value.' AND '.DB::regexp('credit_requests.remark', '^[0-9]+$').' THEN CAST(credit_requests.remark AS decimal) ELSE 0 END, 0)) AS realization')
             ->orderBy('business_types.id')
             ->groupBy('business_types.id');
 

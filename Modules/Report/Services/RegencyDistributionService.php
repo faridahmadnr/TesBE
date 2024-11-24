@@ -34,6 +34,7 @@ final class RegencyDistributionService extends BaseService
             $data = $submissions->where('id', str_replace('-', '', $geo['id']))->first();
             $geojson[$key]['properties']['percentage'] = $data['percentage'] ?? 0;
             $geojson[$key]['properties']['submission'] = $data['submission'] ?? 0;
+            $geojson[$key]['properties']['realization'] = $data['realization'] ?? 0;
             $geojson[$key]['properties']['name'] = $data['name'];
         }
 
@@ -50,15 +51,14 @@ final class RegencyDistributionService extends BaseService
 
     private function getDistribution($quarter, $year)
     {
-        $totalDebitor = CreditRequest::where('status', CreditRequestStatusEnum::APPROVED->value)
-            ->when($year, function ($query) use ($year) {
-                $query->whereYear('created_at', $year);
-            })
+        $totalDebitor = CreditRequest::when($year, function ($query) use ($year) {
+            $query->whereYear('created_at', $year);
+        })
             ->when(! is_null($quarter) && $quarter !== 'all', function ($query) use ($quarter) {
                 [$quarter] = QuartersEnum::getQuarterMonthsValue(strtoupper($quarter));
                 $query->whereRaw('EXTRACT(QUARTER FROM created_at) = ?', [$quarter]);
             })
-            ->selectRaw('count(id) as debitor')
+            ->selectRaw('COUNT(credit_requests.created_by) as debitor')
             ->selectRaw('coalesce(sum(amount), 0) as amount')
             ->selectRaw('SUM(COALESCE(CASE WHEN '.DB::regexp('remark', '^[0-9]+$').' THEN CAST(remark AS decimal) ELSE 0 END, 0)) AS realization');
 
@@ -67,10 +67,9 @@ final class RegencyDistributionService extends BaseService
 
     private function getSubmissionByRegency($quarter, $year)
     {
-        $allSubmission = CreditRequest::where('status', 4)
-            ->when($year, function ($query) use ($year) {
-                $query->whereYear('created_at', $year);
-            })
+        $allSubmission = CreditRequest::when($year, function ($query) use ($year) {
+            $query->whereYear('created_at', $year);
+        })
             ->when(! is_null($quarter) && $quarter !== 'all', function ($query) use ($quarter) {
                 [$quarter] = QuartersEnum::getQuarterMonthsValue(strtoupper($quarter));
                 $query->whereRaw('EXTRACT(QUARTER FROM created_at) = ?', [$quarter]);
@@ -90,7 +89,8 @@ final class RegencyDistributionService extends BaseService
             })
             ->selectRaw('LOWER(regencies.name) as name')
             ->selectRaw('regencies.id as id')
-            ->selectRaw('SUM(COALESCE(CASE WHEN credit_requests.status = '.CreditRequestStatusEnum::DRAFT->value.' THEN 1 ELSE 0 END, 0)) AS submission')
+            ->selectRaw('SUM(COALESCE(CASE WHEN credit_requests.status != '.CreditRequestStatusEnum::APPROVED->value.' THEN 1 ELSE 0 END, 0)) AS submission')
+            ->selectRaw('SUM(COALESCE(CASE WHEN credit_requests.status = '.CreditRequestStatusEnum::APPROVED->value.' THEN 1 ELSE 0 END, 0)) AS realization')
             ->groupBy('regencies.name', 'regencies.id')
             ->get()
             ->map(function ($item) use ($allSubmission) {
@@ -100,6 +100,8 @@ final class RegencyDistributionService extends BaseService
                     'name' => ucwords($item->name),
                     // @phpstan-ignore-next-line
                     'submission' => $item->submission,
+                    // @phpstan-ignore-next-line
+                    'realization' => $item->realization,
                     // @phpstan-ignore-next-line
                     'percentage' => $allSubmission > 0 ? round($item->submission / $allSubmission * 100, 2) : 0,
                 ];
@@ -111,21 +113,21 @@ final class RegencyDistributionService extends BaseService
     private function getReportByRegency($quarter, $year = null)
     {
         $regencies = Regency::whereIn('name', RegencyEnum::validRegencies())
-            ->leftJoin('regency_reports', function ($join) use ($year, $quarter) {
-                $join->on('regencies.id', '=', 'regency_reports.regency_id')
+            ->leftJoin('credit_requests', function ($join) use ($year, $quarter) {
+                $join->on('regencies.id', '=', 'credit_requests.business_regency_id')
                     ->when($year, function ($query) use ($year) {
-                        $query->whereYear('regency_reports.date', $year);
+                        $query->whereYear('credit_requests.created_at', $year);
                     })
                     ->when(! is_null($quarter) && $quarter !== 'all', function ($query) use ($quarter) {
                         [$quarter] = QuartersEnum::getQuarterMonthsValue(strtoupper($quarter));
-                        $query->whereRaw('EXTRACT(QUARTER FROM regency_reports.date) = ?', [$quarter]);
+                        $query->whereRaw('EXTRACT(QUARTER FROM credit_requests.created_at) = ?', [$quarter]);
                     });
             })
-            ->selectRaw('SUM(COALESCE(regency_reports.debtor, 0)) as total_debitor')
-            ->selectRaw('SUM(COALESCE(regency_reports.realization, 0)) as total_realization')
-            ->selectRaw('SUM(COALESCE(regency_reports.target, 0)) as total_target')
+            ->selectRaw('COUNT(credit_requests.created_by) as total_debitor')
+            ->selectRaw('SUM(COALESCE(CASE WHEN credit_requests.status != '.CreditRequestStatusEnum::APPROVED->value.' THEN credit_requests.amount ELSE 0 END, 0)) AS total_target')
+            ->selectRaw('SUM(COALESCE(CASE WHEN credit_requests.status = '.CreditRequestStatusEnum::APPROVED->value.' AND '.DB::regexp('credit_requests.remark', '^[0-9]+$').' THEN CAST(credit_requests.remark AS decimal) ELSE 0 END, 0)) AS total_realization')
             ->selectRaw('LOWER(regencies.name) as name')
-            ->orderBy('total_realization')
+            ->orderBy('name')
             ->groupBy('regencies.name')
             ->get()
             ->map(function ($item, $index) {
@@ -136,11 +138,11 @@ final class RegencyDistributionService extends BaseService
                     // @phpstan-ignore-next-line
                     'submissionAmountText' => formatCurrency($item->total_target),
                     // @phpstan-ignore-next-line
-                    'realizationAmount' => $item->total_realization,
+                    'realizationAmount' => intval($item->total_realization),
                     // @phpstan-ignore-next-line
                     'realizationAmountText' => formatCurrency($item->total_realization),
                     // @phpstan-ignore-next-line
-                    'realizationPercentage' => $item->total_target > 0 ? ($item->total_realization / $item->total_target) * 100 : 0,
+                    'realizationPercentage' => $item->total_target > 0 ? round(($item->total_realization / $item->total_target) * 100, 2) : 0,
                     // @phpstan-ignore-next-line
                     'debitor' => $item->total_debitor,
                     'target' => $item->total_target,

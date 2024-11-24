@@ -14,6 +14,7 @@ use Modules\Report\Http\Controllers\API\V1;
 */
 
 Route::group(['prefix' => 'v1/reports', 'as' => 'api.v1.reports.'], function () {
+    Route::get('/public', V1\PublicReportController::class);
 
     Route::get('regencies/chart', V1\RegencyDistributionController::class);
     Route::get('submission-status', V1\SubmissionStatusController::class);

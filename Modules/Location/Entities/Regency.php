@@ -31,6 +31,7 @@ use Modules\Report\Enums\QuartersEnum;
  * @property-read string|null $hash_id_raw
  * @property-read \Modules\Location\Entities\Province $province
  * @property-read \Modules\User\Entities\User|null $updater
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static Builder|Regency newModelQuery()
  * @method static Builder|Regency newQuery()
@@ -49,6 +50,7 @@ use Modules\Report\Enums\QuartersEnum;
  * @method static Builder|Regency withSubmissionStatus($creditRequestTypes = null, $year = null, $quarter = null)
  * @method static Builder|Regency withTrashed()
  * @method static Builder|Regency withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class Regency extends BaseModel
@@ -103,7 +105,7 @@ class Regency extends BaseModel
                     'SUM(COALESCE(CASE WHEN credit_requests.credit_request_type_id = '
                     .$creditRequestTypeId
                     .' THEN 1 ELSE 0 END, 0)) AS '
-                    .\Str::camel(str_replace('kur', '', strtolower($creditRequestTypeName)))
+                    .'"'.$creditRequestTypeName.'"'
                 );
             }
         }
