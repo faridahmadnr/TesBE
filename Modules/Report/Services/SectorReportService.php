@@ -162,7 +162,7 @@ final class SectorReportService extends BaseService
             ->selectRaw('business_types.name as name')
             ->selectRaw('SUM(COALESCE(CASE WHEN credit_requests.status != '.CreditRequestStatusEnum::APPROVED->value.' THEN credit_requests.amount ELSE 0 END, 0)) AS submission')
             ->selectRaw('SUM(COALESCE(CASE WHEN credit_requests.status = '.CreditRequestStatusEnum::APPROVED->value.' AND '.DB::regexp('credit_requests.remark', '^[0-9]+$').' THEN CAST(credit_requests.remark AS decimal) ELSE 0 END, 0)) AS realization')
-            ->orderBy('business_types.id')
+            ->orderBy('business_types.name')
             ->groupBy('business_types.name');
 
         return $query->get()->map(function ($item) {

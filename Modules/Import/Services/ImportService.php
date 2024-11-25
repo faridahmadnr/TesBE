@@ -6,6 +6,7 @@ use App\Services\BaseService;
 use Illuminate\Support\Facades\Log;
 use Modules\BusinessType\Entities\BusinessType;
 use Modules\Location\Entities\Regency;
+use Modules\Report\Entities\AchivementRealizationReport;
 use Modules\Report\Entities\RegencyReport;
 use Modules\Report\Entities\SectorReport;
 
@@ -18,6 +19,10 @@ final class ImportService extends BaseService
 
         if ($type == 'sector') {
             return $this->_importSector($rows);
+        }
+
+        if ($type == 'realization') {
+            return $this->_importRealization($rows);
         }
 
         return $this->_importSubmission($rows);
@@ -115,6 +120,31 @@ final class ImportService extends BaseService
 
         RegencyReport::insert($data);
         RegencyReport::flushQueryCache();
+
+        return $data;
+    }
+
+    private function _importRealization(array $rows)
+    {
+        $data = [];
+        foreach ($rows as $row) {
+            $year = $row[0];
+            $target = $row[1];
+            $realization = $row[2];
+
+            $date = $year.'-01-01';
+
+            $data[] = [
+                'target' => $target,
+                'realization' => $realization,
+                'date' => $date,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+
+        AchivementRealizationReport::insert($data);
+        AchivementRealizationReport::flushQueryCache();
 
         return $data;
     }

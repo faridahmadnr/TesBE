@@ -33,6 +33,10 @@ class PublicReportController extends BaseController
             $data = $this->regencyReportService->getReportBySector($quarter, $year);
         }
 
+        if ($type === 'achivement-realization') {
+            $data = $this->regencyReportService->getReportByAchivement($quarter, $year);
+        }
+
         unset($data['user']);
         unset($data['histories']);
 

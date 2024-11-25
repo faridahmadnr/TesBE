@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Modules\BusinessType\Entities\BusinessType;
 use Modules\CreditRequest\Entities\CreditRequest;
 use Modules\CreditRequest\Enums\CreditRequestStatusEnum;
+use Modules\Report\Entities\AchivementRealizationReport;
 use Modules\Report\Entities\SectorReport;
 use Modules\Report\Enums\QuartersEnum;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -158,5 +159,18 @@ final class PublicReportService extends BaseService
             ->groupBy('business_types.name');
 
         return $query->get();
+    }
+
+    public function getReportByAchivement($quarter, $year = null)
+    {
+        $query = AchivementRealizationReport::when($year, function ($query) use ($year) {
+            $query->whereYear('achivement_realization_reports.date', $year);
+        })
+            ->selectRaw('SUM(COALESCE(achivement_realization_reports.realization, 0)) as realization')
+            ->selectRaw('SUM(COALESCE(achivement_realization_reports.target, 0)) as target')
+            ->groupBy('achivement_realization_reports.date')
+            ->first();
+
+        return $query;
     }
 }
