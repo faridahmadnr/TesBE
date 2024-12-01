@@ -114,8 +114,11 @@ final class PublicReportService extends BaseService
             ->map(function ($item) {
                 return [
                     'name' => $item->name,
+                    // @phpstan-ignore-next-line
                     'debitor' => $item->debitor,
+                    // @phpstan-ignore-next-line
                     'submission' => intval($item->submission),
+                    // @phpstan-ignore-next-line
                     'submissionText' => formatCurrency($item->submission),
                 ];
             });
@@ -160,7 +163,6 @@ final class PublicReportService extends BaseService
             ->selectRaw('SUM(COALESCE(CASE WHEN credit_requests.status = '.CreditRequestStatusEnum::APPROVED->value.' THEN 1 ELSE 0 END, 0)) AS realization')
             ->groupBy('regencies.name', 'regencies.id')
             ->get();
-        dd($query);
 
         return [];
     }
@@ -215,6 +217,7 @@ final class PublicReportService extends BaseService
             return [
                 'year' => $year['year'],
                 'realization' => $matchingEvent ? $matchingEvent->realization : 0,
+                // @phpstan-ignore-next-line
                 'debitor' => $matchingEvent ? $matchingEvent->debitor : 0,
                 'date' => $matchingEvent ? $matchingEvent->created_at : null,
             ];
