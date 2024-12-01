@@ -12,7 +12,6 @@ use Modules\BusinessType\Entities\BusinessType;
  * @property int $id
  * @property int|null $business_type_id
  * @property string $date
- * @property int $target
  * @property int $realization
  * @property int|null $created_by
  * @property int|null $updated_by
@@ -20,6 +19,7 @@ use Modules\BusinessType\Entities\BusinessType;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property int|null $debitor
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $actions
  * @property-read int|null $actions_count
  * @property-read BusinessType|null $businessType
@@ -39,11 +39,11 @@ use Modules\BusinessType\Entities\BusinessType;
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport whereCreatedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport whereDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SectorReport whereDebitor($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport whereDeletedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport whereRealization($value)
- * @method static \Illuminate\Database\Eloquent\Builder|SectorReport whereTarget($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport whereUpdatedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport withTrashed()

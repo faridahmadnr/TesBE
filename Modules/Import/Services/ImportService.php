@@ -45,7 +45,7 @@ final class ImportService extends BaseService
 
             $year = $row[0];
             $quarter = strtolower($row[1]);
-            $submissionAmount = $row[3];
+            $target = $row[3];
             $realizationAmount = $row[4];
 
             $date = $year.'-01-01';
@@ -63,7 +63,7 @@ final class ImportService extends BaseService
 
             $data[] = [
                 'business_type_id' => $businessTypeId,
-                'target' => $submissionAmount,
+                'debitor' => $target,
                 'realization' => $realizationAmount,
                 'date' => $date,
                 'created_at' => now(),
