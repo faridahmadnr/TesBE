@@ -217,7 +217,6 @@ final class PublicReportService extends BaseService
             return [
                 'year' => $year['year'],
                 'realization' => $matchingEvent ? $matchingEvent->realization : 0,
-                // @phpstan-ignore-next-line
                 'debitor' => $matchingEvent ? $matchingEvent->debitor : 0,
                 'date' => $matchingEvent ? $matchingEvent->created_at : null,
             ];
