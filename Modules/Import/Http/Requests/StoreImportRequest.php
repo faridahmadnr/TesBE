@@ -15,7 +15,7 @@ class StoreImportRequest extends FormRequest
     {
         return [
             'data' => 'required|array',
-            'type' => 'required|in:bank,sector,submission,realization',
+            'type' => 'required|in:bank,sector,submission,realization,sector5years',
         ];
     }
 

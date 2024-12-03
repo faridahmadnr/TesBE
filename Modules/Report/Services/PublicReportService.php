@@ -183,7 +183,8 @@ final class PublicReportService extends BaseService
             ->selectRaw('SUM(COALESCE(sector_reports.realization, 0)) as realization')
             ->selectRaw('SUM(COALESCE(sector_reports.debitor, 0)) as debitor')
             ->selectRaw('MAX(sector_reports.created_at) AS date')
-            ->groupBy('business_types.id');
+            ->groupBy('business_types.id')
+            ->groupBy('business_types.name');
 
         return $query->get();
     }

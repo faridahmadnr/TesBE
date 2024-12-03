@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Log;
 use Modules\BusinessType\Entities\BusinessType;
 use Modules\Location\Entities\Regency;
 use Modules\Report\Entities\AchivementRealizationReport;
+use Modules\Report\Entities\QuinquennialReport;
 use Modules\Report\Entities\RegencyReport;
 use Modules\Report\Entities\SectorReport;
 
@@ -23,6 +24,10 @@ final class ImportService extends BaseService
 
         if ($type == 'realization') {
             return $this->_importRealization($rows);
+        }
+
+        if ($type === 'sector5years') {
+            return $this->_importSector5years($rows);
         }
 
         return $this->_importSubmission($rows);
@@ -145,6 +150,30 @@ final class ImportService extends BaseService
 
         AchivementRealizationReport::insert($data);
         AchivementRealizationReport::flushQueryCache();
+
+        return $data;
+    }
+
+    private function _importSector5years(array $rows)
+    {
+        $data = [];
+        foreach ($rows as $row) {
+            $year = $row[0];
+            $target = $row[1];
+            $realizationAmount = $row[2];
+
+            $date = $year.'-01-01';
+            $data[] = [
+                'debitor' => $target,
+                'realization' => $realizationAmount,
+                'date' => $date,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+
+        QuinquennialReport::insert($data);
+        QuinquennialReport::flushQueryCache();
 
         return $data;
     }
