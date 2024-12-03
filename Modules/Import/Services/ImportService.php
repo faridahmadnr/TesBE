@@ -66,14 +66,25 @@ final class ImportService extends BaseService
                 $date = $year.'-10-01';
             }
 
-            $data[] = [
+            $sectorExists = SectorReport::where([
                 'business_type_id' => $businessTypeId,
-                'debitor' => $target,
-                'realization' => $realizationAmount,
                 'date' => $date,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];
+            ]);
+
+            tap($sectorExists)
+                ->increment('realization', $realizationAmount)
+                ->increment('debitor', $target);
+
+            if (! $sectorExists->exists()) {
+                $data[] = [
+                    'business_type_id' => $businessTypeId,
+                    'debitor' => $target,
+                    'realization' => $realizationAmount,
+                    'date' => $date,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
         }
 
         SectorReport::insert($data);
@@ -139,6 +150,17 @@ final class ImportService extends BaseService
 
             $date = $year.'-01-01';
 
+            $exists = AchivementRealizationReport::where([
+                'date' => $date,
+            ]);
+
+            tap($exists)
+                ->increment('target', $target)
+                ->increment('realization', $realization);
+
+            if ($exists->exists()) {
+                continue;
+            }
             $data[] = [
                 'target' => $target,
                 'realization' => $realization,
@@ -163,6 +185,18 @@ final class ImportService extends BaseService
             $realizationAmount = $row[2];
 
             $date = $year.'-01-01';
+
+            $exists = QuinquennialReport::where([
+                'date' => $date,
+            ]);
+
+            tap($exists)
+                ->increment('debitor', $target)
+                ->increment('realization', $realizationAmount);
+
+            if ($exists->exists()) {
+                continue;
+            }
             $data[] = [
                 'debitor' => $target,
                 'realization' => $realizationAmount,

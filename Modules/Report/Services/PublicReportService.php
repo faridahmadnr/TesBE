@@ -12,6 +12,7 @@ use Modules\CreditRequest\Enums\CreditRequestStatusEnum;
 use Modules\Location\Entities\Regency;
 use Modules\Location\Enums\RegencyEnum;
 use Modules\Report\Entities\AchivementRealizationReport;
+use Modules\Report\Entities\QuinquennialReport;
 use Modules\Report\Entities\SectorReport;
 use Modules\Report\Enums\QuartersEnum;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -200,11 +201,11 @@ final class PublicReportService extends BaseService
             return ['year' => $item];
         });
 
-        $events = SectorReport::selectRaw('SUM(COALESCE(sector_reports.realization, 0)) as realization')
-            ->selectRaw('SUM(COALESCE(sector_reports.debitor, 0)) as debitor')
-            ->selectRaw('MAX(sector_reports.date) AS date')
-            ->selectRaw('MAX(sector_reports.created_at) AS created_at')
-            ->groupBy('sector_reports.date')
+        $events = QuinquennialReport::selectRaw('SUM(COALESCE(quinquennial_reports.realization, 0)) as realization')
+            ->selectRaw('SUM(COALESCE(quinquennial_reports.debitor, 0)) as debitor')
+            ->selectRaw('MAX(quinquennial_reports.date) AS date')
+            ->selectRaw('MAX(quinquennial_reports.created_at) AS created_at')
+            ->groupBy('quinquennial_reports.date')
             ->orderBy('date')
             ->get();
 
