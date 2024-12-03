@@ -9,8 +9,6 @@ use Modules\BusinessType\Entities\BusinessType;
 use Modules\CreditRequest\Entities\CreditRequest;
 use Modules\CreditRequest\Entities\CreditRequestType;
 use Modules\CreditRequest\Enums\CreditRequestStatusEnum;
-use Modules\Location\Entities\Regency;
-use Modules\Location\Enums\RegencyEnum;
 use Modules\Report\Entities\AchivementRealizationReport;
 use Modules\Report\Entities\QuinquennialReport;
 use Modules\Report\Entities\SectorReport;
@@ -18,6 +16,7 @@ use Modules\Report\Enums\QuartersEnum;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
+use Storage;
 
 final class PublicReportService extends BaseService
 {
@@ -147,25 +146,26 @@ final class PublicReportService extends BaseService
 
     public function getReportByRegency($quarter, $year = null)
     {
-        $query = Regency::whereIn('name', RegencyEnum::validRegencies())
-            ->leftJoin('credit_requests', function ($join) use ($year, $quarter) {
-                $join->on('regencies.id', '=', 'credit_requests.business_regency_id')
-                    ->when($year, function ($query) use ($year) {
-                        $query->whereYear('credit_requests.created_at', $year);
-                    })
-                    ->when(! is_null($quarter) && $quarter !== 'all', function ($query) use ($quarter) {
-                        [$quarter] = QuartersEnum::getQuarterMonthsValue(strtoupper($quarter));
-                        $query->whereRaw('EXTRACT(QUARTER FROM credit_requests.created_at) = ?', [$quarter]);
-                    });
-            })
-            ->selectRaw('LOWER(regencies.name) as name')
-            ->selectRaw('regencies.id as id')
-            ->selectRaw('SUM(COALESCE(CASE WHEN credit_requests.status != '.CreditRequestStatusEnum::APPROVED->value.' THEN 1 ELSE 0 END, 0)) AS submission')
-            ->selectRaw('SUM(COALESCE(CASE WHEN credit_requests.status = '.CreditRequestStatusEnum::APPROVED->value.' THEN 1 ELSE 0 END, 0)) AS realization')
-            ->groupBy('regencies.name', 'regencies.id')
-            ->get();
+        /** @var RegencyDistributionService */
+        $regencyService = app(RegencyDistributionService::class);
+        $submissions = $regencyService->getSubmissionByRegency(year: $year, quarter: $quarter);
 
-        return [];
+        $path = 'data/map.geojson';
+        if (! Storage::disk('local')->exists($path)) {
+            return response()->json(['error' => 'File not found'], 404);
+        }
+
+        $geojson = json_decode(Storage::disk('local')->get($path), true);
+
+        foreach ($geojson as $key => $geo) {
+            $data = $submissions->where('id', str_replace('-', '', $geo['id']))->first();
+            $geojson[$key]['properties']['percentage'] = $data['percentage'] ?? 0;
+            $geojson[$key]['properties']['submission'] = $data['submission'] ?? 0;
+            $geojson[$key]['properties']['realization'] = $data['realization'] ?? 0;
+            $geojson[$key]['properties']['name'] = $data['name'];
+        }
+
+        return $geojson;
     }
 
     public function getReportBySector($quarter, $year = null)

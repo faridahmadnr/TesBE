@@ -65,7 +65,7 @@ final class RegencyDistributionService extends BaseService
         return $totalDebitor->first();
     }
 
-    private function getSubmissionByRegency($quarter, $year)
+    public function getSubmissionByRegency($quarter, $year)
     {
         $allSubmission = CreditRequest::when($year, function ($query) use ($year) {
             $query->whereYear('created_at', $year);
