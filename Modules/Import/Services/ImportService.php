@@ -30,6 +30,10 @@ final class ImportService extends BaseService
             return $this->_importSector5years($rows);
         }
 
+        if ($type === 'region') {
+            return $this->_importRegion($rows);
+        }
+
         return $this->_importSubmission($rows);
     }
 
@@ -208,6 +212,47 @@ final class ImportService extends BaseService
 
         QuinquennialReport::insert($data);
         QuinquennialReport::flushQueryCache();
+
+        return $data;
+    }
+
+    private function _importRegion(array $rows)
+    {
+        $data = [];
+
+        foreach ($rows as $row) {
+            $regencyId = Regency::select(['id', 'name'])
+                ->whereRaw('LOWER(name) = ?', strtolower(trim($row[1])))
+                ->first()
+                ?->id;
+
+            if (! $regencyId) {
+                Log::info('skipped import: '.$row[1]);
+
+                continue;
+            }
+
+            $year = $row[0];
+            $date = $year.'-01-01';
+            $percentage = intval($row[2]);
+            $debtor = $row[3];
+            $outstandingValue = $row[4];
+            $realizationAmount = $row[5];
+
+            $data[] = [
+                'date' => $date,
+                'regency_id' => $regencyId,
+                'debtor' => $debtor,
+                'percentage' => $percentage,
+                'outstanding_value' => $outstandingValue,
+                'realization' => $realizationAmount,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+
+        RegencyReport::insert($data);
+        RegencyReport::flushQueryCache();
 
         return $data;
     }

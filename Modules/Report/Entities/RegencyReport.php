@@ -13,7 +13,6 @@ use Modules\Location\Entities\Regency;
  * @property int $id
  * @property int|null $regency_id
  * @property string $date
- * @property int $target
  * @property int $realization
  * @property int|null $created_by
  * @property int|null $updated_by
@@ -21,8 +20,9 @@ use Modules\Location\Entities\Regency;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property int|null $credit_request_type_id
  * @property int|null $debtor
+ * @property int $percentage
+ * @property int $outstanding_value
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $actions
  * @property-read int|null $actions_count
  * @property-read \Modules\User\Entities\User|null $creator
@@ -39,15 +39,15 @@ use Modules\Location\Entities\Regency;
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel updatedBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|RegencyReport whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RegencyReport whereCreatedBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RegencyReport whereCreditRequestTypeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RegencyReport whereDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RegencyReport whereDebtor($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RegencyReport whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RegencyReport whereDeletedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RegencyReport whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RegencyReport whereOutstandingValue($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RegencyReport wherePercentage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RegencyReport whereRealization($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RegencyReport whereRegencyId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RegencyReport whereTarget($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RegencyReport whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RegencyReport whereUpdatedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RegencyReport withTrashed()
@@ -64,6 +64,7 @@ class RegencyReport extends BaseModel
         'outstanding_value',
         'target',
         'realization',
+        'percentage',
     ];
 
     public function regency(): BelongsTo

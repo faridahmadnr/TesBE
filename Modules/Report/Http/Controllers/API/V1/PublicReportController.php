@@ -26,7 +26,7 @@ class PublicReportController extends BaseController
         }
 
         if ($type === 'regency') {
-            $data = $this->regencyReportService->getReportByRegency($quarter, $year);
+            $data = $this->regencyReportService->getReportByRegion($quarter, $year);
         }
 
         if ($type === 'sector') {

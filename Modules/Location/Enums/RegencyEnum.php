@@ -63,6 +63,24 @@ enum RegencyEnum: int
         };
     }
 
+    public static function fromProvinceId($value): mixed
+    {
+        switch ($value) {
+            case self::KULONPROGO->value:
+                return _('KABUPATEN KULON PROGO');
+            case self::BANTUL->value:
+                return _('KABUPATEN BANTUL');
+            case self::GUNUNGKIDUL->value:
+                return _('KABUPATEN GUNUNG KIDUL');
+            case self::SLEMAN->value:
+                return _('KABUPATEN SLEMAN');
+            case self::YOGYAKARTA->value:
+                return _('KOTA YOGYAKARTA');
+            default:
+                return null;
+        }
+    }
+
     public static function fromValue($value): mixed
     {
         switch ($value) {

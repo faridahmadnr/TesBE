@@ -9,8 +9,10 @@ use Modules\BusinessType\Entities\BusinessType;
 use Modules\CreditRequest\Entities\CreditRequest;
 use Modules\CreditRequest\Entities\CreditRequestType;
 use Modules\CreditRequest\Enums\CreditRequestStatusEnum;
+use Modules\Location\Enums\RegencyEnum;
 use Modules\Report\Entities\AchivementRealizationReport;
 use Modules\Report\Entities\QuinquennialReport;
+use Modules\Report\Entities\RegencyReport;
 use Modules\Report\Entities\SectorReport;
 use Modules\Report\Enums\QuartersEnum;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -163,6 +165,42 @@ final class PublicReportService extends BaseService
             $geojson[$key]['properties']['submission'] = $data['submission'] ?? 0;
             $geojson[$key]['properties']['realization'] = $data['realization'] ?? 0;
             $geojson[$key]['properties']['name'] = $data['name'];
+        }
+
+        return $geojson;
+    }
+
+    public function getReportByRegion($quarter, $year = null)
+    {
+        $submissions = RegencyReport::when($year, function ($query) use ($year) {
+            $query->whereYear('regency_reports.date', $year);
+        })
+            ->selectRaw('regency_reports.regency_id as id')
+            ->selectRaw('SUM(COALESCE(regency_reports.realization, 0)) as realization')
+            ->selectRaw('SUM(COALESCE(regency_reports.outstanding_value, 0)) as outstanding')
+            ->selectRaw('SUM(COALESCE(regency_reports.percentage, 0)) as percentage')
+            ->selectRaw('SUM(COALESCE(regency_reports.debtor, 0)) as debtor')
+            ->selectRaw('MAX(regency_reports.created_at) AS created_at')
+            ->groupBy('regency_reports.regency_id')
+            ->groupBy('regency_reports.date')
+            ->get();
+
+        $path = 'data/map.geojson';
+        if (! Storage::disk('local')->exists($path)) {
+            return response()->json(['error' => 'File not found'], 404);
+        }
+
+        $geojson = json_decode(Storage::disk('local')->get($path), true);
+
+        foreach ($geojson as $key => $geo) {
+            $regionId = str_replace('-', '', $geo['id']);
+            $data = $submissions->where('id', $regionId)->first();
+            $provinceName = RegencyEnum::fromProvinceId($regionId);
+            $geojson[$key]['properties']['percentage'] = $data['percentage'] ?? 0;
+            $geojson[$key]['properties']['debtor'] = $data['debtor'] ?? 0;
+            $geojson[$key]['properties']['outstanding'] = $data['outstanding'] ?? 0;
+            $geojson[$key]['properties']['realization'] = $data['realization'] ?? 0;
+            $geojson[$key]['properties']['name'] = ucwords(strtolower($provinceName));
         }
 
         return $geojson;
