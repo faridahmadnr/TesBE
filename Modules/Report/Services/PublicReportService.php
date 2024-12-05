@@ -201,6 +201,7 @@ final class PublicReportService extends BaseService
             $geojson[$key]['properties']['outstanding'] = $data['outstanding'] ?? 0;
             $geojson[$key]['properties']['realization'] = $data['realization'] ?? 0;
             $geojson[$key]['properties']['name'] = ucwords(strtolower($provinceName));
+            $geojson[$key]['date'] = $data['created_at'] ?? null;
         }
 
         return $geojson;
