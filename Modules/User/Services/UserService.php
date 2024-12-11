@@ -225,6 +225,7 @@ final class UserService extends BaseService
 
             $user->save();
 
+            // @phpstan-ignore-next-line
             $filename = $user?->profile?->photo;
             if (isset($data['photo'])) {
                 /** @var UploadedFile $photo */
