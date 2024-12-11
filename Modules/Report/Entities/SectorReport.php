@@ -29,7 +29,6 @@ use Modules\BusinessType\Entities\BusinessType;
  * @property-read mixed $month
  * @property-read mixed $year
  * @property-read \Modules\User\Entities\User|null $updater
- *
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport newQuery()
@@ -49,7 +48,6 @@ use Modules\BusinessType\Entities\BusinessType;
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport whereUpdatedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|SectorReport withoutTrashed()
- *
  * @mixin \Eloquent
  */
 class SectorReport extends BaseModel

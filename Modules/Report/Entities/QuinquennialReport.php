@@ -23,7 +23,6 @@ use App\Models\BaseModel;
  * @property-read string|null $hash_id
  * @property-read string|null $hash_id_raw
  * @property-read \Modules\User\Entities\User|null $updater
- *
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|QuinquennialReport newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|QuinquennialReport newQuery()
@@ -42,7 +41,6 @@ use App\Models\BaseModel;
  * @method static \Illuminate\Database\Eloquent\Builder|QuinquennialReport whereUpdatedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QuinquennialReport withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|QuinquennialReport withoutTrashed()
- *
  * @mixin \Eloquent
  */
 class QuinquennialReport extends BaseModel

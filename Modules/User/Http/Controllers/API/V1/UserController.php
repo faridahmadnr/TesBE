@@ -17,7 +17,7 @@ class UserController extends BaseController
     /**
      * Constructs a new instance of the class.
      *
-     * @param  UserService  $userService The UserService instance.
+     * @param  UserService  $userService  The UserService instance.
      * @return void
      */
     public function __construct(
@@ -41,7 +41,7 @@ class UserController extends BaseController
     /**
      * Store a new user.
      *
-     * @param  StoreUserRequest  $request The request object containing the validated user data.
+     * @param  StoreUserRequest  $request  The request object containing the validated user data.
      * @return JsonResponse The response object containing the newly created user.
      */
     public function store(StoreUserRequest $request)
@@ -56,7 +56,7 @@ class UserController extends BaseController
     /**
      * Shows the user data.
      *
-     * @param  User  $user The user object.
+     * @param  User  $user  The user object.
      * @return JsonResponse The JSON response containing the user data.
      */
     public function show(User $user): JsonResponse
@@ -69,15 +69,14 @@ class UserController extends BaseController
     /**
      * Update a user.
      *
-     * @param  UpdateUserRequest  $request the request object containing the validated data
-     * @param  User  $user the user to be updated
+     * @param  UpdateUserRequest  $request  the request object containing the validated data
+     * @param  User  $user  the user to be updated
      * @return JsonResponse the JSON response containing the updated user resource
      */
     public function update(UpdateUserRequest $request, User $user): JsonResponse
     {
-        $user = $this->userService->update($user, $request->validated());
-
         $user->loadMissing(['roles', 'profile', 'profile.bank']);
+        $user = $this->userService->update($user, $request->validated());
 
         return $this->okResponse(new UserResource($user));
     }
@@ -85,7 +84,7 @@ class UserController extends BaseController
     /**
      * Deletes a user.
      *
-     * @param  User  $user The user to be deleted.
+     * @param  User  $user  The user to be deleted.
      * @return JsonResponse The JSON response containing the deleted user.
      */
     public function destroy(User $user): JsonResponse
@@ -100,7 +99,7 @@ class UserController extends BaseController
     /**
      * Restore a user.
      *
-     * @param  User  $user The user to be restored.
+     * @param  User  $user  The user to be restored.
      * @return JsonResponse The JSON response containing the restored user.
      */
     public function restore(User $user): JsonResponse
@@ -115,7 +114,7 @@ class UserController extends BaseController
     /**
      * Deletes a user permanently from the system.
      *
-     * @param  User  $user The user to be deleted.
+     * @param  User  $user  The user to be deleted.
      * @return JsonResponse The JSON response containing the deleted user.
      */
     public function forceDelete(User $user): JsonResponse

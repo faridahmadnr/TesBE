@@ -133,7 +133,11 @@ final class UserService extends BaseService
                 'email',
                 AllowedFilter::callback('role', function (Builder $query, $value) {
                     $query->whereHas('roles', function (Builder $query) use ($value) {
-                        $query->where('name', $value);
+                        if (Str::startsWith($value, '-')) {
+                            $query->where('name', '!=', Str::after($value, '-'));
+                        } else {
+                            $query->where('name', $value);
+                        }
                     });
                 }),
                 AllowedFilter::trashed(),
@@ -221,7 +225,7 @@ final class UserService extends BaseService
 
             $user->save();
 
-            $filename = $user->profile->photo;
+            $filename = $user?->profile?->photo;
             if (isset($data['photo'])) {
                 /** @var UploadedFile $photo */
                 $photo = $data['photo'];
@@ -230,8 +234,8 @@ final class UserService extends BaseService
             }
 
             $user->profile()->update([
-                'phone' => $data['phone'],
-                'bank_id' => isset($data['bank_id']) ? Bank::keyFromHashId($data['bank_id']) : $user->profile->bank_id,
+                'phone' => $data['phone'] ?? null,
+                'bank_id' => isset($data['bank_id']) ? Bank::keyFromHashId($data['bank_id']) : $user?->profile?->bank_id,
                 'photo' => $filename,
             ]);
 

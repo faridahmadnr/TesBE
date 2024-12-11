@@ -330,7 +330,7 @@ final class CreditRequestService extends BaseService
         try {
             $creditRequest->update([
                 'status' => CreditRequestStatusEnum::PROCESSED->value,
-                'remark' => $data['message'],
+                'processed_by' => User::keyFromHashId($data['processedBy']),
             ]);
         } catch (\Throwable $th) {
             report($th);

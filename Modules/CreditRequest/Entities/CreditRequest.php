@@ -43,6 +43,7 @@ use Modules\User\Entities\User;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property string|null $remark
+ * @property int|null $processed_by
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $actions
  * @property-read int|null $actions_count
  * @property-read Bank|null $bank
@@ -59,6 +60,7 @@ use Modules\User\Entities\User;
  * @property-read Termin|null $termin
  * @property-read User|null $updater
  * @property-read User|null $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static Builder|CreditRequest newModelQuery()
  * @method static Builder|CreditRequest newQuery()
@@ -82,6 +84,7 @@ use Modules\User\Entities\User;
  * @method static Builder|CreditRequest whereId($value)
  * @method static Builder|CreditRequest whereImage($value)
  * @method static Builder|CreditRequest wherePostalCode($value)
+ * @method static Builder|CreditRequest whereProcessedBy($value)
  * @method static Builder|CreditRequest whereRegistrationNumber($value)
  * @method static Builder|CreditRequest whereRemark($value)
  * @method static Builder|CreditRequest whereStatus($value)
@@ -93,6 +96,7 @@ use Modules\User\Entities\User;
  * @method static Builder|CreditRequest withTrashed()
  * @method static Builder|CreditRequest withoutTrashed()
  * @method static Builder|CreditRequest year($year = null)
+ *
  * @mixin \Eloquent
  */
 final class CreditRequest extends BaseModel
@@ -144,7 +148,7 @@ final class CreditRequest extends BaseModel
 
         'reject_message',
         'pending_message',
-        'process_by',
+        'processed_by',
         'accepted_plafond',
         'pic_contact',
         'is_confirmed',

@@ -4,6 +4,7 @@ namespace Modules\CreditRequest\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller as BaseController;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Modules\CreditRequest\Entities\CreditRequest;
 use Modules\CreditRequest\Http\Requests\CreditRequestPendingRequest;
 use Modules\CreditRequest\Http\Requests\CreditRequestSimulationRequest;
@@ -115,10 +116,11 @@ class CreditRequestController extends BaseController
     }
 
     public function redirect(
+        Request $request,
         CreditRequest $creditRequest
     ): JsonResponse {
         $creditRequest = $this->creditRequestService
-            ->redirected($creditRequest);
+            ->redirected($creditRequest, $request->input());
 
         return $this->okResponse(new CreditRequestResource($creditRequest));
     }

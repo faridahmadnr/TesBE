@@ -206,6 +206,7 @@ class MigrateData extends Command
             $oldTermins = $this->getOldTermins();
             $termins = DB::table('termins')->get();
 
+            $this->info('Get Banks');
             $oldBanks = $this->getOldBanks();
             $banks = DB::table('banks')->get();
 
@@ -218,6 +219,7 @@ class MigrateData extends Command
             });
             $newUsers = collect($users);
 
+            $this->info('Start migrating credit requests');
             foreach ($this->getDataFromCsv($creditRequestPath) as $creditrequest) {
                 $oldBusinessTypeId = $oldBusinessTypes->firstWhere('id', $creditrequest[3]);
                 $businessTypeId = $businessTypes->firstWhere('name', $oldBusinessTypeId['name'])->id ?? false;
@@ -323,6 +325,8 @@ class MigrateData extends Command
                 $lastCreditRequestId++;
                 $this->info('Credit request '.$creditrequest[1].' migrated');
             }
+
+            $this->info('Start migrating data');
 
             DB::table('users')->insert($users);
             DB::table('members')->insert($members);
@@ -456,10 +460,14 @@ class MigrateData extends Command
 
         $insertedData = [];
         foreach ($banks as $data) {
-            $image = file_get_contents($data[6]);
-            $path = 'news/'.$data[0].'.jpg';
+            // try {
+            //     $image = file_get_contents($data[6]);
+            //     $path = 'news/'.$this->_removeUnusedChar($data[1]).'.jpg';
+            //     Storage::put($path, $image);
+            // } catch (\Throwable $th) {
+            //     $this->info('[BANK] Unable to get image');
+            // }
 
-            Storage::put($path, $image);
             $insertedData[] = [
                 'name' => $data[1],
                 'link' => $data[2],
@@ -491,10 +499,14 @@ class MigrateData extends Command
                 continue;
             }
 
-            $image = file_get_contents($item[3]);
-            $path = 'news/'.$item[0].'.jpg';
+            // try {
+            //     $image = file_get_contents($item[3]);
+            //     $path = 'news/'.$this->_removeUnusedChar($item[0]).'.jpg';
+            //     Storage::put($path, $image);
+            // } catch (\Throwable $th) {
+            //     $this->info('[NEWS] Unable to get image');
+            // }
 
-            Storage::put($path, $image);
             $insertedData[] = [
                 'title' => $item[1],
                 'slug' => $item[4],
@@ -520,10 +532,14 @@ class MigrateData extends Command
                 continue;
             }
 
-            $image = file_get_contents($item[3]);
-            $path = 'requirements/'.$item[0].'.jpg';
+            // try {
+            //     $image = file_get_contents($item[3]);
+            //     $path = 'requirements/'.$item[0].'.jpg';
+            //     Storage::put($path, $image);
+            // } catch (\Throwable $th) {
+            //     $this->info('[REQUIREMENT] Unable to get image');
+            // }
 
-            Storage::put($path, $image);
             $insertedData[] = [
                 'name' => $item[1],
                 'summary' => $item[9],

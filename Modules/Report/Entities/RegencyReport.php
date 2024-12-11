@@ -31,7 +31,6 @@ use Modules\Location\Entities\Regency;
  * @property-read string|null $hash_id_raw
  * @property-read Regency|null $regency
  * @property-read \Modules\User\Entities\User|null $updater
- *
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|RegencyReport newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RegencyReport newQuery()
@@ -53,7 +52,6 @@ use Modules\Location\Entities\Regency;
  * @method static \Illuminate\Database\Eloquent\Builder|RegencyReport whereUpdatedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RegencyReport withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|RegencyReport withoutTrashed()
- *
  * @mixin \Eloquent
  */
 class RegencyReport extends BaseModel
