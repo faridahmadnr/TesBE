@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('sector_reports', function (Blueprint $table) {
-            Schema::hasColumn('sector_reports', 'debtor') ? $table->dropColumn('debtor') : '';
+            Schema::hasColumn('sector_reports', 'contract_value') ? $table->dropColumn('contract_value') : '';
         });
     }
 
@@ -26,7 +26,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('sector_reports', function (Blueprint $table) {
-            ! Schema::hasColumn('sector_reports', 'debtor') ? $table->integer('debtor') : '';
+            ! Schema::hasColumn('sector_reports', 'contract_value') ? $table->integer('contract_value') : '';
         });
     }
 };
