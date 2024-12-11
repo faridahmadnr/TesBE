@@ -23,6 +23,7 @@ use App\Models\BaseModel;
  * @property-read string|null $hash_id
  * @property-read string|null $hash_id_raw
  * @property-read \Modules\User\Entities\User|null $updater
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|AchivementRealizationReport newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AchivementRealizationReport newQuery()
@@ -41,6 +42,7 @@ use App\Models\BaseModel;
  * @method static \Illuminate\Database\Eloquent\Builder|AchivementRealizationReport whereUpdatedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AchivementRealizationReport withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|AchivementRealizationReport withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class AchivementRealizationReport extends BaseModel

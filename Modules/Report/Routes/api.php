@@ -47,8 +47,61 @@ Route::group(['prefix' => 'v1/reports', 'as' => 'api.v1.reports.'], function () 
 
         Route::apiResource('sectors', V1\SectorReportController::class)
             ->except(['index']);
-    });
 
+        Route::group(['prefix' => 'external', 'as' => 'external.'], function () {
+            Route::apiResource('sector-distribution', V1\External\ExternalSectorDistributionController::class)
+                ->parameters([
+                    'sector-distribution' => 'sectorReport',
+                ]);
+            Route::controller(V1\External\ExternalSectorDistributionController::class)->group(function () {
+                Route::post('sector-distribution/{sectorReport}/restore', 'restore')
+                    ->name('sector-distribution.restore')
+                    ->withTrashed();
+                Route::delete('sector-distribution/{sectorReport}/delete', 'forceDelete')
+                    ->name('sector-distribution.delete')
+                    ->withTrashed();
+            });
+
+            Route::apiResource('region-distribution', V1\External\ExternalRegencyDistributionController::class)
+                ->parameters([
+                    'region-distribution' => 'regionReport',
+                ]);
+            Route::controller(V1\External\ExternalRegencyDistributionController::class)->group(function () {
+                Route::post('region-distribution/{regionReport}/restore', 'restore')
+                    ->name('region-distribution.restore')
+                    ->withTrashed();
+                Route::delete('region-distribution/{regionReport}/delete', 'forceDelete')
+                    ->name('region-distribution.delete')
+                    ->withTrashed();
+            });
+
+            Route::apiResource('sector-distribution-5-years', V1\External\ExternalQuinquennialDistributionController::class)
+                ->parameters([
+                    'sector-distribution-5-years' => 'sectorReport',
+                ]);
+            Route::controller(V1\External\ExternalQuinquennialDistributionController::class)->group(function () {
+                Route::post('sector-distribution-5-years/{sectorReport}/restore', 'restore')
+                    ->name('sector-distribution-5-years.restore')
+                    ->withTrashed();
+                Route::delete('sector-distribution-5-years/{sectorReport}/delete', 'forceDelete')
+                    ->name('sector-distribution-5-years.delete')
+                    ->withTrashed();
+            });
+
+            Route::apiResource('achivement-realization', V1\External\ExternalAchivementController::class)
+                ->parameters([
+                    'achivement-realization' => 'achivementRealization',
+                ]);
+            Route::controller(V1\External\ExternalAchivementController::class)->group(function () {
+                Route::post('achivement-realization/{achivementRealization}/restore', 'restore')
+                    ->name('achivement-realization.restore')
+                    ->withTrashed();
+                Route::delete('achivement-realization/{achivementRealization}/delete', 'forceDelete')
+                    ->name('achivement-realization.delete')
+                    ->withTrashed();
+            });
+        });
+    });
     // REGION REPORTS
     Route::apiResource('regencies', V1\RegencyReportController::class)
         ->only(['index']);

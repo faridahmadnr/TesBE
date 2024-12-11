@@ -9,7 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Filesystem\FilesystemManager;
 use Laravel\Scout\Searchable;
-use Rennokki\QueryCache\Traits\QueryCacheable;
+// TODO: add cache to reduce database calls
+// use Rennokki\QueryCache\Traits\QueryCacheable;
 use RichanFongdasen\EloquentBlameable\BlameableTrait;
 use Spatie\Activitylog\Traits\CausesActivity;
 use Str;
@@ -20,7 +21,7 @@ use Str;
 #[\AllowDynamicProperties]
 abstract class BaseModel extends Model
 {
-    use BlameableTrait, CausesActivity, HasFactory, HasHashId, HasHashIdRouting, QueryCacheable, Searchable, SoftDeletes;
+    use BlameableTrait, CausesActivity, HasFactory, HasHashId, HasHashIdRouting, Searchable, SoftDeletes;
 
     public $cacheFor = 600;
 

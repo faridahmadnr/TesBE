@@ -92,7 +92,6 @@ final class ImportService extends BaseService
         }
 
         SectorReport::insert($data);
-        SectorReport::flushQueryCache();
 
         return $data;
     }
@@ -139,7 +138,6 @@ final class ImportService extends BaseService
         }
 
         RegencyReport::insert($data);
-        RegencyReport::flushQueryCache();
 
         return $data;
     }
@@ -175,7 +173,6 @@ final class ImportService extends BaseService
         }
 
         AchivementRealizationReport::insert($data);
-        AchivementRealizationReport::flushQueryCache();
 
         return $data;
     }
@@ -211,7 +208,6 @@ final class ImportService extends BaseService
         }
 
         QuinquennialReport::insert($data);
-        QuinquennialReport::flushQueryCache();
 
         return $data;
     }
@@ -252,7 +248,6 @@ final class ImportService extends BaseService
         }
 
         RegencyReport::insert($data);
-        RegencyReport::flushQueryCache();
 
         return $data;
     }

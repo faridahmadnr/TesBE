@@ -13,6 +13,8 @@ use Modules\Location\Entities\Regency;
  * @property int $id
  * @property int|null $regency_id
  * @property string $date
+ * @property int $debtor
+ * @property int $outstanding_value
  * @property int $realization
  * @property int|null $created_by
  * @property int|null $updated_by
@@ -20,9 +22,7 @@ use Modules\Location\Entities\Regency;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property int|null $debtor
  * @property int $percentage
- * @property int $outstanding_value
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $actions
  * @property-read int|null $actions_count
  * @property-read \Modules\User\Entities\User|null $creator
@@ -31,6 +31,7 @@ use Modules\Location\Entities\Regency;
  * @property-read string|null $hash_id_raw
  * @property-read Regency|null $regency
  * @property-read \Modules\User\Entities\User|null $updater
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static \Illuminate\Database\Eloquent\Builder|RegencyReport newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RegencyReport newQuery()
@@ -52,6 +53,7 @@ use Modules\Location\Entities\Regency;
  * @method static \Illuminate\Database\Eloquent\Builder|RegencyReport whereUpdatedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RegencyReport withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|RegencyReport withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class RegencyReport extends BaseModel
@@ -66,6 +68,17 @@ class RegencyReport extends BaseModel
         'realization',
         'percentage',
     ];
+
+    /**
+     * Set the base cache tags that will be present
+     * on all queries.
+     */
+    protected function getCacheBaseTags(): array
+    {
+        return [
+            'regency_report',
+        ];
+    }
 
     public function regency(): BelongsTo
     {
