@@ -20,6 +20,10 @@ class VerifySignature
         $sign = $request->header('X-Sign');
         $signTimestamp = $request->header('X-Sign-Timestamp');
 
+        if ($request->url() === route('api.v1.credit-request.export')) {
+            return $next($request);
+        }
+
         // return $next($request);
         if (! $this->isValidTimestamp($signTimestamp)) {
             if ($isDebug) {
