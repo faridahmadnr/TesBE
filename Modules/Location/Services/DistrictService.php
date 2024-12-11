@@ -6,6 +6,7 @@ use App\Exceptions\GeneralException;
 use App\Services\BaseService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
+use Log;
 use Modules\Location\Entities\District;
 use Modules\Location\Entities\Regency;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -26,6 +27,7 @@ final class DistrictService extends BaseService
             'name',
             'created_at',
         ])
+            ->whereIn('regency_id', [3401, 3402, 3403, 3404, 3405])
             ->with(['regency']);
         $results = QueryBuilder::for($query)
             ->defaultSort('-created_at')
@@ -35,6 +37,9 @@ final class DistrictService extends BaseService
                 AllowedFilter::callback('regency', function (Builder $query, $regency) {
                     $query->whereHas('regency', function (Builder $query) use ($regency) {
                         $regencyId = Regency::keyFromHashId($regency);
+                        Log::info('REGENCY ID', [
+                            'regencyId' => $regencyId,
+                        ]);
                         $query->where('id', $regencyId);
                     });
                 }),
