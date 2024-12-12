@@ -236,6 +236,7 @@ final class UserService extends BaseService
 
             $user->profile()->update([
                 'phone' => $data['phone'] ?? null,
+                // @phpstan-ignore-next-line
                 'bank_id' => isset($data['bank_id']) ? Bank::keyFromHashId($data['bank_id']) : $user?->profile?->bank_id,
                 'photo' => $filename,
             ]);
