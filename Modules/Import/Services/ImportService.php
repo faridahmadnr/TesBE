@@ -13,6 +13,10 @@ use Modules\Report\Entities\SectorReport;
 
 final class ImportService extends BaseService
 {
+    protected const BILLION = 1000000000;
+
+    protected const MILLION = 1000000;
+
     public function import(array $data)
     {
         $type = $data['type'];
@@ -57,6 +61,11 @@ final class ImportService extends BaseService
             $target = $row[3];
             $realizationAmount = $row[4];
 
+            $unit = self::BILLION; // milyar
+            if (strtolower($row[5]) === 'juta') {
+                $unit = self::MILLION; // juta
+            }
+
             $date = $year.'-01-01';
             if ($quarter == 'Q2') {
                 $date = $year.'-04-01';
@@ -83,7 +92,7 @@ final class ImportService extends BaseService
                 $data[] = [
                     'business_type_id' => $businessTypeId,
                     'debitor' => $target,
-                    'realization' => $realizationAmount,
+                    'realization' => $realizationAmount * $unit,
                     'date' => $date,
                     'created_at' => now(),
                     'updated_at' => now(),
@@ -185,6 +194,11 @@ final class ImportService extends BaseService
             $target = $row[1];
             $realizationAmount = $row[2];
 
+            $unit = self::BILLION; // milyar
+            if (strtolower($row[3]) === 'juta') {
+                $unit = self::MILLION; // juta
+            }
+
             $date = $year.'-01-01';
 
             $exists = QuinquennialReport::where([
@@ -200,7 +214,7 @@ final class ImportService extends BaseService
             }
             $data[] = [
                 'debitor' => $target,
-                'realization' => $realizationAmount,
+                'realization' => $realizationAmount * $unit,
                 'date' => $date,
                 'created_at' => now(),
                 'updated_at' => now(),
