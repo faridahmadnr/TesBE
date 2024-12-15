@@ -257,7 +257,7 @@ final class PublicReportService extends BaseService
 
             return [
                 'year' => $year['year'],
-                'realization' => $matchingEvent ? $matchingEvent->realization / 1000000000 : 0,
+                'realization' => $matchingEvent ? $matchingEvent->realization : 0,
                 'debitor' => $matchingEvent ? $matchingEvent->debitor : 0,
                 'date' => $matchingEvent ? $matchingEvent->created_at : null,
             ];

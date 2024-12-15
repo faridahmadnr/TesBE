@@ -19,7 +19,7 @@ class SubmissionStatusController extends BaseController
         $type = request()->filter['type'] ?? null;
         $data = $this->submissionStatusService->getSubmissionStatus($type);
 
-        if ($type === 'stats') {
+        if ($type === 'stats' || $type === 'kurType') {
             return $this->successResponse($data);
         }
 

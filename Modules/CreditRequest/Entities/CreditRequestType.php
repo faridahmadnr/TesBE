@@ -28,6 +28,7 @@ use Modules\Report\Enums\QuartersEnum;
  * @property-read string|null $hash_id
  * @property-read string|null $hash_id_raw
  * @property-read \Modules\User\Entities\User|null $updater
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static Builder|CreditRequestType newModelQuery()
  * @method static Builder|CreditRequestType newQuery()
@@ -48,6 +49,7 @@ use Modules\Report\Enums\QuartersEnum;
  * @method static Builder|CreditRequestType withSubmissionStatus($year = null, $quarter = null)
  * @method static Builder|CreditRequestType withTrashed()
  * @method static Builder|CreditRequestType withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class CreditRequestType extends BaseModel
@@ -72,9 +74,9 @@ class CreditRequestType extends BaseModel
                         $query->whereRaw('EXTRACT(QUARTER FROM credit_requests.created_at) = ?', [$quarter]);
                     });
             })
-            ->selectRaw('credit_request_types.name')
-            ->selectRaw('SUM(COALESCE(CASE WHEN credit_requests.status = '.CreditRequestStatusEnum::DRAFT->value.' THEN 1 ELSE 0 END, 0)) AS potential')
-            ->selectRaw('SUM(COALESCE(CASE WHEN '.DB::regexp('credit_requests.remark', '^[0-9]+$').' THEN CAST(credit_requests.remark AS decimal) ELSE 0 END, 0)) AS realization')
+            ->selectRaw('SUM(COALESCE(CASE WHEN credit_requests.status != '.CreditRequestStatusEnum::APPROVED->value.' THEN 1 ELSE 0 END, 0)) AS debitor')
+            ->selectRaw('SUM(COALESCE(CASE WHEN credit_requests.status != '.CreditRequestStatusEnum::APPROVED->value.' AND '.DB::regexp('credit_requests.remark', '^[0-9]+$').' THEN CAST(credit_requests.remark AS decimal) ELSE 0 END, 0)) AS submission')
+            ->selectRaw('credit_request_types.name as name')
             ->groupBy('credit_request_types.name');
 
         return $baseQuery;

@@ -3,6 +3,7 @@
 namespace Modules\Report\Services;
 
 use App\Services\BaseService;
+use Illuminate\Support\Facades\DB;
 use Modules\CreditRequest\Entities\CreditRequest;
 use Modules\CreditRequest\Entities\CreditRequestType;
 use Modules\CreditRequest\Enums\CreditRequestStatusEnum;
@@ -57,14 +58,32 @@ final class SubmissionStatusService extends BaseService
 
     private function getSubmissionStatusByKurType($year = null, $quarter = null)
     {
-        $query = CreditRequestType::withSubmissionStatus(
-            year: $year,
-            quarter: $quarter
-        );
-
-        $query = QueryBuilder::for($query)
-            ->paginate(request()->query('pageSize') ?? 10)
-            ->appends(request()->query());
+        $query = CreditRequestType::leftJoin('credit_requests', function ($join) use ($year, $quarter) {
+            $join->on('credit_request_types.id', '=', 'credit_requests.credit_request_type_id')
+                ->when($year, function ($query) use ($year) {
+                    $query->whereYear('credit_requests.created_at', $year);
+                })
+                ->when(! is_null($quarter) && $quarter !== 'all', function ($query) use ($quarter) {
+                    [$quarter] = QuartersEnum::getQuarterMonthsValue(strtoupper($quarter));
+                    $query->whereRaw('EXTRACT(QUARTER FROM credit_requests.created_at) = ?', [$quarter]);
+                });
+        })
+            ->selectRaw('SUM(COALESCE(CASE WHEN credit_requests.status != '.CreditRequestStatusEnum::APPROVED->value.' THEN 1 ELSE 0 END, 0)) AS debitor')
+            ->selectRaw('SUM(COALESCE(CASE WHEN credit_requests.status != '.CreditRequestStatusEnum::APPROVED->value.' AND '.DB::regexp('credit_requests.remark', '^[0-9]+$').' THEN CAST(credit_requests.remark AS decimal) ELSE 0 END, 0)) AS submission')
+            ->selectRaw('credit_request_types.name as name')
+            ->groupBy('credit_request_types.name')
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'name' => $item->name,
+                    // @phpstan-ignore-next-line
+                    'debitor' => $item->debitor,
+                    // @phpstan-ignore-next-line
+                    'submission' => intval($item->submission),
+                    // @phpstan-ignore-next-line
+                    'submissionText' => formatCurrency($item->submission),
+                ];
+            });
 
         return $query;
     }
