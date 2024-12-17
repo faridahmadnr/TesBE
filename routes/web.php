@@ -19,7 +19,7 @@ Route::get('/', function () {
     // $user = User::first();
 
     // return (new VerifyEmailNotification($user))->toMail($user);
-    return new DailyBackupDatabaseMail();
+    return new DailyBackupDatabaseMail;
     abort(403);
 });
 

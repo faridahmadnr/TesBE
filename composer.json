@@ -42,7 +42,7 @@
         "spatie/laravel-permission": "^6.0",
         "spatie/laravel-query-builder": "^5.6",
         "spatie/simple-excel": "^3.6",
-        "vercoutere/laravel-mjml": "^0.2.0"
+        "vercoutere/laravel-mjml": "dev-master"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.13",
@@ -149,6 +149,10 @@
         {
             "type": "git",
             "url": "https://github.com/agungkes/laravel-model-hashid.git"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/Kaha-Tech/laravel-mjml.git"
         }
     ]
 }
