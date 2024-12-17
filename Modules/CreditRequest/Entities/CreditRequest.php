@@ -85,7 +85,7 @@ use Modules\User\Entities\User;
  * @method static Builder|CreditRequest whereImage($value)
  * @method static Builder|CreditRequest wherePostalCode($value)
  * @method static Builder|CreditRequest whereProcessedBy($value)
- * @method static Builder|CreditRequest whereRegistrationNumber($value)
+ * @method static Builder|CreditRequest whereRegistrationNumber($value, $field = null)
  * @method static Builder|CreditRequest whereRemark($value)
  * @method static Builder|CreditRequest whereStatus($value)
  * @method static Builder|CreditRequest whereTerminId($value)

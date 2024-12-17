@@ -31,6 +31,7 @@ use Mews\Purifier\Casts\CleanHtml;
  * @property-read string|null $hash_id
  * @property-read string|null $hash_id_raw
  * @property-read \Modules\User\Entities\User|null $updater
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static Builder|News newModelQuery()
  * @method static Builder|News newQuery()
@@ -44,7 +45,7 @@ use Mews\Purifier\Casts\CleanHtml;
  * @method static Builder|News whereDeletedBy($value)
  * @method static Builder|News whereFeaturedImage($value)
  * @method static Builder|News whereId($value)
- * @method static Builder|News whereSlug($value)
+ * @method static Builder|News whereSlug($value, $field = null)
  * @method static Builder|News whereStatus($value)
  * @method static Builder|News whereSummary($value)
  * @method static Builder|News whereTitle($value)
@@ -52,6 +53,7 @@ use Mews\Purifier\Casts\CleanHtml;
  * @method static Builder|News whereUpdatedBy($value)
  * @method static Builder|News withTrashed()
  * @method static Builder|News withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class News extends BaseModel
