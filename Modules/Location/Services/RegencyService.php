@@ -4,9 +4,7 @@ namespace Modules\Location\Services;
 
 use App\Exceptions\GeneralException;
 use App\Services\BaseService;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
-use Modules\Location\Entities\Province;
 use Modules\Location\Entities\Regency;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
@@ -26,19 +24,14 @@ final class RegencyService extends BaseService
             'name',
             'province_id',
             'created_at',
-        ])->with(['province', 'districts']);
+        ])->where('province_id', '=', 34)
+            ->with(['province', 'districts']);
 
         $results = QueryBuilder::for($query)
             ->defaultSort('-created_at')
             ->allowedFields(['id', 'name'])
             ->allowedFilters([
                 'name',
-                AllowedFilter::callback('province', function (Builder $query, $province) {
-                    $query->whereHas('province', function (Builder $query) use ($province) {
-                        $provinceId = Province::keyFromHashId($province);
-                        $query->where('id', $provinceId);
-                    });
-                }),
                 AllowedFilter::trashed(),
             ])
             ->allowedSorts([
