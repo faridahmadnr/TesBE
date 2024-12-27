@@ -63,7 +63,8 @@ class CreditRequestResource extends JsonResource
                 'dob' => $this->user->member->dob ?? '-',
                 'isDeleted' => ! is_null($this->user->deleted_at),
             ] : null),
-            'status' => strtolower(CreditRequestStatusEnum::from($this->status)->name),
+            // @phpstan-ignore-next-line
+            'status' => strtolower(CreditRequestStatusEnum::from($this->status ?? 1)->name),
             'history' => $this->whenLoaded('histories', $this->histories->map(function ($history) {
                 return [
                     'id' => $history->hashId,

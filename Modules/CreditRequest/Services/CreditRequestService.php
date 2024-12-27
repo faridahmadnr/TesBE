@@ -50,17 +50,19 @@ final class CreditRequestService extends BaseService
         /** @var CreditRequest $previousCreditRequest */
         $previousCreditRequest = $this->select(['id', 'created_at'])
             ->limit(1)
-            ->orderBy('created_at', 'desc');
+            ->where('user_id', '=', auth()->user()->id)
+            ->orderBy('created_at', 'desc')
+            ->first();
 
-        if ($previousCreditRequest) {
+        if (! is_null($previousCreditRequest)) {
             $previousCreditRequestDate = carbon($previousCreditRequest->first()->created_at);
 
             if (now()->diffInDays($previousCreditRequestDate) <= 30) {
-                throw new GeneralException(__('There was a problem registering this credit request. Please try again.'));
+                throw new GeneralException(__('There are too many credit requests in the last 30 days. Please try again later.'));
             }
 
             if (now()->diffInYears($previousCreditRequestDate) < 1) {
-                throw new GeneralException(__('There was a problem registering this credit request. Please try again.'));
+                throw new GeneralException(__('There are too many credit requests in the last year. Please try again later.'));
             }
         }
 

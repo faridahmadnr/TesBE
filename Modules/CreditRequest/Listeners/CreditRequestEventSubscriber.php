@@ -27,7 +27,8 @@ class CreditRequestEventSubscriber implements ShouldHandleEventsAfterCommit
     public function onCreated(CreditRequestCreated $event)
     {
         $event->creditRequest->histories()->save(new CreditRequestHistory([
-            'status' => $event->creditRequest->status,
+            // @phpstan-ignore-next-line
+            'status' => $event->creditRequest?->status ?? 1,
             'description' => 'Pengajuan KUR telah dibuat oleh '.$event->creditRequest->creator->name.'.',
         ]));
 
