@@ -1,0 +1,11 @@
+{
+    "name": "Termin",
+    "alias": "termin",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Termin\\Providers\\TerminServiceProvider"
+    ],
+    "files": []
+}

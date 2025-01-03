@@ -1,0 +1,16 @@
+{
+    "Bank": true,
+    "User": true,
+    "BusinessPermit": true,
+    "BusinessType": true,
+    "Location": true,
+    "Termin": true,
+    "Testimoni": true,
+    "CreditRequest": true,
+    "News": true,
+    "Report": true,
+    "DataVisualization": true,
+    "Faq": true,
+    "Requirement": true,
+    "Import": true
+}

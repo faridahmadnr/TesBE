@@ -1,0 +1,11 @@
+{
+    "recommendations": [
+        "open-southeners.laravel-pint",
+        "m1guelpf.better-pest",
+        "amiralizadeh9480.laravel-extra-intellisense",
+        "xdebug.php-debug",
+        "bmewburn.vscode-intelephense-client",
+        "SanderRonde.phpstan-vscode",
+        "georgykurian.laravel-ide-helper"
+    ]
+}
