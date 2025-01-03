@@ -1,0 +1,268 @@
+<?php
+
+namespace Modules\Import\Services;
+
+use App\Services\BaseService;
+use Illuminate\Support\Facades\Log;
+use Modules\BusinessType\Entities\BusinessType;
+use Modules\Location\Entities\Regency;
+use Modules\Report\Entities\AchivementRealizationReport;
+use Modules\Report\Entities\QuinquennialReport;
+use Modules\Report\Entities\RegencyReport;
+use Modules\Report\Entities\SectorReport;
+
+final class ImportService extends BaseService
+{
+    protected const BILLION = 1000000000;
+
+    protected const MILLION = 1000000;
+
+    public function import(array $data)
+    {
+        $type = $data['type'];
+        $rows = $data['data'];
+
+        if ($type == 'sector') {
+            return $this->_importSector($rows);
+        }
+
+        if ($type == 'realization') {
+            return $this->_importRealization($rows);
+        }
+
+        if ($type === 'sector5years') {
+            return $this->_importSector5years($rows);
+        }
+
+        if ($type === 'region') {
+            return $this->_importRegion($rows);
+        }
+
+        return $this->_importSubmission($rows);
+    }
+
+    private function _importSector(array $rows)
+    {
+        $data = [];
+        foreach ($rows as $row) {
+            $businessTypeId = BusinessType::select(['id', 'name'])
+                ->whereRaw('LOWER(name) = ?', strtolower(trim($row[2])))
+                ->first()
+                ?->id;
+
+            if (! $businessTypeId) {
+                Log::info('skipped import: '.$row[2]);
+
+                continue;
+            }
+
+            $year = $row[0];
+            $quarter = strtolower($row[1]);
+            $target = $row[3];
+            $realizationAmount = $row[4];
+
+            $unit = self::BILLION; // milyar
+            if (strtolower($row[5]) === 'juta') {
+                $unit = self::MILLION; // juta
+            }
+
+            $date = $year.'-01-01';
+            if ($quarter == 'Q2') {
+                $date = $year.'-04-01';
+            }
+
+            if ($quarter == 'Q3') {
+                $date = $year.'-07-01';
+            }
+
+            if ($quarter == 'Q4') {
+                $date = $year.'-10-01';
+            }
+
+            $sectorExists = SectorReport::where([
+                'business_type_id' => $businessTypeId,
+                'date' => $date,
+            ]);
+
+            tap($sectorExists)
+                ->increment('realization', $realizationAmount)
+                ->increment('debitor', $target);
+
+            if (! $sectorExists->exists()) {
+                $data[] = [
+                    'business_type_id' => $businessTypeId,
+                    'debitor' => $target,
+                    'realization' => $realizationAmount * $unit,
+                    'date' => $date,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
+        }
+
+        SectorReport::insert($data);
+
+        return $data;
+    }
+
+    private function _importSubmission(array $rows)
+    {
+        $data = [];
+
+        $creditRequestTypes = [1, 2, 3];
+        foreach ($rows as $row) {
+            $regencyId = Regency::select(['id', 'name'])
+                ->whereRaw('LOWER(name) = ?', strtolower(trim($row[2])))
+                ->first()
+                ?->id;
+
+            $year = $row[0];
+            $quarter = strtolower($row[1]);
+            $submissionAmount = $row[6];
+            $realizationAmount = $row[7];
+
+            $date = $year.'-01-01';
+            if ($quarter == 'Q2') {
+                $date = $year.'-04-01';
+            }
+
+            if ($quarter == 'Q3') {
+                $date = $year.'-07-01';
+            }
+
+            if ($quarter == 'Q4') {
+                $date = $year.'-10-01';
+            }
+
+            foreach ($creditRequestTypes as $key => $creditRequestTypeId) {
+                $data[] = [
+                    'regency_id' => $regencyId,
+                    'credit_request_type_id' => $creditRequestTypeId,
+                    'target' => $submissionAmount,
+                    'realization' => $realizationAmount,
+                    'date' => $date,
+                    'debtor' => $row[3 + $key],
+                ];
+            }
+        }
+
+        RegencyReport::insert($data);
+
+        return $data;
+    }
+
+    private function _importRealization(array $rows)
+    {
+        $data = [];
+        foreach ($rows as $row) {
+            $year = $row[0];
+            $target = $row[1];
+            $realization = $row[2];
+
+            $date = $year.'-01-01';
+
+            $exists = AchivementRealizationReport::where([
+                'date' => $date,
+            ]);
+
+            tap($exists)
+                ->increment('target', $target)
+                ->increment('realization', $realization);
+
+            if ($exists->exists()) {
+                continue;
+            }
+            $data[] = [
+                'target' => $target,
+                'realization' => $realization,
+                'date' => $date,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+
+        AchivementRealizationReport::insert($data);
+
+        return $data;
+    }
+
+    private function _importSector5years(array $rows)
+    {
+        $data = [];
+        foreach ($rows as $row) {
+            $year = $row[0];
+            $target = $row[1];
+            $realizationAmount = $row[2];
+
+            $unit = self::BILLION; // milyar
+            if (strtolower($row[3]) === 'juta') {
+                $unit = self::MILLION; // juta
+            }
+
+            $date = $year.'-01-01';
+
+            $exists = QuinquennialReport::where([
+                'date' => $date,
+            ]);
+
+            tap($exists)
+                ->increment('debitor', $target)
+                ->increment('realization', $realizationAmount);
+
+            if ($exists->exists()) {
+                continue;
+            }
+            $data[] = [
+                'debitor' => $target,
+                'realization' => $realizationAmount * $unit,
+                'date' => $date,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+
+        QuinquennialReport::insert($data);
+
+        return $data;
+    }
+
+    private function _importRegion(array $rows)
+    {
+        $data = [];
+
+        foreach ($rows as $row) {
+            $regencyId = Regency::select(['id', 'name'])
+                ->whereRaw('LOWER(name) = ?', strtolower(trim($row[1])))
+                ->first()
+                ?->id;
+
+            if (! $regencyId) {
+                Log::info('skipped import: '.$row[1]);
+
+                continue;
+            }
+
+            $year = $row[0];
+            $date = $year.'-01-01';
+            $percentage = intval($row[2]);
+            $debtor = $row[3];
+            $outstandingValue = $row[4];
+            $realizationAmount = $row[5];
+
+            $data[] = [
+                'date' => $date,
+                'regency_id' => $regencyId,
+                'debtor' => $debtor,
+                'percentage' => $percentage,
+                'outstanding_value' => $outstandingValue,
+                'realization' => $realizationAmount,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+
+        RegencyReport::insert($data);
+
+        return $data;
+    }
+}

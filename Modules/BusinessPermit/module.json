@@ -1,0 +1,11 @@
+{
+    "name": "BusinessPermit",
+    "alias": "businesspermit",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\BusinessPermit\\Providers\\BusinessPermitServiceProvider"
+    ],
+    "files": []
+}

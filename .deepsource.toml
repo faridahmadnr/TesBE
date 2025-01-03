@@ -1,0 +1,23 @@
+version = 1
+
+test_patterns = [
+  "tests/**",
+  "Modules/*/Tests/**"
+]
+
+exclude_patterns = [
+  "Modules/*/Database/**",
+  "database/**",
+  "stubs/**",
+  "storage/**",
+  "public/**"
+]
+
+[[analyzers]]
+name = "php"
+
+  [analyzers.meta]
+  bootstrap_files = ["vendor/autoload.php"]
+
+[[transformers]]
+name = "php-cs-fixer"

@@ -1,0 +1,11 @@
+{
+    "name": "Testimoni",
+    "alias": "testimoni",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Testimoni\\Providers\\TestimoniServiceProvider"
+    ],
+    "files": []
+}

@@ -1,0 +1,11 @@
+{
+    "name": "DataVisualization",
+    "alias": "datavisualization",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\DataVisualization\\Providers\\DataVisualizationServiceProvider"
+    ],
+    "files": []
+}

@@ -1,0 +1,16 @@
+<?php
+
+namespace $NAMESPACE$;
+
+use App\Models\BaseModel;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
+class $CLASS$ extends BaseModel
+{
+    protected $fillable = $FILLABLE$;
+    
+    protected static function newFactory()
+    {
+        return \$MODULE_NAMESPACE$\$MODULE$\Database\factories\$NAME$Factory::new();
+    }
+}
