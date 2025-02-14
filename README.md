@@ -70,6 +70,30 @@ Run the following command to perform database migrations and seed the database:
 ./vendor/bin/sail php artisan app:migrate-data
 ```
 
+### Requirements
+
+1. PHP > v7.4
+2. Composer
+3. NodeJS
+4. See more requirement from laravel [here](https://laravel.com/docs/7.x)
+5. Minio
+
+### Installation
+
+1. Clone this repository to your local computer
+2. Copy .env.example to .env
+3. Fill .env with your own configuration
+4. Run `php artisan key:generate` if needed
+5. Run `php artisan migrate --seed` to execute migration and seeder data
+
+## Using Docker
+
+1. Clone this repository
+2. Run `docker compose up -d`
+3. Wait for all service is ready and running
+4. Generate key inside app using `docker compose exec app php artisan key:generate`
+5. Run migration inside app service using command `docker compose exec app php artisan migrate:fresh --seed`
+
 ## Features
 
 ### Blameable
