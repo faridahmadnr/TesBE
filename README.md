@@ -1,130 +1,127 @@
-# KUR Jogja
+# KUR Jogja Backend
 
 [![DeepSource](https://app.deepsource.com/gh/agungkes/kur-jogja-backend.svg/?label=active+issues&show_trend=true&token=4lskwfhwPmXmShTJ4-Kf5aAv)](https://app.deepsource.com/gh/agungkes/kur-jogja-backend/)
 
+## Overview
+
+This repository contains the backend codebase for the **KUR Jogja** project. It utilizes Laravel for application logic and Laravel Sail for managing the local development environment.
+
+For more details on Laravel Sail, refer to the [official documentation](https://laravel.com/docs/sail).
+
+---
+
+## Table of Contents
+
+1. [Local Development](#local-development)
+2. [Development Server](#start-the-development-server)
+3. [Running Tests](#run-tests)
+4. [Database Migration and Seeding](#run-migration-and-seeder)
+5. [Data Import from Old Database](#run-data-import-from-the-old-database)
+6. [Features](#features)
+    - [Blameable](#blameable)
+    - [Encryption of Sensitive Data](#encrypt-sensitive-information)
+
+---
+
 ## Local Development
 
-This project uses
-[Laravel Sail](https://laravel.com/docs/sail) to manage
-its local development stack. For more detailed usage instructions take a look at
-the [official documentation](https://laravel.com/docs/sail).
+This project uses Laravel Sail for managing the local development stack. The links below provide access to essential tools and services during development:
 
-### Links
+-   **Application**: [http://localhost](http://localhost)
+-   **Preview Emails via Mailpit**: [http://localhost:8025](http://localhost:8025)
+-   **MeiliSearch Administration Panel**: [http://localhost:7700](http://localhost:7700)
+-   **MinIO Administration Panel**: [http://localhost:9000](http://localhost:9000)
 
--   **Your Application** http://localhost
--   **Preview Emails via Mailpit** http://localhost:8025
--   **MeiliSearch Administration Panel** http://localhost:7700
--   **MinIO Administration Panel** http://localhost:9000
+---
 
-### Start the development server
+## Start the Development Server
 
-```shell
+To start the local development server, use the following command:
+
+```bash
 ./vendor/bin/sail up
 ```
 
-You can also use the `-d` option, to start the server in
-the background if you do not care about the logs or still want to use your
-terminal for other things.
+To run the server in the background, add the -d flag:
 
-### Run Tests
+```bash
+./vendor/bin/sail up -d
+```
 
-```shell
+## Run Tests
+
+To execute the test suite, run:
+
+```bash
 ./vendor/bin/sail test
 ```
 
-### Run migration and seeder
+## Run Migration and Seeder
 
-```shell
+Run the following command to perform database migrations and seed the database:
+
+```bash
 ./vendor/bin/sail php artisan module:migrate-fresh --seed
 ```
 
-### Run data import from the old database
+## Run Data Import from the Old Database
 
-#### IMPORTANT WARNING: Before running this command make sure you have run migration and seeder first.
-
-```shell
+```bash
 ./vendor/bin/sail php artisan app:migrate-data
 ```
 
+### Requirements
+
+1. PHP > v7.4
+2. Composer
+3. NodeJS
+4. See more requirement from laravel [here](https://laravel.com/docs/7.x)
+5. Minio
+
+### Installation
+
+1. Clone this repository to your local computer
+2. Copy .env.example to .env
+3. Fill .env with your own configuration
+4. Run `php artisan key:generate` if needed
+5. Run `php artisan migrate --seed` to execute migration and seeder data
+
+## Using Docker
+
+1. Clone this repository
+2. Run `docker compose up -d`
+3. Wait for all service is ready and running
+4. Generate key inside app using `docker compose exec app php artisan key:generate`
+5. Run migration inside app service using command `docker compose exec app php artisan migrate:fresh --seed`
+
+## Features
+
 ### Blameable
 
-Readmore: [Blameable](https://github.com/richan-fongdasen/eloquent-blameable)
+Tracks the user responsible for creating, updating, or deleting records. To implement blameable fields in your migration:
 
-```
-    $table->foreign('created_by')
-        ->references('id')->on('users')
-        ->onDelete('cascade');
-
-    $table->foreign('updated_by')
-        ->references('id')->on('users')
-        ->onDelete('cascade');
-
-    $table->foreign('deleted_by')
-        ->references('id')->on('users')
-        ->onDelete('cascade');
+```php
+$table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
+$table->foreign('updated_by')->references('id')->on('users')->onDelete('cascade');
+$table->foreign('deleted_by')->references('id')->on('users')->onDelete('cascade');
 ```
 
-### Sanitize user input (NEVER TRUS USER INPUT)
+For more details, see the Blameable Documentation.
 
-Readmore: [sanitizer](https://github.com/elegantweb/sanitizer)
+### Encrypt Sensitive Information
 
-```
-namespace App\Http\Requests;
+Sensitive data is encrypted to ensure security. IMPORTANT: The application key (APP_KEY) is crucial. Losing or changing it will result in the loss of encrypted data.
 
-use Elegant\Sanitizer\Laravel\SanitizesInput;
+Example of encrypted fields:
 
-class MyAwesomeRequest extends Request
-{
-    use SanitizesInput;
-
-    public function filters()
-    {
-        return [
-            'name' => 'trim|capitalize',
-        ];
-    }
-}
-```
-
-### Encrypt sensitive information
-
-#### IMPORTANT WARNING: Protect Your App Key
-
-```
-APP_KEY=base64:QikAJAlo0evYLq2RYFxGv/PRrSIfJcNDj2qiFRp1oUs=
-
-```
-
-The encrypted data is lost if you lost or change your APP_KEY
-
-Example:
-
-```
+```php
 protected $casts = [
     'passport_number' => 'encrypted',
 ];
 ```
 
-### Image Optimizer
+Make sure your .env file contains a valid APP_KEY, such as:
 
+```bash
+APP_KEY=base64:QikAJAlo0evYLq2RYFxGv/PRrSIfJcNDj2qiFRp1oUs=
 ```
-sudo apt-get install jpegoptim
-sudo apt-get install optipng
-sudo apt-get install pngquant
-sudo npm install -g svgo
-sudo apt-get install gifsicle
-sudo apt-get install webp
-sudo apt-get install libavif-bin # minimum 0.9.3
-```
-
-sail artisan module:make Import --api && \
-sail artisan module:make-request StoreImportCategoryRequest Import && \
-sail artisan module:make-request UpdateImportCategoryRequest Import && \
-sail artisan module:make-resource ImportCategoryCollection --collection Import && \
-sail artisan module:make-resource ImportCategoryResource Import && \
-sail artisan module:make-policy ImportCategoryPolicy Import && \
-sail artisan module:make-model ImportCategory Import -m
-
-### TODO
-
-[] Create unit test
