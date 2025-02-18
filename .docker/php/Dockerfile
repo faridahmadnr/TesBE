@@ -6,7 +6,7 @@ COPY .env.example .env
 
 # Install apk packages we want
 RUN apk add -Uuv \
-    git bash supervisor freetype-dev libjpeg-turbo-dev libzip-dev $PHPIZE_DEPS nodejs npm \
+    git bash supervisor freetype-dev libjpeg-turbo-dev libzip-dev libexif-dev $PHPIZE_DEPS nodejs npm \
     libpng-dev postgresql-dev nginx \
     && rm -rf /var/cache/apk/*
 
