@@ -27,9 +27,9 @@ RUN chmod +x /opt/composer.phar \
 # RUN /opt/install-extensions.sh
 
 RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
-RUN docker-php-ext-install pdo pdo_pgsql opcache pcntl gd bcmath zip
+RUN docker-php-ext-install pdo pdo_pgsql opcache pcntl gd bcmath zip exif
 RUN pecl install -o -f redis &&  rm -rf /tmp/pear
-RUN docker-php-ext-enable redis
+RUN docker-php-ext-enable redis exif
 
 # Setup opcache
 RUN docker-php-ext-configure opcache --enable-opcache

@@ -1,6 +1,7 @@
 services:
     # The Application
-    api:
+    newkur-api:
+        container_name: newkur-api
         restart: "unless-stopped"
         build:
             context: ./
@@ -21,13 +22,14 @@ services:
         volumes:
             - ".:/var/www"
         depends_on:
-            - pgsql
-            - redis
-            - npm
+#            - pgsql
+            - newkur-redis
+            - newkur-npm
             # - meilisearch
             # - soketi
 
-    composer:
+    newkur-composer:
+        container_name: newkur-composer
         restart: "no"
         image: prooph/composer:8.2
         working_dir: /var/www
@@ -35,61 +37,66 @@ services:
         volumes:
             - .:/var/www
 
-    npm_dependencies:
+    newkur-npm:
+        container_name: newkur-npm
         image: node:16.19.1-alpine3.17
         working_dir: /var/www
         command: yarn install
         depends_on:
-            composer:
+            newkur-composer:
                 condition: service_completed_successfully
         volumes:
             - .:/var/www
 
     # The Nginx Server
-    nginx:
+    newkur-nginx:
+        container_name: newkur-nginx
         restart: "unless-stopped"
         build:
             context: ./
             dockerfile: .docker/nginx/Dockerfile
         working_dir: /var/www
         depends_on:
-            - app
-        volumes_from:
-            - app
-        ports:
-            - 81:80
-
-    pgsql:
-        restart: "unless-stopped"
-        image: "postgres:15"
-        environment:
-            POSTGRES_DB: ${DB_DATABASE}
-            POSTGRES_USER: ${DB_USERNAME}
-            POSTGRES_PASSWORD: ${DB_PASSWORD}
-        volumes:
-            - dbdata:/var/lib/postgresql/data
+            - newkur-api
         networks:
-            - sail
-        healthcheck:
-            test:
-                - CMD
-                - pg_isready
-                - "-q"
-                - "-d"
-                - "${DB_DATABASE}"
-                - "-U"
-                - "${DB_USERNAME}"
-            retries: 3
-            timeout: 5s
+            - shared-network
+        volumes_from:
+            - newkur-api
+        ports:
+            - 410:80
 
-    redis:
+ #   pgsql:
+ #       restart: "unless-stopped"
+ #       image: "postgres:15"
+ #       environment:
+ #           POSTGRES_DB: ${DB_DATABASE}
+ #           POSTGRES_USER: ${DB_USERNAME}
+ #           POSTGRES_PASSWORD: ${DB_PASSWORD}
+ #       volumes:
+ #           - dbdata:/var/lib/postgresql/data
+ #       networks:
+ #           - sail
+ #       healthcheck:
+ #           test:
+ #               - CMD
+ #               - pg_isready
+ #               - "-q"
+ #               - "-d"
+ #               - "${DB_DATABASE}"
+ #               - "-U"
+ #               - "${DB_USERNAME}"
+ #           retries: 3
+ #           timeout: 5s
+
+    newkur-redis:
+        container_name: newkur-redis
         image: "redis:alpine"
-        # ports:
-        #     - "${FORWARD_REDIS_PORT:-6379}:6379"
+        #ports:
+        #    - "${FORWARD_REDIS_PORT:-6379}:6379"
         volumes:
             - "sail-redis:/data"
         networks:
-            - sail
+            - shared-network
         healthcheck:
             test:
                 - CMD
@@ -126,13 +133,14 @@ services:
     #         - "${SOKETI_METRICS_SERVER_PORT:-9601}:9601"
     #     networks:
     #         - sail
+
 networks:
-    sail:
-        driver: bridge
+  shared-network:
+    external: true
 volumes:
-    sail-pgsql:
-        driver: local
+    #sail-pgsql:
+    #    driver: local
     sail-redis:
         driver: local
-    sail-meilisearch:
-        driver: local
+    #sail-meilisearch:
+    #    driver: local
