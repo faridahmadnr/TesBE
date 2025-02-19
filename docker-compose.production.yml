@@ -23,6 +23,8 @@ services:
       APP_NAME: ${APP_NAME}
     volumes:
       - ".:/var/www"
+      - vendor:/var/www/vendor
+      - bootstrap_cache:/var/www/bootstrap/cache
     depends_on:
       - newkur-redis
 
@@ -60,7 +62,9 @@ services:
 
 networks:
   shared-network:
-    external: true
+    external: false
 volumes:
   kur-redis:
     driver: local
+  vendor:
+  bootstrap_cache:
