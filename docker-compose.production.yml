@@ -1,0 +1,66 @@
+services:
+  # The Application
+  newkur-api:
+    container_name: newkur-api
+    restart: "unless-stopped"
+    build:
+      context: ./
+      dockerfile: .docker/php/Dockerfile
+    working_dir: /var/www
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - shared-network
+    environment:
+      DB_PORT: ${DB_PORT}
+      DB_HOST: ${DB_HOST}
+      DB_CONNECTION: ${DB_CONNECTION}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_DATABASE: ${DB_DATABASE}
+      APP_ENV: ${APP_ENV}
+      APP_DEBUG: ${APP_DEBUG}
+      APP_NAME: ${APP_NAME}
+    volumes:
+      - ".:/var/www"
+    depends_on:
+      - newkur-redis
+
+  # The Nginx Server
+  newkur-nginx:
+    container_name: newkur-nginx
+    restart: "unless-stopped"
+    build:
+      context: ./
+      dockerfile: .docker/nginx/Dockerfile
+    working_dir: /var/www
+    depends_on:
+      - newkur-api
+    networks:
+      - shared-network
+    volumes_from:
+      - newkur-api
+    ports:
+      - 410:80
+
+  newkur-redis:
+    container_name: newkur-redis
+    image: "redis:alpine"
+    volumes:
+      - "kur-redis:/data"
+    networks:
+      - shared-network
+    healthcheck:
+      test:
+        - CMD
+        - redis-cli
+        - ping
+      retries: 3
+      timeout: 5s
+
+networks:
+  shared-network:
+    external: true
+volumes:
+  kur-redis:
+    driver: local

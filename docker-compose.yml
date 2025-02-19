@@ -9,6 +9,8 @@ services:
         working_dir: /var/www
         extra_hosts:
             - "host.docker.internal:host-gateway"
+        networks:
+            - shared-network
         environment:
             DB_PORT: ${DB_PORT}
             DB_HOST: ${DB_HOST}
@@ -22,31 +24,31 @@ services:
         volumes:
             - ".:/var/www"
         depends_on:
-#            - pgsql
+            #            - pgsql
             - newkur-redis
-            - newkur-npm
+            # - newkur-npm
             # - meilisearch
             # - soketi
 
-    newkur-composer:
-        container_name: newkur-composer
-        restart: "no"
-        image: prooph/composer:8.2
-        working_dir: /var/www
-        command: install --no-ansi --no-interaction --no-plugins --no-progress --no-scripts --optimize-autoloader
-        volumes:
-            - .:/var/www
+    # newkur-composer:
+    #     container_name: newkur-composer
+    #     restart: "no"
+    #     image: prooph/composer:8.2
+    #     working_dir: /var/www
+    #     command: install --no-ansi --no-interaction --no-plugins --no-progress --no-scripts --optimize-autoloader
+    #     volumes:
+    #         - .:/var/www
 
-    newkur-npm:
-        container_name: newkur-npm
-        image: node:16.19.1-alpine3.17
-        working_dir: /var/www
-        command: yarn install
-        depends_on:
-            newkur-composer:
-                condition: service_completed_successfully
-        volumes:
-            - .:/var/www
+    # newkur-npm:
+    #     container_name: newkur-npm
+    #     image: node:16.19.1-alpine3.17
+    #     working_dir: /var/www
+    #     command: yarn install
+    #     depends_on:
+    #         newkur-composer:
+    #             condition: service_completed_successfully
+    #     volumes:
+    #         - .:/var/www
 
     # The Nginx Server
     newkur-nginx:
@@ -65,28 +67,28 @@ services:
         ports:
             - 410:80
 
- #   pgsql:
- #       restart: "unless-stopped"
- #       image: "postgres:15"
- #       environment:
- #           POSTGRES_DB: ${DB_DATABASE}
- #           POSTGRES_USER: ${DB_USERNAME}
- #           POSTGRES_PASSWORD: ${DB_PASSWORD}
- #       volumes:
- #           - dbdata:/var/lib/postgresql/data
- #       networks:
- #           - sail
- #       healthcheck:
- #           test:
- #               - CMD
- #               - pg_isready
- #               - "-q"
- #               - "-d"
- #               - "${DB_DATABASE}"
- #               - "-U"
- #               - "${DB_USERNAME}"
- #           retries: 3
- #           timeout: 5s
+    #   pgsql:
+    #       restart: "unless-stopped"
+    #       image: "postgres:15"
+    #       environment:
+    #           POSTGRES_DB: ${DB_DATABASE}
+    #           POSTGRES_USER: ${DB_USERNAME}
+    #           POSTGRES_PASSWORD: ${DB_PASSWORD}
+    #       volumes:
+    #           - dbdata:/var/lib/postgresql/data
+    #       networks:
+    #           - sail
+    #       healthcheck:
+    #           test:
+    #               - CMD
+    #               - pg_isready
+    #               - "-q"
+    #               - "-d"
+    #               - "${DB_DATABASE}"
+    #               - "-U"
+    #               - "${DB_USERNAME}"
+    #           retries: 3
+    #           timeout: 5s
 
     newkur-redis:
         container_name: newkur-redis
@@ -135,8 +137,8 @@ services:
     #         - sail
 
 networks:
-  shared-network:
-    external: true
+    shared-network:
+        external: false
 volumes:
     #sail-pgsql:
     #    driver: local
