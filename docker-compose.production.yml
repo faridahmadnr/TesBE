@@ -28,16 +28,27 @@ services:
     depends_on:
       - newkur-redis
 
+  newkur-frontend:
+    image: newkur-frontend #sesuaikan dengan yang ada
+    container_name: newkur-frontend
+    depends_on:
+      - newkur-api
+    networks:
+      - shared-network
+    ports:
+      - "8756:80"
+
   # The Nginx Server
   newkur-nginx:
     container_name: newkur-nginx
     restart: "unless-stopped"
-    build:
-      context: ./
-      dockerfile: .docker/nginx/Dockerfile
+    image: nginx:alpine
     working_dir: /var/www
+    volumes:
+      - ./.docker/nginx/nginx-with-fe.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
       - newkur-api
+      - newkur-frontend
     networks:
       - shared-network
     volumes_from:
