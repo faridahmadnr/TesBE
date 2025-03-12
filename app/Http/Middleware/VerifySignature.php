@@ -24,7 +24,7 @@ class VerifySignature
             return $next($request);
         }
 
-        // return $next($request);
+        return $next($request);
         if (! $this->isValidTimestamp($signTimestamp)) {
             if ($isDebug) {
                 return response()->json([
