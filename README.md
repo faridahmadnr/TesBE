@@ -86,6 +86,32 @@ Run the following command to perform database migrations and seed the database:
 4. Run `php artisan key:generate` if needed
 5. Run `php artisan migrate --seed` to execute migration and seeder data
 
+### Environment Configuration (.env)
+
+To run this project locally, create a .env file in the root directory and fill in the following environment variables:
+
+```env
+# Port number the server will run on
+APP_URL=
+FRONTEND_URL= // must be same as your frontend
+
+# Base URL of the application (useful for redirects or callbacks)
+BASE_URL=http://localhost:3000
+
+# Database configuration
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=your_db_user
+DB_PASSWORD=your_db_password
+DB_NAME=your_db_name
+
+# Captcha
+CAPTCHA_KEY= // secret captcha
+
+# Security
+HASHID_SALT= // random generated
+```
+
 ## Using Docker
 
 1. Clone this repository
