@@ -96,6 +96,10 @@ class MigrateData extends Command
             foreach ($this->getDataFromCsv($userPath) as $user) {
                 $roleId = $roles[$oldDataRoles[$user[6]]];
 
+                if ($user[2] === 'kur@jogjaprov.go.id') {
+                    $roleId = 1;
+                }
+
                 $userId = $lastUserId + 1;
                 $users[] = [
                     'id' => $userId,
@@ -499,13 +503,13 @@ class MigrateData extends Command
                 continue;
             }
 
-            // try {
-            //     $image = file_get_contents($item[3]);
-            //     $path = 'news/'.$this->_removeUnusedChar($item[0]).'.jpg';
-            //     Storage::put($path, $image);
-            // } catch (\Throwable $th) {
-            //     $this->info('[NEWS] Unable to get image');
-            // }
+            try {
+                $image = file_get_contents($item[3]);
+                $path = 'news/'.$this->_removeUnusedChar($item[0]).'.jpg';
+                Storage::put($path, $image);
+            } catch (\Throwable $th) {
+                $this->info('[NEWS] Unable to get image');
+            }
 
             $insertedData[] = [
                 'title' => $item[1],
@@ -532,13 +536,13 @@ class MigrateData extends Command
                 continue;
             }
 
-            // try {
-            //     $image = file_get_contents($item[3]);
-            //     $path = 'requirements/'.$item[0].'.jpg';
-            //     Storage::put($path, $image);
-            // } catch (\Throwable $th) {
-            //     $this->info('[REQUIREMENT] Unable to get image');
-            // }
+            try {
+                $image = file_get_contents($item[3]);
+                $path = 'requirements/'.$item[0].'.jpg';
+                Storage::put($path, $image);
+            } catch (\Throwable $th) {
+                $this->info('[REQUIREMENT] Unable to get image');
+            }
 
             $insertedData[] = [
                 'name' => $item[1],
