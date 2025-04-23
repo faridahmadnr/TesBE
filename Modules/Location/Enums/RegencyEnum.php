@@ -55,11 +55,11 @@ enum RegencyEnum: int
     public function label(): string
     {
         return match ($this) {
-            self::KULONPROGO => _('KABUPATEN KULON PROGO'),
-            self::BANTUL => _('KABUPATEN BANTUL'),
-            self::GUNUNGKIDUL => _('KABUPATEN GUNUNG KIDUL'),
-            self::SLEMAN => _('KABUPATEN SLEMAN'),
-            self::YOGYAKARTA => _('KOTA YOGYAKARTA'),
+            self::KULONPROGO => __('KABUPATEN KULON PROGO'),
+            self::BANTUL => __('KABUPATEN BANTUL'),
+            self::GUNUNGKIDUL => __('KABUPATEN GUNUNG KIDUL'),
+            self::SLEMAN => __('KABUPATEN SLEMAN'),
+            self::YOGYAKARTA => __('KOTA YOGYAKARTA'),
         };
     }
 
@@ -67,15 +67,15 @@ enum RegencyEnum: int
     {
         switch ($value) {
             case self::KULONPROGO->value:
-                return _('KABUPATEN KULON PROGO');
+                return __('KABUPATEN KULON PROGO');
             case self::BANTUL->value:
-                return _('KABUPATEN BANTUL');
+                return __('KABUPATEN BANTUL');
             case self::GUNUNGKIDUL->value:
-                return _('KABUPATEN GUNUNG KIDUL');
+                return __('KABUPATEN GUNUNG KIDUL');
             case self::SLEMAN->value:
-                return _('KABUPATEN SLEMAN');
+                return __('KABUPATEN SLEMAN');
             case self::YOGYAKARTA->value:
-                return _('KOTA YOGYAKARTA');
+                return __('KOTA YOGYAKARTA');
             default:
                 return null;
         }
