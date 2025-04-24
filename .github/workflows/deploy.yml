@@ -116,15 +116,15 @@ jobs:
       - name: Setup SSH for deployer
         uses: shimataro/ssh-key-action@v2
         with:
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+          key: ${{ secrets.SSH_PRIVATE_KEY_PRODUCTION }}
+          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS_PRODUCTION }}
           if_key_exists: replace
 
       - name: Setup Deployer
         uses: atymic/deployer-php-action@master
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          ssh-known-hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY_PRODUCTION }}
+          ssh-known-hosts: ${{ secrets.SSH_KNOWN_HOSTS_PRODUCTION }}
           if_key_exists: replace
 
       - name: Deploy to Production
