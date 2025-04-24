@@ -4,7 +4,6 @@ namespace Modules\Report\Services;
 
 use App\Services\BaseService;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 use Modules\BusinessType\Entities\BusinessType;
 use Modules\CreditRequest\Entities\CreditRequest;
 use Modules\CreditRequest\Entities\CreditRequestType;
@@ -77,7 +76,7 @@ final class PublicReportService extends BaseService
         })
             ->selectRaw('business_types.name as name')
             ->selectRaw('SUM(COALESCE(CASE WHEN credit_requests.status != '.CreditRequestStatusEnum::APPROVED->value.' THEN credit_requests.amount ELSE 0 END, 0)) AS submission')
-            ->selectRaw('SUM(COALESCE(CASE WHEN credit_requests.status = '.CreditRequestStatusEnum::APPROVED->value.' AND '.DB::regexp('credit_requests.remark', '^[0-9]+$').' THEN CAST(credit_requests.remark AS decimal) ELSE 0 END, 0)) AS realization')
+            ->selectRaw('SUM(COALESCE(CASE WHEN credit_requests.status = '.CreditRequestStatusEnum::APPROVED->value.' THEN credit_requests.amount ELSE 0 END, 0)) AS realization')
             ->orderBy('business_types.id')
             ->groupBy('business_types.id');
 
@@ -109,7 +108,7 @@ final class PublicReportService extends BaseService
                 });
         })
             ->selectRaw('SUM(COALESCE(CASE WHEN credit_requests.status != '.CreditRequestStatusEnum::APPROVED->value.' THEN 1 ELSE 0 END, 0)) AS debitor')
-            ->selectRaw('SUM(COALESCE(CASE WHEN credit_requests.status != '.CreditRequestStatusEnum::APPROVED->value.' AND '.DB::regexp('credit_requests.remark', '^[0-9]+$').' THEN CAST(credit_requests.remark AS decimal) ELSE 0 END, 0)) AS submission')
+            ->selectRaw('SUM(COALESCE(CASE WHEN credit_requests.status != '.CreditRequestStatusEnum::APPROVED->value.' THEN credit_requests.amount ELSE 0 END, 0)) AS submission')
             ->selectRaw('credit_request_types.name as name')
             ->groupBy('credit_request_types.name')
             ->get()

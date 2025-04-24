@@ -42,7 +42,7 @@ class CreditRequestEventSubscriber implements ShouldHandleEventsAfterCommit
     {
         $event->creditRequest->histories()->save(new CreditRequestHistory([
             'status' => $event->creditRequest->status,
-            'description' => 'Pengajuan KUR telah diperbarui oleh '.$event->creditRequest->creator->name.'.',
+            'description' => 'Pengajuan KUR telah diperbarui oleh '.auth()->user()->name.'.',
         ]));
         activity('creditRequest')
             ->performedOn($event->creditRequest)
@@ -54,7 +54,7 @@ class CreditRequestEventSubscriber implements ShouldHandleEventsAfterCommit
     {
         $event->creditRequest->histories()->save(new CreditRequestHistory([
             'status' => $event->creditRequest->status,
-            'description' => 'Pengajuan KUR telah dihapus oleh '.$event->creditRequest->creator->name.'.',
+            'description' => 'Pengajuan KUR telah dihapus oleh '.auth()->user()->name.'.',
         ]));
         activity('creditRequest')
             ->performedOn($event->creditRequest)
@@ -66,7 +66,7 @@ class CreditRequestEventSubscriber implements ShouldHandleEventsAfterCommit
     {
         $event->creditRequest->histories()->save(new CreditRequestHistory([
             'status' => $event->creditRequest->status,
-            'description' => 'Pengajuan KUR telah dihapus permanen oleh '.$event->creditRequest->creator->name.'.',
+            'description' => 'Pengajuan KUR telah dihapus permanen oleh '.auth()->user()->name.'.',
         ]));
         activity('creditRequest')
             ->performedOn($event->creditRequest)
@@ -78,7 +78,7 @@ class CreditRequestEventSubscriber implements ShouldHandleEventsAfterCommit
     {
         $event->creditRequest->histories()->save(new CreditRequestHistory([
             'status' => $event->creditRequest->status,
-            'description' => 'Pengajuan KUR telah dikembalikan oleh '.$event->creditRequest->creator->name.'.',
+            'description' => 'Pengajuan KUR telah dikembalikan oleh '.auth()->user()->name.'.',
         ]));
         activity('creditRequest')
             ->performedOn($event->creditRequest)
@@ -90,7 +90,7 @@ class CreditRequestEventSubscriber implements ShouldHandleEventsAfterCommit
     {
         $event->creditRequest->histories()->save(new CreditRequestHistory([
             'status' => $event->creditRequest->status,
-            'description' => 'Pengajuan KUR telah dikonfirmasi oleh '.$event->creditRequest->creator->name.'.',
+            'description' => 'Pengajuan KUR telah dikonfirmasi oleh '.auth()->user()->name.'.',
         ]));
         activity('creditRequest')
             ->performedOn($event->creditRequest)
@@ -105,7 +105,7 @@ class CreditRequestEventSubscriber implements ShouldHandleEventsAfterCommit
     {
         $event->creditRequest->histories()->save(new CreditRequestHistory([
             'status' => $event->creditRequest->status,
-            'description' => 'Pengajuan KUR ditunda oleh '.$event->creditRequest->creator->name.' dengan alasan '.$event->creditRequest->remark.'.',
+            'description' => 'Pengajuan KUR ditunda oleh '.auth()->user()->name.' dengan alasan '.$event->creditRequest->remark.'.',
         ]));
         activity('creditRequest')
             ->performedOn($event->creditRequest)
@@ -120,7 +120,7 @@ class CreditRequestEventSubscriber implements ShouldHandleEventsAfterCommit
     {
         $event->creditRequest->histories()->save(new CreditRequestHistory([
             'status' => $event->creditRequest->status,
-            'description' => 'Pengajuan KUR ditolak oleh '.$event->creditRequest->creator->name.' dengan alasan '.$event->creditRequest->remark.'.',
+            'description' => 'Pengajuan KUR ditolak oleh '.auth()->user()->name.' dengan alasan '.$event->creditRequest->remark.'.',
         ]));
         activity('creditRequest')
             ->performedOn($event->creditRequest)
@@ -135,7 +135,7 @@ class CreditRequestEventSubscriber implements ShouldHandleEventsAfterCommit
     {
         $event->creditRequest->histories()->save(new CreditRequestHistory([
             'status' => $event->creditRequest->status,
-            'description' => 'Pengajuan KUR disetujui oleh '.$event->creditRequest->creator->name.' dengan plafond yang diterima sebesar '.$event->creditRequest->remark.'.',
+            'description' => 'Pengajuan KUR disetujui oleh '.auth()->user()->name.' dengan plafond yang diterima sebesar '.$event->creditRequest->remark.'.',
         ]));
         activity('creditRequest')
             ->performedOn($event->creditRequest)
@@ -150,7 +150,7 @@ class CreditRequestEventSubscriber implements ShouldHandleEventsAfterCommit
     {
         $event->creditRequest->histories()->save(new CreditRequestHistory([
             'status' => $event->creditRequest->status,
-            'description' => 'Pengajuan KUR dialihkan oleh '.$event->creditRequest->creator->name.'.',
+            'description' => 'Pengajuan KUR dialihkan oleh '.auth()->user()->name.'.',
         ]));
         activity('creditRequest')
             ->performedOn($event->creditRequest)

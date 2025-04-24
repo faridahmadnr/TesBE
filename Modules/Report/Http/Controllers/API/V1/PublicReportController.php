@@ -10,8 +10,7 @@ class PublicReportController extends BaseController
 {
     public function __construct(
         private PublicReportService $regencyReportService
-    ) {
-    }
+    ) {}
 
     public function __invoke(): JsonResponse
     {
@@ -19,26 +18,18 @@ class PublicReportController extends BaseController
         $quarter = request()->filter['quarter'] ?? null;
         $type = request()->filter['type'] ?? null;
 
-        $data = $this->regencyReportService->getReportAppBySubmission($quarter, $year);
-
         if ($type === 'gender') {
             $data = $this->regencyReportService->getReportAppByGender($quarter, $year);
-        }
-
-        if ($type === 'regency') {
+        } elseif ($type === 'regency') {
             $data = $this->regencyReportService->getReportByRegion($quarter, $year);
-        }
-
-        if ($type === 'sector') {
+        } elseif ($type === 'sector') {
             $data = $this->regencyReportService->getReportBySector($quarter, $year);
-        }
-
-        if ($type === 'sector5year') {
+        } elseif ($type === 'sector5year') {
             $data = $this->regencyReportService->getReportBySector5Year($year);
-        }
-
-        if ($type === 'achievement-realization') {
+        } elseif ($type === 'achievement-realization') {
             $data = $this->regencyReportService->getReportByAchivement($quarter, $year);
+        } else {
+            $data = $this->regencyReportService->getReportAppBySubmission($quarter, $year);
         }
 
         unset($data['user']);
