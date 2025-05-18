@@ -445,7 +445,12 @@ class MigrateData extends Command
         $path = str_replace('\\', '/', storage_path('app/data/backup/termins.csv'));
         $termins = $this->getDataFromCsv($path);
 
-        $insertedData = array_map(fn ($data) => ['name' => $data[1], 'value' => $data[2]], $termins);
+        $insertedData = array_map(fn ($data) => [
+            'name' => $data[1],
+            'value' => $data[2],
+            'created_at' => now(),
+            'updated_at' => now(),
+        ], $termins);
         Termin::insert($insertedData);
 
         return collect($termins)->map(function ($termin) {
@@ -479,6 +484,8 @@ class MigrateData extends Command
                 'status' => $data[4],
                 'reason_status' => $data[5],
                 'logo' => $data[6],
+                'created_at' => now(),
+                'updated_at' => now(),
             ];
         }
         Bank::insert($insertedData);
