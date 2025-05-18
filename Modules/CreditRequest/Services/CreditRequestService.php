@@ -4,6 +4,7 @@ namespace Modules\CreditRequest\Services;
 
 use App\Exceptions\GeneralException;
 use App\Services\BaseService;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -508,6 +509,12 @@ final class CreditRequestService extends BaseService
                     }
                     $values = array_map(fn ($val) => $val, $value);
                     $query->whereIn('business_regency_id', $values);
+                }),
+                AllowedFilter::callback('search', function (Builder $query, $value) {
+                    $value = strtolower($value);
+                    $query->where(function (Builder $q) use ($value) {
+                        $q->whereRaw('LOWER(registration_number) like ?', "%{$value}%");
+                    });
                 }),
             ])
             ->allowedFields(['id', 'registration_number'])

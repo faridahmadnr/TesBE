@@ -140,6 +140,13 @@ final class UserService extends BaseService
                         }
                     });
                 }),
+                AllowedFilter::callback('search', function (Builder $query, $value) {
+                    $value = strtolower($value);
+                    $query->where(function (Builder $q) use ($value) {
+                        $q->whereRaw('LOWER(name) like ?', "%{$value}%")
+                            ->orWhereRaw('LOWER(email) like ?', "%{$value}%");
+                    });
+                }),
                 AllowedFilter::trashed(),
             ])
             ->allowedSorts([
