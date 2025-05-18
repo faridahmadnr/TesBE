@@ -55,14 +55,14 @@ class RegisterRequest extends FormRequest
             ],
             'agreement' => 'required',
             'password_confirmed' => 'required|same:password',
-            // 'g-recaptcha-response' => ['required', new Captcha],
+            'g_recaptcha_response' => ['required', new Captcha],
         ];
     }
 
     public function messages()
     {
         return [
-            'g-recaptcha-response.required' => 'Please verify that you are not a robot.',
+            'g_recaptcha_response.required' => 'Please verify that you are not a robot.',
         ];
     }
 

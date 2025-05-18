@@ -4,6 +4,7 @@ namespace Modules\User\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Class Captcha.
@@ -30,6 +31,10 @@ class Captcha implements Rule
             'remoteip' => request()->getClientIp(),
             'response' => $value,
         ])->json();
+
+        Log::info('Captcha response: ', [
+            'response' => $response,
+        ]);
 
         return isset($response['success']) && $response['success'] === true;
     }
