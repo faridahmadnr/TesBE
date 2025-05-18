@@ -18,9 +18,9 @@ class StoreCreditRequestTypeRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'min' => 'required|numeric|min:0',
-            'max' => 'required|numeric|gt:min',
-            'interest' => 'required|numeric|min:0|max:100',
+            'min' => 'required|numeric|min:0|max:2147483647',
+            'max' => 'required|numeric|gt:min|max:2147483647',
+            'interest' => 'required|numeric|min:0|max:1',
         ];
     }
 
