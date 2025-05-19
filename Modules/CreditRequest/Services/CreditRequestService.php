@@ -513,7 +513,10 @@ final class CreditRequestService extends BaseService
                 AllowedFilter::callback('search', function (Builder $query, $value) {
                     $value = strtolower($value);
                     $query->where(function (Builder $q) use ($value) {
-                        $q->whereRaw('LOWER(registration_number) like ?', "%{$value}%");
+                        $q->whereRaw('LOWER(registration_number) like ?', "%{$value}%")
+                            ->orWhereHas('user', function (Builder $q) use ($value) {
+                                $q->whereRaw('LOWER(name) like ?', "%{$value}%");
+                            });
                     });
                 }),
             ])
