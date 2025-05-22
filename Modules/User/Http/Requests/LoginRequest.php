@@ -53,24 +53,24 @@ class LoginRequest extends FormRequest
         }
 
         /** @var \Modules\User\Entities\User $user */
-        $user = auth()->user();
-        if ($this->member && ! $user->isMember()) {
-            Auth::guard('web')->logout();
-            request()->session()->invalidate();
-            request()->session()->regenerateToken();
-            throw ValidationException::withMessages([
-                'role' => 'Hanya pengguna yang memiliki status anggota yang diizinkan masuk.',
-            ]);
-        }
+        // $user = auth()->user();
+        // if ($this->member && ! $user->isMember()) {
+        //     Auth::guard('web')->logout();
+        //     request()->session()->invalidate();
+        //     request()->session()->regenerateToken();
+        //     throw ValidationException::withMessages([
+        //         'role' => 'Hanya pengguna yang memiliki status anggota yang diizinkan masuk.',
+        //     ]);
+        // }
 
-        if (! $this->member && $user->isMember()) {
-            Auth::guard('web')->logout();
-            request()->session()->invalidate();
-            request()->session()->regenerateToken();
-            throw ValidationException::withMessages([
-                'role' => 'Pengguna yang memiliki status anggota tidak diizinkan masuk.',
-            ]);
-        }
+        // if (! $this->member && $user->isMember()) {
+        //     Auth::guard('web')->logout();
+        //     request()->session()->invalidate();
+        //     request()->session()->regenerateToken();
+        //     throw ValidationException::withMessages([
+        //         'role' => 'Pengguna yang memiliki status anggota tidak diizinkan masuk.',
+        //     ]);
+        // }
 
         RateLimiter::clear($this->throttleKey());
     }
