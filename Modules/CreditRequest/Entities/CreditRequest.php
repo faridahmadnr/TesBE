@@ -19,31 +19,6 @@ use Modules\User\Entities\User;
 /**
  * Modules\CreditRequest\Entities\CreditRequest
  *
- * @property int $id
- * @property string $registration_number
- * @property int|null $user_id
- * @property int|null $business_type_id
- * @property int|null $business_permit_id
- * @property string|null $business_tin NPWP (Taxpayer Identification Number)
- * @property string|null $image
- * @property string $business_address
- * @property int|null $business_regency_id
- * @property int|null $business_district_id
- * @property string $village
- * @property string $postal_code
- * @property int|null $credit_request_type_id
- * @property int|null $termin_id
- * @property int|null $bank_id
- * @property int $amount
- * @property int $status
- * @property int|null $created_by
- * @property int|null $updated_by
- * @property int|null $deleted_by
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property string|null $remark
- * @property int|null $processed_by
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $actions
  * @property-read int|null $actions_count
  * @property-read Bank|null $bank
@@ -67,31 +42,6 @@ use Modules\User\Entities\User;
  * @method static Builder|CreditRequest quarter($quarter = null)
  * @method static Builder|CreditRequest query()
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel updatedBy($userId)
- * @method static Builder|CreditRequest whereAmount($value)
- * @method static Builder|CreditRequest whereBankId($value)
- * @method static Builder|CreditRequest whereBusinessAddress($value)
- * @method static Builder|CreditRequest whereBusinessDistrictId($value)
- * @method static Builder|CreditRequest whereBusinessPermitId($value)
- * @method static Builder|CreditRequest whereBusinessRegencyId($value)
- * @method static Builder|CreditRequest whereBusinessTin($value)
- * @method static Builder|CreditRequest whereBusinessTypeId($value)
- * @method static Builder|CreditRequest whereCreatedAt($value)
- * @method static Builder|CreditRequest whereCreatedBy($value)
- * @method static Builder|CreditRequest whereCreditRequestTypeId($value)
- * @method static Builder|CreditRequest whereDeletedAt($value)
- * @method static Builder|CreditRequest whereDeletedBy($value)
- * @method static Builder|CreditRequest whereId($value)
- * @method static Builder|CreditRequest whereImage($value)
- * @method static Builder|CreditRequest wherePostalCode($value)
- * @method static Builder|CreditRequest whereProcessedBy($value)
- * @method static Builder|CreditRequest whereRegistrationNumber($value)
- * @method static Builder|CreditRequest whereRemark($value)
- * @method static Builder|CreditRequest whereStatus($value)
- * @method static Builder|CreditRequest whereTerminId($value)
- * @method static Builder|CreditRequest whereUpdatedAt($value)
- * @method static Builder|CreditRequest whereUpdatedBy($value)
- * @method static Builder|CreditRequest whereUserId($value)
- * @method static Builder|CreditRequest whereVillage($value)
  * @method static Builder|CreditRequest withTrashed()
  * @method static Builder|CreditRequest withoutTrashed()
  * @method static Builder|CreditRequest year($year = null)

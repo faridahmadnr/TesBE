@@ -11,17 +11,6 @@ use Modules\Report\Enums\QuartersEnum;
 /**
  * Modules\CreditRequest\Entities\CreditRequestType
  *
- * @property int $id
- * @property string $name
- * @property float $interest
- * @property int $min_value
- * @property int $max_value
- * @property int|null $created_by
- * @property int|null $updated_by
- * @property int|null $deleted_by
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $actions
  * @property-read int|null $actions_count
  * @property-read \Modules\User\Entities\User|null $creator
@@ -34,17 +23,6 @@ use Modules\Report\Enums\QuartersEnum;
  * @method static Builder|CreditRequestType onlyTrashed()
  * @method static Builder|CreditRequestType query()
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel updatedBy($userId)
- * @method static Builder|CreditRequestType whereCreatedAt($value)
- * @method static Builder|CreditRequestType whereCreatedBy($value)
- * @method static Builder|CreditRequestType whereDeletedAt($value)
- * @method static Builder|CreditRequestType whereDeletedBy($value)
- * @method static Builder|CreditRequestType whereId($value)
- * @method static Builder|CreditRequestType whereInterest($value)
- * @method static Builder|CreditRequestType whereMaxValue($value)
- * @method static Builder|CreditRequestType whereMinValue($value)
- * @method static Builder|CreditRequestType whereName($value)
- * @method static Builder|CreditRequestType whereUpdatedAt($value)
- * @method static Builder|CreditRequestType whereUpdatedBy($value)
  * @method static Builder|CreditRequestType withSubmissionStatus($year = null, $quarter = null)
  * @method static Builder|CreditRequestType withTrashed()
  * @method static Builder|CreditRequestType withoutTrashed()

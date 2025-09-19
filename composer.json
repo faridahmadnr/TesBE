@@ -46,6 +46,7 @@
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.13",
+        "beyondcode/laravel-er-diagram-generator": "^5.0",
         "fakerphp/faker": "^1.9.1",
         "jedymatt/laravel-sail-env": "^1.1",
         "larastan/larastan": "^2.9.5",
