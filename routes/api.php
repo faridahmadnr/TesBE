@@ -21,6 +21,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 
 // Route untuk API UXTrace
 Route::post('/track', [TrackingController::class, 'store']);
+
 Route::get('coba',function(){
     return "ok";
 });

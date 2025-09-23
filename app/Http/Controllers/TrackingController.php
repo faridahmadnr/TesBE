@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Log;
 class TrackingController extends Controller
 {
     /**
-     * Menyimpan event baru ke dalam database.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
@@ -17,33 +16,34 @@ class TrackingController extends Controller
     public function store(Request $request)
     {
         try {
-            // 1. Validasi data yang masuk dari frontend
+            //Validate data yang masuk dari frontend (ini masi sementara, buat nyoba dl)
             $validatedData = $request->validate([
                 'user_id' => 'nullable|string|max:255',
                 'event_name' => 'required|string|max:255',
-                'page_name' => 'nullable|string|max:255',
-                'ip_address' => 'nullable|string|max:45',
-                'event_properties' => 'nullable|array',
+                'ip_address' => 'nullable|ip',
+                'event_properties' => 'nullable|json',
             ]);
 
-            // 2. Simpan data ke database menggunakan Model Event.
-            // makesure event_properties di decode jadi json string
+            $enrichmentData = [];
+
+
+            //Simpan data ke database pake Model Event yg udh dibuat
+            //makesure event_properties diubah jd array dl, !!implementasi realnya pake jsnon!!
             $event = Event::create($validatedData);
 
-            // 3. Berikan respons sukses.
-            // 201 untuk resource berhasil dibuat.
+            //201 untuk resource berhasil dibuat ^^
             return response()->json([
                 'message' => 'Event berhasil dicatat',
                 'data' => $event,
             ], 201);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
-            // Tangani error jika data tidak valid (misal: event_name kosong).
+            //kl misal data ga valid
             Log::error('Validation Error while storing event', ['errors' => $e->errors()]);
             return response()->json([
                 'message' => 'Validasi data gagal.',
                 'errors' => $e->errors()
-            ], 422); // Status 422 Unprocessable Entity
+            ], 422);
 
         } catch (\Exception $e) {
             // handle any other error
@@ -51,8 +51,11 @@ class TrackingController extends Controller
             return response()->json([
                 'message' => 'Terjadi kesalahan pada server. Mohon coba lagi.',
                 'error' => $e->getMessage()
-            ], 500); // Status 500 Internal Server Error
+            ], 500);
         }
+
+
         
     }
+
 }

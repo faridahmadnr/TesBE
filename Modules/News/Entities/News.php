@@ -10,13 +10,24 @@ use Mews\Purifier\Casts\CleanHtml;
 /**
  * Modules\News\Entities\News
  *
+ * @property int $id
+ * @property string $title
+ * @property string $slug
  * @property array $content
+ * @property string|null $summary
+ * @property string|null $featured_image
+ * @property bool $status
+ * @property int|null $created_by
+ * @property int|null $updated_by
+ * @property int|null $deleted_by
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $actions
  * @property-read int|null $actions_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Modules\News\Entities\NewsCategory> $categories
  * @property-read int|null $categories_count
  * @property-read \Modules\User\Entities\User|null $creator
- * @property-read mixed $featured_image
  * @property-read string|null $hash_id
  * @property-read string|null $hash_id_raw
  * @property-read \Modules\User\Entities\User|null $updater
@@ -26,6 +37,19 @@ use Mews\Purifier\Casts\CleanHtml;
  * @method static Builder|News onlyTrashed()
  * @method static Builder|News query()
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel updatedBy($userId)
+ * @method static Builder|News whereContent($value)
+ * @method static Builder|News whereCreatedAt($value)
+ * @method static Builder|News whereCreatedBy($value)
+ * @method static Builder|News whereDeletedAt($value)
+ * @method static Builder|News whereDeletedBy($value)
+ * @method static Builder|News whereFeaturedImage($value)
+ * @method static Builder|News whereId($value)
+ * @method static Builder|News whereSlug($value)
+ * @method static Builder|News whereStatus($value)
+ * @method static Builder|News whereSummary($value)
+ * @method static Builder|News whereTitle($value)
+ * @method static Builder|News whereUpdatedAt($value)
+ * @method static Builder|News whereUpdatedBy($value)
  * @method static Builder|News withTrashed()
  * @method static Builder|News withoutTrashed()
  * @mixin \Eloquent

@@ -40,13 +40,12 @@ class Event extends Model
     protected $fillable = [
         'user_id',
         'event_name',
-        'page_name',
         'ip_address',
         'event_properties',
     ];
 
     // Kolom yang harus di-cast ke tipe data tertentu
     protected $casts = [
-        'event_properties' => 'array',
+        'event_properties' => 'json',
     ];
 }
