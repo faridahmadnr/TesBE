@@ -13,6 +13,15 @@ use Modules\Report\Enums\QuartersEnum;
 /**
  * Modules\Location\Entities\Regency
  *
+ * @property int $id
+ * @property int $province_id
+ * @property string $name
+ * @property int|null $created_by
+ * @property int|null $updated_by
+ * @property int|null $deleted_by
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $actions
  * @property-read int|null $actions_count
  * @property-read \Modules\User\Entities\User|null $creator
@@ -20,7 +29,7 @@ use Modules\Report\Enums\QuartersEnum;
  * @property-read int|null $districts_count
  * @property-read string|null $hash_id
  * @property-read string|null $hash_id_raw
- * @property-read \Modules\Location\Entities\Province|null $province
+ * @property-read \Modules\Location\Entities\Province $province
  * @property-read \Modules\User\Entities\User|null $updater
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel createdBy($userId)
  * @method static Builder|Regency newModelQuery()
@@ -28,6 +37,15 @@ use Modules\Report\Enums\QuartersEnum;
  * @method static Builder|Regency onlyTrashed()
  * @method static Builder|Regency query()
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel updatedBy($userId)
+ * @method static Builder|Regency whereCreatedAt($value)
+ * @method static Builder|Regency whereCreatedBy($value)
+ * @method static Builder|Regency whereDeletedAt($value)
+ * @method static Builder|Regency whereDeletedBy($value)
+ * @method static Builder|Regency whereId($value)
+ * @method static Builder|Regency whereName($value)
+ * @method static Builder|Regency whereProvinceId($value)
+ * @method static Builder|Regency whereUpdatedAt($value)
+ * @method static Builder|Regency whereUpdatedBy($value)
  * @method static Builder|Regency withSubmissionStatus($creditRequestTypes = null, $year = null, $quarter = null)
  * @method static Builder|Regency withTrashed()
  * @method static Builder|Regency withoutTrashed()
