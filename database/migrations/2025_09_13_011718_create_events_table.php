@@ -15,16 +15,12 @@ return new class extends Migration
             $table->id();
             // Kolom untuk ID pengguna, boleh null untuk user yg blm login(?)
             $table->string('user_id')->nullable(); 
-            // Nama aktivitas (misal 'klik_button')
-            $table->string('event_name'); 
-            // Halaman tempat aktivitas terjadi
-            $table->string('page_name')->nullable(); 
-            // Alamat IP user
+            $table->string('event_name');  
             $table->string('ip_address')->nullable(); 
-            // Detail event dalam format JSON
             $table->jsonb('event_properties')->nullable();
-            // Kolom otomatis untuk created_at dan updated_at, enrichment sementara...
             $table->timestamps();
+            //enih untuk data sementara ya!
+            //enrichment ntr dl, i have to get user id.. 
             
         });
     }
