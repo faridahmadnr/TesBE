@@ -13,15 +13,12 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
-            // Kolom untuk ID pengguna, boleh null untuk user yg blm login(?)
             $table->string('user_id')->nullable(); 
             $table->string('event_name');  
             $table->string('ip_address')->nullable(); 
             $table->jsonb('event_properties')->nullable();
+            $table->jsonb('v_enrichment')->nullable(); //enrichment data.
             $table->timestamps();
-            //enih untuk data sementara ya!
-            //enrichment ntr dl, i have to get user id.. 
-            
         });
     }
 

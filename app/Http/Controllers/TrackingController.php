@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class TrackingController extends Controller
 {
@@ -18,10 +19,11 @@ class TrackingController extends Controller
         try {
             //Validate data yang masuk dari frontend (ini masi sementara, buat nyoba dl)
             $validatedData = $request->validate([
-                'user_id' => 'nullable|string|max:255',
+                'user_id' => 'required|string|max:255',
                 'event_name' => 'required|string|max:255',
-                'ip_address' => 'nullable|ip',
+                'ip_address' => 'required|ip',
                 'event_properties' => 'nullable|json',
+
             ]);
 
             $enrichmentData = [];
@@ -53,9 +55,62 @@ class TrackingController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
-
-
-        
+ 
     }
+
+
+    // private function getEnrichmentData(string $userId): array
+    // {
+
+    //     $user = DB::table('users')->where('id', $userId)->first();
+    //     if (!$user) {
+    //         return [];
+    //     }
+        
+    //     $permissionDetails = [];
+    //     $sessionData = null;
+
+    //     //session
+    //     $sessionData = DB::table('sessions')
+    //         ->where('user_id', $userId)
+    //         ->latest('last_activity')
+    //         ->select('ip_address', 'user_agent')
+    //         ->first();
+
+    //     // ?
+    //     $roleRecord = DB::table('model_has_roles')
+    //         ->where('model_id', $userId)
+    //         ->where('model_type', 'App\Models\User')
+    //         ->first();
+
+    //     if ($roleRecord) {
+    //         $roleId = $roleRecord->role_id;
+            
+        
+    //         $permissionIds = DB::table('role_has_permissions')
+    //             ->where('role_id', $roleId)
+    //             ->pluck('permission_id')
+    //             ->toArray();
+                
+        
+    //         if (!empty($permissionIds)) {
+    //             $permissionDetails = DB::table('permissions')
+    //                 ->whereIn('id', $permissionIds)
+    //                 ->select('name', 'description')
+    //                 ->get()
+    //                 ->toArray();
+    //         }
+    //     }
+
+    //     return [
+    //         'user_profile' => (array) $user,
+    //         'access_control' => [
+    //             'role_id' => $roleId ?? null,
+    //             'permissions' => $permissionDetails
+    //         ],
+    //         'sessions_info' => $sessionData,
+    //     ];
+    // }
+                
 
 }
