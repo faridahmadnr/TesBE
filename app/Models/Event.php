@@ -33,14 +33,13 @@ class Event extends Model
 {
     use HasFactory;
     
-    // Nama tabel yang terhubung dengan model inii ><
+    // Nama tabel yang terhubung dengan model iniio
     protected $table = 'events';
 
     // mass assignable
     protected $fillable = [
         'user_id',
         'event_name',
-        'ip_address',
         'event_properties',
     ];
 
