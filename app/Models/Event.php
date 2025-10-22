@@ -11,11 +11,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property string|null $user_id
  * @property string $event_name
- * @property string|null $page_name
- * @property string|null $ip_address
  * @property array|null $event_properties
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property mixed|null $v_enrichment
+ * @property string|null $ip_address
  * @method static \Illuminate\Database\Eloquent\Builder|Event newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Event newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Event query()
@@ -24,9 +24,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereEventProperties($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereIpAddress($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Event wherePageName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereVEnrichment($value)
  * @mixin \Eloquent
  */
 class Event extends Model

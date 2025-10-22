@@ -16,17 +16,17 @@ class TrackingController extends Controller
      */
     public function store(Request $request)
     {
+
+        // $enrichmentData = $this->getEnrichmentData($user_id);
         try {
             //Validate data yang masuk dari frontend (ini masi sementara, buat nyoba dl)
             $validatedData = $request->validate([
                 'user_id' => 'required|string|max:255',
                 'event_name' => 'required|string|max:255',
-                'ip_address' => 'required|ip',
                 'event_properties' => 'nullable|json',
-
             ]);
 
-            $enrichmentData = [];
+            // $enrichmentData = [];
 
 
             //Simpan data ke database pake Model Event yg udh dibuat
