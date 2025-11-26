@@ -15,7 +15,7 @@ class KurPageEnterController extends Controller
 
         $model = $isEnriched ?KurPageEnter::query() :RawPageEnter::query();
 
-        $data = $model -> paginate(20);
+        $data = $model -> paginate(100);
         
         return response()->json($data);
     }

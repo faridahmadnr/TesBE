@@ -15,7 +15,7 @@ class KurPageSlideController extends Controller
 
         $model = $isEnriched ? KurPageSlide::query() :RawPageSlide::query();
 
-        $data = $model -> paginate(20);
+        $data = $model -> paginate(100);
         
         return response()->json($data);
     }

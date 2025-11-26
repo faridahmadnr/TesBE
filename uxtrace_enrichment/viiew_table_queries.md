@@ -760,30 +760,3 @@ LEFT JOIN failed_jobs fj
 WHERE e.event_name = 'confirm_value';
 
 
-
-
-
-# Confirm Value
-page_marker
-previous_page_marker
-pre_previous_marker
-page_name
-previous_page_name
-entry_source
-entry_method
-page_area
-button_name
-value
-
-
-# Confirm Result
-page_marker
-previous_page_marker
-pre_previous_marker
-page_name
-previous_page_name
-entry_source
-entry_method
-page_area
-button_name
-value

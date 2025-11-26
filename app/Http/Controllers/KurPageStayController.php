@@ -13,9 +13,9 @@ class KurPageStayController extends Controller
     {
         $isEnriched = $request -> query('enriched') == 'true';
 
-        $model = $isEnriched ? \App\Models\KurPageStay::query() : \App\Models\RawPageStay::query();
+        $model = $isEnriched ? KurPageStay::query() :RawPageStay::query();
 
-        $data = $model -> paginate(20);
+        $data = $model -> paginate(100);
         
         return response()->json($data);
     }

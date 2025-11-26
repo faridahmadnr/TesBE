@@ -23,7 +23,10 @@ class TrackingController extends Controller
                 'user_id' => 'nullable|string|max:255',
                 'event_name' => 'required|string|max:255',
                 'event_properties' => 'required|json',
+                'email' => 'nullable|email|max:255',
             ]);
+
+            $validatedData['ip_address'] = $request->ip();
             
             $event = Event::create($validatedData);
 

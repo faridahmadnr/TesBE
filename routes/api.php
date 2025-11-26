@@ -11,7 +11,6 @@ use App\Http\Controllers\KurButtonClickController;
 use App\Http\Controllers\KurConfirmResultController;
 use App\Http\Controllers\KurConfirmValueController;
 
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
