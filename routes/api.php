@@ -41,5 +41,3 @@ Route::get('/kur-button-click', [KurButtonClickController::class, 'index']);
 Route::get('/kur-confirm-result', [KurConfirmResultController::class, 'index']);
 Route::get('/kur-confirm-value', [KurConfirmValueController::class, 'index']);
 
-//route for button click
-//route for confirm level
