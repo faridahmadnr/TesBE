@@ -1,52 +1,59 @@
 # ===============================
-# Stage 1: Build
+# Stage 1: Build dengan Composer
 # ===============================
-FROM php:8.2.27-cli-alpine3.21 AS builder
+FROM composer:latest AS builder
+
 WORKDIR /app
 
-RUN apk add --no-cache \
-    libzip-dev libpq-dev libexif-dev \
-    freetype-dev libjpeg-turbo-dev libpng-dev
+# Salin file composer untuk instalasi dependency
+COPY composer.json composer.lock ./
 
 COPY --from=ghcr.io/mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
-RUN install-php-extensions gd bcmath zip exif pdo pdo_pgsql
+RUN install-php-extensions gd bcmath zip exif
+RUN docker-php-ext-enable exif
 
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-COPY composer.json composer.lock ./
-RUN composer install --no-dev --prefer-dist --no-progress --optimize-autoloader --no-scripts --no-interaction
+# Install dependency tanpa dev packages dan optimasi autoloader
+RUN composer install --no-dev --prefer-dist --no-progress --optimize-autoloader --no-scripts
 
+# Salin seluruh source code aplikasi
 COPY . .
 
 # ===============================
-# Stage 2: Production
+# Stage 2: Image Production PHP-FPM
 # ===============================
-FROM php:8.2.27-cli-alpine3.21
+FROM php:8.2.27-fpm-alpine3.21
 
 WORKDIR /var/www
 
-RUN apk add --no-cache \
-    freetype libjpeg-turbo libzip libpq libexif libpng bash
+# Install apk packages we want
+RUN apk add -Uuv \
+    git bash supervisor freetype-dev libjpeg-turbo-dev libzip-dev libpq-dev libexif-dev $PHPIZE_DEPS \
+    libpng-dev \
+    && rm -rf /var/cache/apk/*
 
 COPY --from=ghcr.io/mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
-RUN install-php-extensions gd bcmath zip exif pdo pdo_pgsql opcache redis
+RUN install-php-extensions pdo pdo_pgsql opcache pcntl gd bcmath zip exif
+RUN docker-php-ext-enable exif
 
+# Setup opcache
+# RUN docker-php-ext-configure opcache --enable-opcache
+# COPY .docker/php/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+    
+# Salin hasil composer dari stage builder
 COPY --from=builder /app/vendor ./vendor
+# COPY .env.example .env
+
+# Salin seluruh source code aplikasi ke image production
 COPY --from=builder /app ./
 
-RUN rm -f bootstrap/cache/*.php && \
-    mkdir -p storage/logs storage/framework/{sessions,views,cache/data} && \
-    chmod -R 777 storage bootstrap/cache
+RUN rm -f /var/www/bootstrap/cache/*.php
 
-# Create startup script
-RUN echo '#!/bin/sh' > /start.sh && \
-    echo 'echo "=== BeuXTrace Starting ==="' >> /start.sh && \
-    echo 'echo "Port: 8080"' >> /start.sh && \
-    echo 'php artisan config:clear' >> /start.sh && \
-    echo 'php artisan cache:clear' >> /start.sh && \
-    echo 'echo "Starting Laravel..."' >> /start.sh && \
-    echo 'php artisan serve --host=0.0.0.0 --port=8080' >> /start.sh && \
-    chmod +x /start.sh
+RUN chown -R www-data:www-data \
+    /var/www/storage \
+    /var/www/bootstrap/cache
 
-EXPOSE 8080
-
-CMD ["/start.sh"]
+RUN ls -lh
+# Install wait-for-it
+# RUN curl https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh > /opt/wait-for-it.sh \
+#     && chmod +x /opt/wait-for-it.sh \
+#     && ln -s /opt/wait-for-it.sh /usr/bin/wait-for-it
