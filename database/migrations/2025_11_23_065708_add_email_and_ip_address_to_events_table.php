@@ -12,8 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('events', function (Blueprint $table) {
-            $table->string('email')->nullable()->after('event_properties');
-            $table->string('ip_address')->nullable()->after('email');
+            if (!Schema::hasColumn('events', 'email')) {
+                $table->string('email')->nullable();
+            }
+
+            if (!Schema::hasColumn('events', 'ip_address')) {
+                $table->string('ip_address')->nullable();
+            }
         });
     }
 
@@ -23,7 +28,12 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('events', function (Blueprint $table) {
-            $table->dropColumn(['email', 'ip_address']);
+            if (Schema::hasColumn('events', 'email')) {
+                $table->dropColumn('email');
+            }
+            if (Schema::hasColumn('events', 'ip_address')) {
+                $table->dropColumn('ip_address');
+            }
         });
     }
 };

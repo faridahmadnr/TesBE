@@ -29,9 +29,9 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 // Route untuk API UXTrace
 Route::post('/track', [TrackingController::class, 'store']);
 
-// Route::get('coba',function(){
-//     return "ok";
-// });
+Route::get('coba',function(){
+    return "ok";
+});
 
 Route::get('/kur-page-stay', [KurPageStayController::class, 'index']);
 Route::get('/kur-page-slide', [KurPageSlideController::class, 'index']);
@@ -40,4 +40,3 @@ Route::get('/kur-button-show', [KurButtonShowController::class, 'index']);
 Route::get('/kur-button-click', [KurButtonClickController::class, 'index']);
 Route::get('/kur-confirm-result', [KurConfirmResultController::class, 'index']);
 Route::get('/kur-confirm-value', [KurConfirmValueController::class, 'index']);
-
