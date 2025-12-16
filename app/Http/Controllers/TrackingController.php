@@ -51,4 +51,10 @@ class TrackingController extends Controller
         }
  
     }
+    public function index(Request $request)
+    {
+        $data = Event::query()->paginate(100);
+        
+        return response()->json($data);
+    }
 }
