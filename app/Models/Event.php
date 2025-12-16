@@ -10,13 +10,14 @@ use Modules\User\Entities\User;
  * App\Models\Event
  *
  * @property int $id
- * @property string|null $user_id
+ * @property int $user_id
  * @property string $event_name
+ * @property string|null $ip_address
  * @property array|null $event_properties
+ * @property mixed|null $v_enrichment
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string|null $email
- * @property string|null $ip_address
  * @method static \Illuminate\Database\Eloquent\Builder|Event newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Event newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Event query()
@@ -28,6 +29,7 @@ use Modules\User\Entities\User;
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereIpAddress($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereVEnrichment($value)
  * @mixin \Eloquent
  */
 class Event extends Model

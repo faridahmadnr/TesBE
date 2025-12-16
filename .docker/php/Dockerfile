@@ -11,10 +11,13 @@ COPY composer.json composer.lock ./
 COPY --from=ghcr.io/mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 RUN install-php-extensions gd bcmath zip exif
 RUN docker-php-ext-enable exif
-
+RUN apt-get update && apt-get install -y \
+    libzip-dev \
+    && docker-php-ext-install zip exif pdo_pgsql \
+    && docker-php-ext-enable zip exif
 # Install dependency tanpa dev packages dan optimasi autoloader
 RUN composer install --no-dev --prefer-dist --no-progress --optimize-autoloader --no-scripts
-
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Salin seluruh source code aplikasi
 COPY . .
 
