@@ -9,6 +9,14 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "ext-zip": "*",
+        "ext-mbstring": "*",
+        "ext-pdo": "*",
+        "ext-tokenizer": "*",
+        "ext-ctype": "*",
+        "ext-xml": "*",
+        "ext-openssl": "*",
+        "ext-fileinfo": "*",
         "dedoc/scramble": "^0.8.6",
         "deligoez/laravel-model-hashid": "dev-main",
         "deployer/deployer": "^7.3",
@@ -61,99 +69,20 @@
         "spatie/laravel-ignition": "^2.0",
         "sti3bas/laravel-scout-array-driver": "^3.5"
     },
-    "autoload": {
-        "psr-4": {
-            "App\\": "app/",
-            "Modules\\": "Modules/",
-            "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Tests\\": "tests/"
-        }
-    },
-    "scripts": {
-        "post-autoload-dump": [
-            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
-        ],
-        "post-update-cmd": [
-            "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
-            "@php artisan ide-helper:generate",
-            "@php artisan ide-helper:meta"
-        ],
-        "post-root-package-install": [
-            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
-        ],
-        "post-create-project-cmd": [
-            "@php artisan key:generate --ansi"
-        ],
-        "clear-all": [
-            "@php artisan clear-compiled",
-            "@php artisan cache:clear",
-            "@php artisan route:clear",
-            "@php artisan view:clear",
-            "@php artisan config:clear",
-            "composer dumpautoload -o"
-        ],
-        "cache-all": [
-            "@php artisan config:cache",
-            "@php artisan route:cache"
-        ],
-        "generate-helper": [
-            "@php artisan ide-helper:models"
-        ],
-        "reset": [
-            "composer clear-all",
-            "composer cache-all"
-        ],
-        "sync-scout": [
-            "@php artisan scout:sync-index-settings"
-        ],
-        "test": "./vendor/bin/pest --coverage-html coverage",
-        "test-coverage": "vendor/bin/pest --parallel --coverage-html coverage",
-        "format": "vendor/bin/pint",
-        "lint": "./vendor/bin/phpstan analyse --memory-limit=2G"
-    },
-    "extra": {
-        "laravel": {
-            "dont-discover": []
-        },
-        "patches": {
-            "deligoez/laravel-model-hashid": {
-                "Change return to throw": "./patches"
-            }
-        }
-    },
     "config": {
         "optimize-autoloader": true,
-        "preferred-install": "dist",
+        "preferred-install": {
+            "*": "dist"
+        },
         "sort-packages": true,
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
+        },
+        "platform": {
+            "php": "8.2.0",
+            "ext-zip": "1.21.0",
+            "ext-mbstring": "8.2.0"
         }
-    },
-    "minimum-stability": "stable",
-    "prefer-stable": true,
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/laravel-shift/laravel-password-exposed-validation-rule.git"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/agungkes/laravel-nist-password-rules.git"
-        },
-        {
-            "type": "git",
-            "url": "https://github.com/agungkes/laravel-model-hashid.git"
-        },
-        {
-            "type": "git",
-            "url": "https://github.com/Kaha-Tech/laravel-mjml.git"
-        }
-    ]
+    }
 }

@@ -19,3 +19,7 @@ yarn-error.log
 .vscode/*
 !/.vscode/extensions.json
 /coverage
+
+/.env.railway
+/railway.json
+/nixpacks.toml
