@@ -1,28 +1,28 @@
-services:
-    # The Application
-    api:
-        restart: "unless-stopped"
-        build:
-            context: ./
-            dockerfile: .docker/php/Dockerfile
-        working_dir: /var/www
-        extra_hosts:
-            - "host.docker.internal:host-gateway"
-        environment:
-            DB_PORT: ${DB_PORT}
-            DB_HOST: ${DB_HOST}
-            DB_CONNECTION: ${DB_CONNECTION}
-            DB_USERNAME: ${DB_USERNAME}
-            DB_PASSWORD: ${DB_PASSWORD}
-            DB_DATABASE: ${DB_DATABASE}
-            APP_ENV: ${APP_ENV}
-            APP_DEBUG: ${APP_DEBUG}
-            APP_NAME: ${APP_NAME}
-        volumes:
-            - ".:/var/www"
-        depends_on:
-            - pgsql
-            - redis
+# services:
+#     # The Application
+#     api:
+#         restart: "unless-stopped"
+#         build:
+#             context: ./
+#             dockerfile: .docker/php/Dockerfile
+#         working_dir: /var/www
+#         extra_hosts:
+#             - "host.docker.internal:host-gateway"
+#         environment:
+#             DB_PORT: ${DB_PORT}
+#             DB_HOST: ${DB_HOST}
+#             DB_CONNECTION: ${DB_CONNECTION}
+#             DB_USERNAME: ${DB_USERNAME}
+#             DB_PASSWORD: ${DB_PASSWORD}
+#             DB_DATABASE: ${DB_DATABASE}
+#             APP_ENV: ${APP_ENV}
+#             APP_DEBUG: ${APP_DEBUG}
+#             APP_NAME: ${APP_NAME}
+#         volumes:
+#             - ".:/var/www"
+#         depends_on:
+#             - pgsql
+#             - redis
             # - npm
             # - meilisearch
             # - soketi
